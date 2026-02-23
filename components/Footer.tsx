@@ -20,8 +20,7 @@ const FOOTER_LINKS = {
   'Empresa': [
     { label: 'Sobre Mí', href: '/sobre-mi' },
     { label: 'Rivamez Constructora', href: 'https://rivamez.com', external: true },
-    { label: 'Contacto', href: '/contacto' },
-    { label: 'Política de Privacidad', href: '/privacidad' },
+    { label: 'Contacto', href: '/sobre-mi#contacto' },
   ],
 };
 
@@ -62,10 +61,10 @@ export default function Footer() {
               BIM, ingeniería civil y tecnología. Tutoriales, herramientas y recursos para ingenieros en Perú y Latinoamérica.
             </p>
             <div className="flex items-center gap-3">
-              <a href="#" className="w-9 h-9 bg-surface-800 hover:bg-brand-600 rounded-lg flex items-center justify-center transition-colors">
+              <a href="https://youtube.com/@mikisbell" target="_blank" rel="noopener" className="w-9 h-9 bg-surface-800 hover:bg-brand-600 rounded-lg flex items-center justify-center transition-colors">
                 <Youtube className="w-4 h-4" />
               </a>
-              <a href="#" className="w-9 h-9 bg-surface-800 hover:bg-brand-600 rounded-lg flex items-center justify-center transition-colors">
+              <a href="https://github.com/mikisbell" target="_blank" rel="noopener" className="w-9 h-9 bg-surface-800 hover:bg-brand-600 rounded-lg flex items-center justify-center transition-colors">
                 <Mail className="w-4 h-4" />
               </a>
             </div>
