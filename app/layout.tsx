@@ -4,6 +4,8 @@ import { generateSiteMetadata, generateWebsiteSchema } from '@/lib/seo';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ScrollRevealProvider from '@/components/ScrollRevealProvider';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
 import './globals.css';
 
@@ -59,6 +61,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </main>
           <Footer />
         </ScrollRevealProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

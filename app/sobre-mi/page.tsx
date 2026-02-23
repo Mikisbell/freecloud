@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { Building2, Code, GraduationCap, Award, MapPin, Briefcase } from 'lucide-react';
+import ContactForm from '@/components/ContactForm';
 
 export const metadata: Metadata = {
   title: 'Sobre Mí - Miguel Angel Rivera Ospina',
@@ -120,20 +121,17 @@ export default function SobreMiPage() {
         </div>
       </div>
 
-      {/* CTA */}
-      <div id="contacto" className="bg-surface-900 rounded-2xl p-8 text-center">
-        <h2 className="text-xl font-display font-bold text-white mb-2">
-          ¿Trabajamos juntos?
-        </h2>
-        <p className="text-surface-400 text-sm mb-6 max-w-md mx-auto">
-          Consultoría BIM, desarrollo de herramientas a medida o capacitación para tu equipo.
-        </p>
-        <a
-          href="mailto:contacto@freecloud.pe"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-teal-500 text-white font-semibold rounded-full hover:bg-teal-600 transition-colors"
-        >
-          Contactar →
-        </a>
+      {/* CTA / Contact */}
+      <div id="contacto" className="bg-surface-900 rounded-2xl p-8 md:p-10">
+        <div className="mb-8">
+          <h2 className="text-xl font-display font-bold text-white mb-2">
+            ¿Trabajamos juntos?
+          </h2>
+          <p className="text-surface-400 text-sm max-w-md">
+            Consultoría BIM, desarrollo de herramientas a medida o capacitación para tu equipo.
+          </p>
+        </div>
+        <ContactForm />
       </div>
     </div>
   );
