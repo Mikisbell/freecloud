@@ -42,8 +42,9 @@ export default function AppsPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
       <div className="mb-10">
+        <p className="label-uppercase mb-3">Herramientas</p>
         <h1 className="text-3xl md:text-4xl font-display font-bold text-surface-900 mb-3">
-          🧮 Web Apps
+          Web Apps
         </h1>
         <p className="text-surface-500 max-w-2xl">
           Herramientas online gratuitas para agilizar tu trabajo como ingeniero. Todas funcionan directamente en tu navegador.
@@ -57,17 +58,17 @@ export default function AppsPage() {
             href={app.href}
             className={`group block p-6 bg-white border rounded-xl transition-all ${
               app.status === 'live'
-                ? 'border-surface-100 hover:border-brand-300 hover:shadow-lg card-hover'
+                ? 'border-surface-100 hover:border-teal-300 hover:shadow-lg card-hover'
                 : 'border-dashed border-surface-200 opacity-60 pointer-events-none'
             }`}
           >
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-brand-50 rounded-xl flex items-center justify-center group-hover:bg-brand-100 transition-colors flex-shrink-0">
-                <app.icon className="w-6 h-6 text-brand-600" />
+              <div className="w-12 h-12 bg-teal-50 rounded-xl flex items-center justify-center group-hover:bg-teal-100 transition-colors flex-shrink-0">
+                <app.icon className="w-6 h-6 text-teal-600" />
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <h2 className="font-display font-bold text-surface-900 group-hover:text-brand-600 transition-colors">
+                  <h2 className="font-display font-bold text-surface-900 group-hover:text-teal-600 transition-colors">
                     {app.title}
                   </h2>
                   {app.status === 'pronto' && (

@@ -24,7 +24,7 @@ interface Props {
 const mdxComponents = {
   Callout: ({ type = 'info', children }: { type?: 'info' | 'warning' | 'tip'; children: React.ReactNode }) => {
     const styles = {
-      info: 'bg-brand-50 border-brand-400 text-brand-800',
+      info: 'bg-teal-50 border-teal-400 text-teal-800',
       warning: 'bg-amber-50 border-amber-400 text-amber-800',
       tip: 'bg-emerald-50 border-emerald-400 text-emerald-800',
     };
@@ -39,7 +39,7 @@ const mdxComponents = {
   DownloadButton: ({ href, label }: { href: string; label: string }) => (
     <a
       href={href}
-      className="inline-flex items-center gap-2 px-5 py-3 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 transition-colors my-4"
+      className="inline-flex items-center gap-2 px-5 py-3 bg-teal-500 text-white font-semibold rounded-full hover:bg-teal-600 transition-colors my-4"
       target="_blank"
       rel="noopener"
     >
@@ -58,7 +58,7 @@ const mdxComponents = {
     </div>
   ),
 };
-// ...existing imports eliminados...
+
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
@@ -89,13 +89,13 @@ export default async function BlogPostPage({ params }: Props) {
       <article className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {/* Breadcrumbs */}
         <nav className="flex items-center gap-2 text-sm text-surface-400 mb-6">
-          <Link href="/" className="hover:text-brand-600 transition-colors">Inicio</Link>
+          <Link href="/" className="hover:text-teal-600 transition-colors">Inicio</Link>
           <span>/</span>
-          <Link href="/blog" className="hover:text-brand-600 transition-colors">Blog</Link>
+          <Link href="/blog" className="hover:text-teal-600 transition-colors">Blog</Link>
           <span>/</span>
           {categoryConfig && (
             <>
-              <Link href={`/blog?cat=${post.category}`} className="hover:text-brand-600 transition-colors">
+              <Link href={`/blog?cat=${post.category}`} className="hover:text-teal-600 transition-colors">
                 {categoryConfig.name}
               </Link>
               <span>/</span>
@@ -179,7 +179,7 @@ export default async function BlogPostPage({ params }: Props) {
                   <Link
                     key={tag}
                     href={`/blog?tag=${tag}`}
-                    className="px-3 py-1 bg-surface-100 text-surface-600 text-sm rounded-full hover:bg-brand-50 hover:text-brand-600 transition-colors"
+                    className="px-3 py-1 bg-surface-100 text-surface-600 text-sm rounded-full hover:bg-teal-50 hover:text-teal-600 transition-colors"
                   >
                     {tag}
                   </Link>
@@ -196,7 +196,7 @@ export default async function BlogPostPage({ params }: Props) {
                 <p className="text-surface-600 text-sm mb-3">{post.relatedProduct}</p>
                 <a
                   href={post.relatedProductUrl || '/recursos'}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-accent-600 text-white font-semibold text-sm rounded-lg hover:bg-accent-700 transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-accent-600 text-white font-semibold text-sm rounded-full hover:bg-accent-700 transition-colors"
                 >
                   Descargar recurso
                 </a>
@@ -228,7 +228,7 @@ export default async function BlogPostPage({ params }: Props) {
             {/* Author */}
             <div className="bg-surface-50 rounded-xl p-5">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-brand-500 to-brand-700 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-700 rounded-full flex items-center justify-center text-white font-bold text-lg">
                   MR
                 </div>
                 <div>
@@ -284,4 +284,3 @@ export default async function BlogPostPage({ params }: Props) {
     </>
   );
 }
-

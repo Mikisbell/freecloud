@@ -29,7 +29,7 @@ export default function SobreMiPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start gap-8 mb-12">
-        <div className="w-32 h-32 bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl flex items-center justify-center text-white text-4xl font-display font-bold shadow-xl shadow-brand-500/20 flex-shrink-0">
+        <div className="w-32 h-32 bg-gradient-to-br from-teal-500 to-teal-700 rounded-2xl flex items-center justify-center text-white text-4xl font-display font-bold shadow-xl shadow-teal-500/20 flex-shrink-0">
           MR
         </div>
         <div>
@@ -50,9 +50,9 @@ export default function SobreMiPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
         {STATS.map(stat => (
-          <div key={stat.label} className="bg-brand-50 rounded-xl p-4 text-center">
-            <p className="text-2xl font-display font-bold text-brand-700">{stat.number}</p>
-            <p className="text-xs text-brand-600 font-medium">{stat.label}</p>
+          <div key={stat.label} className="bg-teal-50 rounded-xl p-4 text-center">
+            <p className="text-2xl font-display font-bold text-teal-700">{stat.number}</p>
+            <p className="text-xs text-teal-600 font-medium">{stat.label}</p>
           </div>
         ))}
       </div>
@@ -111,7 +111,7 @@ export default function SobreMiPage() {
               </div>
               <div className="h-2 bg-surface-100 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-brand-500 to-brand-600 rounded-full transition-all duration-1000"
+                  className="h-full bg-gradient-to-r from-teal-500 to-teal-600 rounded-full transition-all duration-1000"
                   style={{ width: `${skill.level}%` }}
                 />
               </div>
@@ -121,7 +121,7 @@ export default function SobreMiPage() {
       </div>
 
       {/* CTA */}
-      <div className="bg-surface-900 rounded-2xl p-8 text-center">
+      <div id="contacto" className="bg-surface-900 rounded-2xl p-8 text-center">
         <h2 className="text-xl font-display font-bold text-white mb-2">
           ¿Trabajamos juntos?
         </h2>
@@ -130,7 +130,7 @@ export default function SobreMiPage() {
         </p>
         <a
           href="mailto:contacto@freecloud.pe"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-500 transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-teal-500 text-white font-semibold rounded-full hover:bg-teal-600 transition-colors"
         >
           Contactar →
         </a>

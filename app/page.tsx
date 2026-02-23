@@ -18,37 +18,34 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-surface-50 via-white to-brand-50" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-100/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent-100/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3" />
+      {/* Hero — Dark with teal glow */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-surface-950 via-surface-900 to-teal-900">
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.07]" />
+        <div className="absolute top-20 right-20 w-80 h-80 bg-teal-500/20 rounded-full blur-[100px] animate-float" />
+        <div className="absolute bottom-10 left-10 w-60 h-60 bg-teal-400/10 rounded-full blur-[80px] animate-float" style={{ animationDelay: '3s' }} />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-24">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-32">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-accent-100 text-accent-700 text-xs font-semibold rounded-full mb-6 animate-fade-in">
-              <span className="w-1.5 h-1.5 bg-accent-500 rounded-full animate-pulse" />
-              BIM obligatorio en Perú desde agosto 2026
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-500/10 border border-teal-500/20 text-teal-300 text-xs font-semibold rounded-full mb-6 backdrop-blur-sm animate-fade-in">
+              <span className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" />
+              BIM OBLIGATORIO EN PERÚ DESDE AGOSTO 2026
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-surface-900 mb-6 animate-slide-up text-balance">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 animate-slide-up text-balance">
               BIM, Ingeniería Civil y{' '}
               <span className="gradient-text">Tecnología</span>
             </h1>
-            <p className="text-lg md:text-xl text-surface-600 mb-8 max-w-2xl animate-slide-up stagger-1">
+            <p className="text-lg md:text-xl text-surface-300 mb-10 max-w-2xl animate-slide-up stagger-1">
               Tutoriales de Revit, Dynamo, Python, Robot Structural y más.
               Plantillas, herramientas y recursos para ingenieros en Perú y Latinoamérica.
             </p>
-            <div className="flex flex-wrap gap-3 animate-slide-up stagger-2">
-              <Link
-                href="/blog"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 transition-all shadow-lg shadow-brand-500/20 hover:shadow-brand-500/30"
-              >
+            <div className="flex flex-wrap gap-4 animate-slide-up stagger-2">
+              <Link href="/blog" className="btn-pill-primary">
                 <BookOpen className="w-5 h-5" />
                 Ver Tutoriales
               </Link>
               <Link
                 href="/recursos"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-surface-700 font-semibold rounded-xl border border-surface-200 hover:border-brand-300 hover:text-brand-600 transition-all"
+                className="btn-pill bg-white/10 text-white border-2 border-white/20 hover:bg-white hover:text-surface-900"
               >
                 <Download className="w-5 h-5" />
                 Recursos Gratis
@@ -56,52 +53,71 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
+        {/* Wave divider */}
+        <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
+          <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-12 md:h-16">
+            <path d="M0,60 C300,100 900,20 1200,60 L1200,120 L0,120 Z" fill="white" />
+          </svg>
+        </div>
       </section>
 
       {/* Featured Post */}
       {featuredPost && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 -mt-4">
-          <BlogCard post={featuredPost} featured />
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-8">
+          <div className="reveal">
+            <BlogCard post={featuredPost} featured />
+          </div>
         </section>
       )}
 
       {/* Recent Posts */}
       {recentPosts.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-display font-bold text-surface-900">
-              Últimos artículos
-            </h2>
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+          <div className="flex items-center justify-between mb-10 reveal">
+            <div>
+              <p className="label-uppercase mb-2">Blog</p>
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-surface-900">
+                Últimos artículos
+              </h2>
+            </div>
             <Link
               href="/blog"
-              className="flex items-center gap-1 text-sm text-brand-600 font-medium hover:gap-2 transition-all"
+              className="flex items-center gap-1 text-sm text-teal-600 font-medium hover:gap-2 transition-all"
             >
               Ver todos <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recentPosts.map(post => (
-              <BlogCard key={post.slug} post={post} />
+            {recentPosts.map((post, i) => (
+              <div key={post.slug} className="reveal" style={{ transitionDelay: `${i * 100}ms` }}>
+                <BlogCard post={post} />
+              </div>
             ))}
           </div>
         </section>
       )}
 
-      {/* Categories */}
-      <section className="bg-surface-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <h2 className="text-2xl font-display font-bold text-surface-900 mb-8 text-center">
-            Explora por categoría
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-            {Object.entries(CATEGORIES).map(([key, cat]) => (
+      {/* Categories — Dark Section */}
+      <section className="section-dark py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 reveal">
+            <p className="label-uppercase mb-2">Categorías</p>
+            <h2 className="text-2xl md:text-3xl font-display font-bold">
+              Explora por tema
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {Object.entries(CATEGORIES).map(([key, cat], i) => (
               <Link
                 key={key}
                 href={`/blog?cat=${key}`}
-                className="group flex flex-col items-center gap-2 p-4 bg-white rounded-xl border border-surface-100 hover:border-brand-300 hover:shadow-md transition-all"
+                className="reveal group flex flex-col items-center gap-3 p-5 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-teal-500/50 hover:bg-teal-500/10 transition-all duration-200"
+                style={{ transitionDelay: `${i * 60}ms` }}
               >
-                <span className="text-2xl">{cat.icon}</span>
-                <span className="text-sm font-medium text-surface-700 group-hover:text-brand-600 transition-colors text-center">
+                <span className="text-3xl">{cat.icon}</span>
+                <span className="text-sm font-medium text-surface-300 group-hover:text-teal-400 transition-colors text-center">
                   {cat.name}
                 </span>
               </Link>
@@ -111,24 +127,28 @@ export default function HomePage() {
       </section>
 
       {/* Tools */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-        <h2 className="text-2xl font-display font-bold text-surface-900 mb-2 text-center">
-          Herramientas y Recursos
-        </h2>
-        <p className="text-surface-500 text-center mb-8 max-w-xl mx-auto">
-          Calculadoras online, plantillas y scripts para agilizar tu trabajo diario
-        </p>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+        <div className="text-center mb-10 reveal">
+          <p className="label-uppercase mb-2">Herramientas</p>
+          <h2 className="text-2xl md:text-3xl font-display font-bold text-surface-900 mb-2">
+            Herramientas y Recursos
+          </h2>
+          <p className="text-surface-500 max-w-xl mx-auto">
+            Calculadoras online, plantillas y scripts para agilizar tu trabajo diario
+          </p>
+        </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {TOOLS.map(tool => (
+          {TOOLS.map((tool, i) => (
             <Link
               key={tool.href}
               href={tool.href}
-              className="group p-5 bg-white border border-surface-100 rounded-xl hover:border-brand-300 hover:shadow-lg transition-all card-hover"
+              className="reveal group p-5 bg-white border border-surface-100 rounded-xl hover:border-teal-400 hover:shadow-lg transition-all card-hover"
+              style={{ transitionDelay: `${i * 80}ms` }}
             >
-              <div className="w-10 h-10 bg-brand-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-brand-100 transition-colors">
-                <tool.icon className="w-5 h-5 text-brand-600" />
+              <div className="w-10 h-10 bg-teal-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-100 transition-colors">
+                <tool.icon className="w-5 h-5 text-teal-600" />
               </div>
-              <h3 className="font-display font-semibold text-surface-900 mb-1 group-hover:text-brand-600 transition-colors">
+              <h3 className="font-display font-semibold text-surface-900 mb-1 group-hover:text-teal-600 transition-colors">
                 {tool.name}
               </h3>
               <p className="text-sm text-surface-500">{tool.desc}</p>
@@ -138,8 +158,10 @@ export default function HomePage() {
       </section>
 
       {/* Newsletter */}
-      <section className="max-w-2xl mx-auto px-4 sm:px-6 pb-16">
-        <Newsletter />
+      <section className="max-w-2xl mx-auto px-4 sm:px-6 pb-20">
+        <div className="reveal">
+          <Newsletter />
+        </div>
       </section>
     </>
   );

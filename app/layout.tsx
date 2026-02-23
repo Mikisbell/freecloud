@@ -3,6 +3,7 @@ import { DM_Sans, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import { generateSiteMetadata, generateWebsiteSchema } from '@/lib/seo';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import ScrollRevealProvider from '@/components/ScrollRevealProvider';
 import Script from 'next/script';
 import './globals.css';
 
@@ -51,11 +52,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="font-body antialiased min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <ScrollRevealProvider>
+          <Header />
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </ScrollRevealProvider>
       </body>
     </html>
   );

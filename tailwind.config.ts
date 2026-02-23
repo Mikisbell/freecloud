@@ -21,6 +21,19 @@ const config: Config = {
           900: '#183f8f',
           950: '#132857',
         },
+        teal: {
+          50: '#edfcfb',
+          100: '#d2f7f5',
+          200: '#a9efec',
+          300: '#72e2de',
+          400: '#3dcdc9',
+          500: '#2ab1ac',
+          600: '#228f8c',
+          700: '#1d7371',
+          800: '#1c5b5a',
+          900: '#1b4c4b',
+          950: '#0a2e2e',
+        },
         accent: {
           50: '#fff7ed',
           100: '#ffeed4',
@@ -59,10 +72,10 @@ const config: Config = {
             maxWidth: '72ch',
             color: 'var(--tw-prose-body)',
             a: {
-              color: '#1a6df5',
+              color: '#2ab1ac',
               textDecoration: 'underline',
               textUnderlineOffset: '3px',
-              '&:hover': { color: '#1357e1' },
+              '&:hover': { color: '#1d7371' },
             },
             'code::before': { content: '""' },
             'code::after': { content: '""' },
@@ -80,6 +93,11 @@ const config: Config = {
         'fade-in': 'fadeIn 0.6s ease-out forwards',
         'slide-up': 'slideUp 0.6s ease-out forwards',
         'slide-in-right': 'slideInRight 0.4s ease-out forwards',
+        'reveal-up': 'revealUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'reveal-left': 'revealLeft 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'reveal-scale': 'revealScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'float': 'float 6s ease-in-out infinite',
+        'gradient-shift': 'gradientShift 8s ease infinite',
       },
       keyframes: {
         fadeIn: {
@@ -93,6 +111,26 @@ const config: Config = {
         slideInRight: {
           '0%': { opacity: '0', transform: 'translateX(-10px)' },
           '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        revealUp: {
+          '0%': { opacity: '0', transform: 'translateY(40px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        revealLeft: {
+          '0%': { opacity: '0', transform: 'translateX(-40px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        revealScale: {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-12px)' },
+        },
+        gradientShift: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
         },
       },
     },

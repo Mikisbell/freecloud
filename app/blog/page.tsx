@@ -21,8 +21,9 @@ export default async function BlogPage({ searchParams }: Props) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
       {/* Header */}
       <div className="mb-10">
+        <p className="label-uppercase mb-3">Blog</p>
         <h1 className="text-3xl md:text-4xl font-display font-bold text-surface-900 mb-3">
-          {activeCat ? `${activeCat.icon} ${activeCat.name}` : 'Blog'}
+          {activeCat ? `${activeCat.icon} ${activeCat.name}` : 'Todos los artículos'}
         </h1>
         <p className="text-surface-500 max-w-2xl">
           {activeCat
@@ -36,10 +37,10 @@ export default async function BlogPage({ searchParams }: Props) {
       <div className="flex flex-wrap gap-2 mb-8">
         <Link
           href="/blog"
-          className={`px-3 py-1.5 text-sm font-medium rounded-full transition-colors ${
+          className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
             !category
-              ? 'bg-brand-600 text-white'
-              : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
+              ? 'bg-teal-500 text-white'
+              : 'bg-surface-100 text-surface-600 hover:bg-teal-50 hover:text-teal-600'
           }`}
         >
           Todos
@@ -48,10 +49,10 @@ export default async function BlogPage({ searchParams }: Props) {
           <Link
             key={key}
             href={`/blog?cat=${key}`}
-            className={`px-3 py-1.5 text-sm font-medium rounded-full transition-colors ${
+            className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
               category === key
-                ? 'bg-brand-600 text-white'
-                : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
+                ? 'bg-teal-500 text-white'
+                : 'bg-surface-100 text-surface-600 hover:bg-teal-50 hover:text-teal-600'
             }`}
           >
             {cat.icon} {cat.name}
@@ -71,7 +72,7 @@ export default async function BlogPage({ searchParams }: Props) {
           <p className="text-surface-400 text-lg mb-4">
             No hay artículos en esta categoría aún.
           </p>
-          <Link href="/blog" className="text-brand-600 font-medium hover:underline">
+          <Link href="/blog" className="text-teal-600 font-medium hover:underline">
             Ver todos los artículos
           </Link>
         </div>

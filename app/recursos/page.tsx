@@ -77,8 +77,9 @@ export default function RecursosPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
       <div className="mb-10">
+        <p className="label-uppercase mb-3">Tienda</p>
         <h1 className="text-3xl md:text-4xl font-display font-bold text-surface-900 mb-3">
-          📦 Recursos y Herramientas
+          Recursos y Herramientas
         </h1>
         <p className="text-surface-500 max-w-2xl">
           Plantillas, scripts y herramientas profesionales para ingeniería civil y BIM.
@@ -87,19 +88,19 @@ export default function RecursosPage() {
       </div>
 
       {/* Free tools banner */}
-      <div className="bg-gradient-to-r from-emerald-50 to-emerald-100/50 border border-emerald-200 rounded-2xl p-6 mb-10">
+      <div className="bg-gradient-to-r from-teal-50 to-teal-100/50 border border-teal-200 rounded-2xl p-6 mb-10">
         <div className="flex flex-col md:flex-row items-center gap-4">
           <div className="flex-1">
-            <h2 className="font-display font-bold text-emerald-900 text-lg mb-1">
+            <h2 className="font-display font-bold text-teal-900 text-lg mb-1">
               🆓 ¿Buscas herramientas gratuitas?
             </h2>
-            <p className="text-emerald-700 text-sm">
+            <p className="text-teal-700 text-sm">
               Nuestras web apps son 100% gratis: calculadora sísmica E.030, predimensionamiento y más.
             </p>
           </div>
           <Link
             href="/apps"
-            className="px-5 py-2.5 bg-emerald-600 text-white font-semibold text-sm rounded-lg hover:bg-emerald-700 transition-colors whitespace-nowrap"
+            className="px-5 py-2.5 bg-teal-500 text-white font-semibold text-sm rounded-full hover:bg-teal-600 transition-colors whitespace-nowrap"
           >
             Ver Web Apps Gratis →
           </Link>
@@ -116,8 +117,8 @@ export default function RecursosPage() {
             <div className="p-5 flex-1 flex flex-col">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 bg-brand-50 rounded-lg flex items-center justify-center">
-                    <product.icon className="w-5 h-5 text-brand-600" />
+                  <div className="w-10 h-10 bg-teal-50 rounded-lg flex items-center justify-center">
+                    <product.icon className="w-5 h-5 text-teal-600" />
                   </div>
                   <span className="text-xs font-medium text-surface-400">{product.category}</span>
                 </div>
@@ -150,7 +151,7 @@ export default function RecursosPage() {
                 </div>
                 <a
                   href={product.href}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-brand-600 text-white text-sm font-semibold rounded-lg hover:bg-brand-700 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-teal-500 text-white text-sm font-semibold rounded-full hover:bg-teal-600 transition-colors"
                 >
                   <Download className="w-4 h-4" />
                   Obtener
@@ -172,7 +173,7 @@ export default function RecursosPage() {
         </p>
         <a
           href="mailto:contacto@freecloud.pe"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-surface-900 text-white font-semibold text-sm rounded-lg hover:bg-surface-800 transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-surface-900 text-white font-semibold text-sm rounded-full hover:bg-surface-800 transition-colors"
         >
           Contactar →
         </a>
