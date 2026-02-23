@@ -3,6 +3,7 @@ import { ArrowRight, BookOpen, Download, Calculator, Code, Cpu, FileSpreadsheet 
 import { getAllPosts, CATEGORIES } from '@/lib/blog';
 import BlogCard from '@/components/BlogCard';
 import Newsletter from '@/components/Newsletter';
+import TabShowcase from '@/components/TabShowcase';
 
 const TOOLS = [
   { name: 'Calculadora Sísmica E.030', href: '/apps/calculadora-sismica', icon: Calculator, desc: 'Calcula fuerza cortante basal según norma peruana' },
@@ -97,6 +98,9 @@ export default function HomePage() {
           </div>
         </section>
       )}
+
+      {/* Tab Showcase — Dataiku style */}
+      <TabShowcase />
 
       {/* Categories — Dark Section */}
       <section className="section-dark py-20 relative overflow-hidden">
