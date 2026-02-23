@@ -1,9 +1,16 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = supabaseUrl && supabaseAnonKey
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null;
+
+function getClient() {
+  if (!supabase) throw new Error('Supabase not configured');
+  return supabase;
+}
 
 // Types for Supabase tables
 export interface Subscriber {
@@ -30,7 +37,7 @@ export interface PageView {
 
 // Newsletter subscription
 export async function subscribeNewsletter(email: string, source: string = 'blog') {
-  const { data, error } = await supabase
+  const { data, error } = await getClient()
     .from('subscribers')
     .upsert({ email, source }, { onConflict: 'email' })
     .select()
@@ -42,7 +49,7 @@ export async function subscribeNewsletter(email: string, source: string = 'blog'
 
 // Track downloads
 export async function trackDownload(productSlug: string, email: string) {
-  const { error } = await supabase
+  const { error } = await getClient()
     .from('downloads')
     .insert({ product_slug: productSlug, email });
 
@@ -51,7 +58,7 @@ export async function trackDownload(productSlug: string, email: string) {
 
 // Simple analytics
 export async function trackPageView(path: string, referrer?: string) {
-  await supabase
+  await getClient()
     .from('page_views')
     .insert({ path, referrer })
     .then(() => {});
