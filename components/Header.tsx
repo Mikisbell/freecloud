@@ -1,39 +1,76 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { Menu, X, Code, ChevronDown } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Menu, X, Code, ChevronDown, ArrowRight } from 'lucide-react';
 
 const NAV_ITEMS = [
   { label: 'Blog', href: '/blog' },
-  {
-    label: 'Categorías',
-    href: '#',
-    children: [
-      { label: '🏗️ BIM Perú', href: '/blog?cat=bim-peru' },
-      { label: '🖥️ Revit', href: '/blog?cat=revit' },
-      { label: '⚡ Dynamo', href: '/blog?cat=dynamo' },
-      { label: '🐍 Python', href: '/blog?cat=python' },
-      { label: '🔧 Robot Structural', href: '/blog?cat=robot-structural' },
-      { label: '📊 Excel/Plantillas', href: '/blog?cat=excel' },
-      { label: '🏛️ Análisis Estructural', href: '/blog?cat=analisis-estructural' },
-    ],
-  },
+  { label: 'Categorías', href: '#', hasMegaMenu: true },
   { label: 'Recursos', href: '/recursos' },
   { label: 'Apps', href: '/apps' },
   { label: 'Sobre Mí', href: '/sobre-mi' },
 ];
 
+const MEGA_MENU = {
+  columns: [
+    {
+      title: 'BIM & Construcción',
+      description: 'Normativa, implementación y flujos BIM en Perú',
+      links: [
+        { label: 'BIM Perú', href: '/blog?cat=bim-peru', icon: '🏗️' },
+        { label: 'Análisis Estructural', href: '/blog?cat=analisis-estructural', icon: '🏛️' },
+        { label: 'Normativa', href: '/blog?cat=normativa', icon: '📋' },
+      ],
+    },
+    {
+      title: 'Software & Herramientas',
+      description: 'Tutoriales de las herramientas que usamos a diario',
+      links: [
+        { label: 'Autodesk Revit', href: '/blog?cat=revit', icon: '🖥️' },
+        { label: 'Robot Structural', href: '/blog?cat=robot-structural', icon: '🔧' },
+        { label: 'Civil 3D', href: '/blog?cat=civil-3d', icon: '🛣️' },
+      ],
+    },
+    {
+      title: 'Automatización',
+      description: 'Programa y automatiza tu flujo de trabajo',
+      links: [
+        { label: 'Dynamo', href: '/blog?cat=dynamo', icon: '⚡' },
+        { label: 'Python + BIM', href: '/blog?cat=python', icon: '🐍' },
+        { label: 'Excel / Plantillas', href: '/blog?cat=excel', icon: '📊' },
+      ],
+    },
+  ],
+  featured: {
+    image: '/blog/bim-obligatorio-peru.svg',
+    title: 'BIM obligatorio en Perú desde 2026',
+    description: 'Todo lo que necesitas saber sobre la implementación BIM obligatoria.',
+    href: '/blog/bim-obligatorio-peru-2026',
+    cta: 'LEER ARTÍCULO',
+  },
+};
+
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [megaOpen, setMegaOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setMegaOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => setMegaOpen(false), 150);
+  };
 
   return (
     <header className={`sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b transition-all duration-200 ${
@@ -59,33 +96,21 @@ export default function Header() {
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
             {NAV_ITEMS.map(item => (
-              item.children ? (
+              item.hasMegaMenu ? (
                 <div
                   key={item.label}
                   className="relative"
-                  onMouseEnter={() => setDropdownOpen(true)}
-                  onMouseLeave={() => setDropdownOpen(false)}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                 >
-                  <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-surface-600 hover:text-teal-600 rounded-lg hover:bg-teal-50 transition-all duration-200">
+                  <button className={`flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                    megaOpen
+                      ? 'text-teal-600 bg-teal-50'
+                      : 'text-surface-600 hover:text-teal-600 hover:bg-teal-50'
+                  }`}>
                     {item.label}
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${megaOpen ? 'rotate-180' : ''}`} />
                   </button>
-                  {dropdownOpen && (
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-[540px] bg-white rounded-2xl shadow-2xl border border-surface-100 p-6 animate-fade-in">
-                      <p className="label-uppercase mb-4">Categorías</p>
-                      <div className="grid grid-cols-2 gap-1">
-                        {item.children.map(child => (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-surface-600 hover:text-teal-600 hover:bg-teal-50 transition-all duration-200"
-                          >
-                            {child.label}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                 </div>
               ) : (
                 <Link
@@ -114,50 +139,119 @@ export default function Header() {
             {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
+      </div>
 
-        {/* Mobile Nav */}
-        {mobileOpen && (
-          <nav className="md:hidden py-4 border-t border-surface-100 animate-fade-in">
-            {NAV_ITEMS.map(item => (
-              item.children ? (
-                <div key={item.label}>
-                  <p className="px-3 py-2 text-xs font-semibold text-surface-400 uppercase tracking-wider">
-                    {item.label}
+      {/* Mega Menu — Dataiku style */}
+      {megaOpen && (
+        <div
+          className="hidden md:block absolute top-full left-0 right-0 bg-surface-50 border-b border-surface-200 shadow-xl animate-fade-in"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+            {/* Columns */}
+            <div className="grid grid-cols-3 gap-10">
+              {MEGA_MENU.columns.map(col => (
+                <div key={col.title}>
+                  <h3 className="font-display font-bold text-surface-900 text-base mb-1">
+                    {col.title}
+                  </h3>
+                  <p className="text-xs text-surface-400 mb-4">
+                    {col.description}
                   </p>
-                  {item.children.map(child => (
-                    <Link
-                      key={child.href}
-                      href={child.href}
-                      className="block px-6 py-2 text-sm text-surface-600 hover:text-teal-600"
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      {child.label}
-                    </Link>
-                  ))}
+                  <ul className="space-y-1">
+                    {col.links.map(link => (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          className="flex items-center gap-2.5 px-2 py-2 -mx-2 rounded-lg text-sm text-surface-600 hover:text-teal-600 hover:bg-white transition-all duration-150"
+                          onClick={() => setMegaOpen(false)}
+                        >
+                          <span className="text-base">{link.icon}</span>
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              ) : (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="block px-3 py-2.5 text-sm font-medium text-surface-700 hover:text-teal-600"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              )
-            ))}
-            <div className="px-3 pt-3">
+              ))}
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-surface-200 mt-8 pt-6">
+              {/* Featured section — like Dataiku's bottom CTA */}
               <Link
-                href="/recursos"
-                className="block w-full text-center px-4 py-2.5 bg-teal-500 text-white text-sm font-semibold rounded-full"
-                onClick={() => setMobileOpen(false)}
+                href={MEGA_MENU.featured.href}
+                className="flex items-center gap-6 group"
+                onClick={() => setMegaOpen(false)}
               >
-                Descargar Gratis
+                <div className="w-24 h-16 bg-white rounded-lg border border-surface-200 overflow-hidden flex-shrink-0 flex items-center justify-center">
+                  <span className="text-3xl">🏗️</span>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm text-surface-500 mb-0.5">
+                    {MEGA_MENU.featured.description}
+                  </p>
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-600 uppercase tracking-wider group-hover:gap-2.5 transition-all">
+                    <ArrowRight className="w-3.5 h-3.5" />
+                    {MEGA_MENU.featured.cta}
+                  </span>
+                </div>
               </Link>
             </div>
-          </nav>
-        )}
-      </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Nav */}
+      {mobileOpen && (
+        <nav className="md:hidden py-4 border-t border-surface-100 animate-fade-in bg-white">
+          {NAV_ITEMS.map(item => (
+            item.hasMegaMenu ? (
+              <div key={item.label}>
+                <p className="px-3 py-2 text-xs font-semibold text-surface-400 uppercase tracking-wider">
+                  Categorías
+                </p>
+                {MEGA_MENU.columns.map(col => (
+                  <div key={col.title} className="mb-2">
+                    <p className="px-3 py-1 text-xs font-bold text-surface-700">
+                      {col.title}
+                    </p>
+                    {col.links.map(link => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className="block px-6 py-2 text-sm text-surface-600 hover:text-teal-600"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        {link.icon} {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="block px-3 py-2.5 text-sm font-medium text-surface-700 hover:text-teal-600"
+                onClick={() => setMobileOpen(false)}
+              >
+                {item.label}
+              </Link>
+            )
+          ))}
+          <div className="px-3 pt-3">
+            <Link
+              href="/recursos"
+              className="block w-full text-center px-4 py-2.5 bg-teal-500 text-white text-sm font-semibold rounded-full"
+              onClick={() => setMobileOpen(false)}
+            >
+              Descargar Gratis
+            </Link>
+          </div>
+        </nav>
+      )}
     </header>
   );
 }
