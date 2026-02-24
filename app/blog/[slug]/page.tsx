@@ -6,6 +6,9 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypeHighlight from 'rehype-highlight';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
 import { Clock, Calendar, Tag, Share2 } from 'lucide-react';
 import { generatePostMetadata, generateArticleSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/seo';
 import BlogCard from '@/components/BlogCard';
@@ -178,8 +181,8 @@ export default async function BlogPostPage({ params }: Props) {
                 components={mdxComponents}
                 options={{
                   mdxOptions: {
-                    remarkPlugins: [remarkGfm],
-                    rehypePlugins: [rehypeSlug, rehypeHighlight],
+                    remarkPlugins: [remarkGfm, remarkMath],
+                    rehypePlugins: [rehypeSlug, rehypeHighlight, rehypeKatex],
                   },
                 }}
               />
