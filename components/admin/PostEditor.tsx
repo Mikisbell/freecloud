@@ -178,6 +178,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
         setSaving(true)
         try {
             const status = forceStatus || formData.status
+            setFormData(prev => ({ ...prev, status }))
 
             const payload: any = {
                 ...formData,
@@ -323,26 +324,53 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                 <CardContent className="pt-4 space-y-4 sm:space-y-5">
                     <div className="flex items-center justify-between">
                         <Label className="text-white/50 text-xs">Estado Actual</Label>
-                        <div className="flex items-center gap-2">
-                            <Badge variant="secondary" className={`text-[10px] border-0 ${formData.status === 'published' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}`}>
-                                {formData.status === 'published' ? 'PUBLICADO' : 'BORRADOR'}
-                            </Badge>
-                            <label className="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" name="status" checked={formData.status === 'published'} onChange={(e) => setFormData({ ...formData, status: e.target.checked ? 'published' : 'draft' })} className="sr-only peer" />
-                                <div className="w-9 h-5 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-teal-500"></div>
-                            </label>
-                        </div>
+                        <Badge variant="secondary" className={`text-[10px] border-0 ${formData.status === 'published' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}`}>
+                            {formData.status === 'published' ? 'PUBLICADO' : 'BORRADOR'}
+                        </Badge>
                     </div>
 
-                    <Button
-                        onClick={() => handleSave()}
-                        disabled={saving || (isEditing && !dirty)}
-                        className={`w-full h-11 transition-all ${isEditing && !dirty ? 'bg-white/[0.04] text-white/30' : 'bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white shadow-lg shadow-teal-500/20'}`}
-                    >
-                        <Save className="w-4 h-4 mr-2" />
-                        {saving ? (isEditing ? 'Actualizando...' : 'Guardando...') : (isEditing ? 'Actualizar' : 'Guardar Nuevo')}
-                    </Button>
-
+                    <div className="flex flex-col gap-2 pt-1">
+                        {formData.status === 'published' ? (
+                            <>
+                                <Button
+                                    onClick={() => handleSave('published')}
+                                    disabled={saving || (isEditing && !dirty)}
+                                    className={`w-full h-11 transition-all ${isEditing && !dirty ? 'bg-white/[0.04] text-white/30' : 'bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white shadow-lg shadow-teal-500/20'}`}
+                                >
+                                    <Save className="w-4 h-4 mr-2" />
+                                    {saving ? 'Actualizando...' : 'Actualizar Publicación'}
+                                </Button>
+                                <Button
+                                    onClick={() => handleSave('draft')}
+                                    disabled={saving}
+                                    variant="outline"
+                                    className="w-full h-11 border-white/[0.08] bg-transparent hover:bg-white/[0.04] text-white/60 hover:text-white"
+                                >
+                                    Despublicar a Borrador
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Button
+                                    onClick={() => handleSave('published')}
+                                    disabled={saving}
+                                    className="w-full h-11 transition-all bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white shadow-lg shadow-teal-500/20"
+                                >
+                                    <Sparkles className="w-4 h-4 mr-2" />
+                                    {saving ? 'Publicando...' : '¡Publicar Ahora!'}
+                                </Button>
+                                <Button
+                                    onClick={() => handleSave('draft')}
+                                    disabled={saving || (isEditing && !dirty)}
+                                    variant="outline"
+                                    className="w-full h-11 border-white/[0.08] bg-transparent hover:bg-white/[0.04] text-white/60 hover:text-white"
+                                >
+                                    <Save className="w-4 h-4 mr-2" />
+                                    {saving ? 'Guardando...' : 'Guardar como Borrador'}
+                                </Button>
+                            </>
+                        )}
+                    </div>
                     <div className="pt-4 border-t border-white/[0.06] text-xs space-y-2">
                         <div className="flex justify-between text-white/40">
                             <span>Lectura estimada:</span>
@@ -601,15 +629,15 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                     </h2>
                 </div>
 
-                {/* Mobile fast-save button */}
+                {/* Mobile fast-save / publish button */}
                 <Button
-                    onClick={() => handleSave()}
+                    onClick={() => handleSave(formData.status === 'published' ? 'published' : 'draft')}
                     disabled={saving || (isEditing && !dirty)}
                     size="sm"
                     className={`lg:hidden h-9 ${isEditing && !dirty ? 'bg-white/[0.04] text-white/30' : 'bg-gradient-to-r from-teal-500 to-teal-600 text-white border-0'}`}
                 >
                     <Save className="w-3.5 h-3.5 mr-1.5" />
-                    {saving ? '...' : (isEditing ? 'Guardar' : 'Crear')}
+                    {saving ? '...' : (formData.status === 'published' ? 'Actualizar' : 'Borrador')}
                 </Button>
             </div>
 

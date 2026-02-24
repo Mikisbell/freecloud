@@ -4,13 +4,15 @@ import { createBrowserClient } from '@supabase/ssr';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-export const supabase = supabaseUrl && supabaseAnonKey
-  ? createClient(supabaseUrl, supabaseAnonKey)
+let browserClient: any = null;
+let serverClient: any = null;
+
+// Export base client only for server environments
+export const supabase = typeof window === 'undefined' && supabaseUrl && supabaseAnonKey
+  ? (serverClient = serverClient || createClient(supabaseUrl, supabaseAnonKey))
   : null;
 
-let browserClient: any = null;
-
-function getClient() {
+export function getClient() {
   if (typeof window !== 'undefined') {
     if (!browserClient) {
       browserClient = createBrowserClient(supabaseUrl, supabaseAnonKey);
@@ -340,7 +342,7 @@ export async function deletePost(id: string) {
 
 export async function uploadImage(file: File) {
   const fileExt = file.name.split('.').pop();
-  const fileName = `${Math.random().toString(36).substring(2, 15)}-${Date.now()}.${fileExt}`;
+  const fileName = `${Math.random().toString(36).substring(2, 15)} -${Date.now()}.${fileExt} `;
 
   const { data, error } = await getClient()
     .storage
