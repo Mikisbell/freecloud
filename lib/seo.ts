@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import { BlogPost } from './blog';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://freecloud.pe';
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || 'FreeCloud';
@@ -48,16 +47,18 @@ export function generateSiteMetadata(overrides?: Partial<Metadata>): Metadata {
   };
 }
 
-export function generatePostMetadata(post: BlogPost): Metadata {
-  const title = post.metaTitle || post.title;
-  const description = post.metaDescription || post.description;
+export function generatePostMetadata(post: any): Metadata {
+  const title = post.meta_title || post.metaTitle || post.title;
+  const description = post.meta_description || post.metaDescription || post.description || post.excerpt;
   const url = `${SITE_URL}/blog/${post.slug}`;
-  const image = post.image || `${SITE_URL}/og-default.png`;
+  const image = post.featured_image || post.image || `${SITE_URL}/og-default.png`;
+  const date = post.published_at || post.created_at || post.date;
+  const tags = post.tags || [];
 
   return {
     title,
     description,
-    keywords: post.tags,
+    keywords: tags,
     openGraph: {
       type: 'article',
       locale: 'es_PE',
@@ -65,11 +66,11 @@ export function generatePostMetadata(post: BlogPost): Metadata {
       title,
       description,
       siteName: SITE_NAME,
-      publishedTime: post.date,
-      modifiedTime: post.updated || post.date,
-      authors: [post.author],
-      tags: post.tags,
-      images: [{ url: image, width: 1200, height: 630, alt: post.imageAlt || post.title }],
+      publishedTime: date,
+      modifiedTime: post.updated_at || post.updated || date,
+      authors: [post.author || 'Miguel Angel Rivera'],
+      tags: tags,
+      images: [{ url: image, width: 1200, height: 630, alt: post.image_alt || post.imageAlt || title }],
     },
     twitter: {
       card: 'summary_large_image',
@@ -81,19 +82,24 @@ export function generatePostMetadata(post: BlogPost): Metadata {
   };
 }
 
-// JSON-LD Structured Data
-export function generateArticleSchema(post: BlogPost) {
+export function generateArticleSchema(post: any) {
+  const title = post.meta_title || post.metaTitle || post.title;
+  const description = post.meta_description || post.metaDescription || post.description || post.excerpt;
+  const image = post.featured_image || post.image || `${SITE_URL}/og-default.png`;
+  const date = post.published_at || post.created_at || post.date;
+  const tags = post.tags || [];
+
   return {
     '@context': 'https://schema.org',
     '@type': 'TechArticle',
-    headline: post.title,
-    description: post.description,
-    image: post.image,
-    datePublished: post.date,
-    dateModified: post.updated || post.date,
+    headline: title,
+    description: description,
+    image: image,
+    datePublished: date,
+    dateModified: post.updated_at || post.updated || date,
     author: {
       '@type': 'Person',
-      name: post.author,
+      name: post.author || 'Miguel Angel Rivera',
       url: SITE_URL,
       jobTitle: 'Ingeniero Civil y de Sistemas',
     },
@@ -104,10 +110,10 @@ export function generateArticleSchema(post: BlogPost) {
       logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.png` },
     },
     mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/blog/${post.slug}` },
-    keywords: post.tags.join(', '),
+    keywords: tags.join(', '),
     about: {
       '@type': 'Thing',
-      name: post.category,
+      name: post.categories?.name || post.category || 'Ingeniería',
     },
   };
 }

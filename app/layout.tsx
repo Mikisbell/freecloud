@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import { DM_Sans, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import { generateSiteMetadata, generateWebsiteSchema } from '@/lib/seo';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import ScrollRevealProvider from '@/components/ScrollRevealProvider';
+import LayoutShell from '@/components/LayoutShell';
+import AdSenseLoader from '@/components/AdSenseLoader';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
@@ -36,31 +35,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID;
 
   return (
-    <html lang="es" data-scroll-behavior="smooth" className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable}`}>
-      <head>
-        {/* AdSense */}
-        {adsenseId && (
-          <Script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
-            crossOrigin="anonymous"
-            strategy="afterInteractive"
-          />
-        )}
-        {/* JSON-LD Website Schema */}
-        <script
+    <html lang="es" suppressHydrationWarning data-scroll-behavior="smooth" className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable}`}>
+      <body suppressHydrationWarning className="font-body antialiased min-h-screen flex flex-col">
+        <LayoutShell>
+          {children}
+        </LayoutShell>
+        {adsenseId && <AdSenseLoader clientId={adsenseId} />}
+        <Script
+          id="website-schema"
           type="application/ld+json"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(generateWebsiteSchema()) }}
         />
-      </head>
-      <body className="font-body antialiased min-h-screen flex flex-col">
-        <ScrollRevealProvider>
-          <Header />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
-        </ScrollRevealProvider>
         <Analytics />
         <SpeedInsights />
       </body>

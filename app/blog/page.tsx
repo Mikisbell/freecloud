@@ -1,8 +1,9 @@
 import { Metadata } from 'next';
-import { getAllPosts, getPostsByCategory, CATEGORIES } from '@/lib/blog';
+import { getPosts, getCategories } from '@/lib/supabase';
 import Link from 'next/link';
 import { ArrowRight, Clock } from 'lucide-react';
 import Newsletter from '@/components/Newsletter';
+import { AdBanner } from '@/components/AdSense';
 
 export const metadata: Metadata = {
   title: 'Blog - Tutoriales BIM e Ingeniería Civil',
@@ -14,11 +15,15 @@ interface Props {
 }
 
 export default async function BlogPage({ searchParams }: Props) {
-  const { cat: category } = await searchParams;
-  const allPosts = category ? getPostsByCategory(category) : getAllPosts();
-  const activeCat = category && CATEGORIES[category as keyof typeof CATEGORIES];
+  const { cat: categorySlug } = await searchParams;
 
-  const featuredPost = !category ? allPosts.find(p => p.featured) || allPosts[0] : null;
+  // Fetch from Supabase
+  const dbCategories = await getCategories();
+  const { posts: allPosts } = await getPosts({ category: categorySlug });
+
+  const activeCat = categorySlug ? dbCategories.find(c => c.slug === categorySlug) : null;
+
+  const featuredPost = !categorySlug ? allPosts.find(p => p.featured) || allPosts[0] : null;
   const posts = featuredPost ? allPosts.filter(p => p.slug !== featuredPost.slug) : allPosts;
 
   return (
@@ -27,7 +32,7 @@ export default async function BlogPage({ searchParams }: Props) {
       <section className="bg-gradient-to-b from-surface-50 to-white border-b border-surface-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-20 text-center">
           <p className="label-uppercase mb-4">
-            {activeCat ? activeCat.icon : '📖'} {activeCat ? activeCat.name : 'Blog'}
+            {activeCat ? activeCat.emoji : '📖'} {activeCat ? activeCat.name : 'Blog'}
           </p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-surface-900 mb-4 text-balance max-w-3xl mx-auto">
             {activeCat
@@ -37,7 +42,7 @@ export default async function BlogPage({ searchParams }: Props) {
           </h1>
           <p className="text-lg text-surface-500 max-w-2xl mx-auto">
             {activeCat
-              ? `Todos los artículos sobre ${activeCat.name.toLowerCase()}`
+              ? activeCat.description || `Todos los artículos sobre ${activeCat.name.toLowerCase()}`
               : 'Tutoriales, guías y recursos sobre BIM, ingeniería civil y tecnología para ingenieros en Perú y Latinoamérica.'
             }
           </p>
@@ -50,25 +55,23 @@ export default async function BlogPage({ searchParams }: Props) {
           <div className="flex items-center gap-2 py-3 overflow-x-auto no-scrollbar">
             <Link
               href="/blog"
-              className={`px-4 py-1.5 text-sm font-medium rounded-full transition-all whitespace-nowrap ${
-                !category
-                  ? 'bg-surface-900 text-white'
-                  : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
-              }`}
+              className={`px-4 py-1.5 text-sm font-medium rounded-full transition-all whitespace-nowrap ${!categorySlug
+                ? 'bg-surface-900 text-white'
+                : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
+                }`}
             >
               Todos
             </Link>
-            {Object.entries(CATEGORIES).map(([key, cat]) => (
+            {dbCategories.map(cat => (
               <Link
-                key={key}
-                href={`/blog?cat=${key}`}
-                className={`px-4 py-1.5 text-sm font-medium rounded-full transition-all whitespace-nowrap ${
-                  category === key
-                    ? 'bg-surface-900 text-white'
-                    : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
-                }`}
+                key={cat.id}
+                href={`/blog?cat=${cat.slug}`}
+                className={`px-4 py-1.5 text-sm font-medium rounded-full transition-all whitespace-nowrap ${categorySlug === cat.slug
+                  ? 'bg-surface-900 text-white'
+                  : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
+                  }`}
               >
-                {cat.icon} {cat.name}
+                {cat.emoji} {cat.name}
               </Link>
             ))}
           </div>
@@ -76,23 +79,22 @@ export default async function BlogPage({ searchParams }: Props) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        {/* Featured post — Dataiku style: image left, text right */}
+        {/* Featured post */}
         {featuredPost && (
           <section className="py-12 md:py-16">
             <Link href={`/blog/${featuredPost.slug}`} className="group block">
               <article className="grid md:grid-cols-2 gap-0 bg-white rounded-2xl overflow-hidden border border-surface-100 card-hover">
-                {/* Image */}
                 <div className="aspect-[4/3] md:aspect-auto bg-gradient-to-br from-surface-100 to-surface-50 overflow-hidden relative">
-                  {featuredPost.image ? (
+                  {featuredPost.featured_image ? (
                     <img
-                      src={featuredPost.image}
-                      alt={featuredPost.imageAlt || featuredPost.title}
+                      src={featuredPost.featured_image}
+                      alt={featuredPost.image_alt || featuredPost.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-teal-500/10 to-teal-600/20 flex items-center justify-center">
                       <span className="text-7xl opacity-40">
-                        {CATEGORIES[featuredPost.category as keyof typeof CATEGORIES]?.icon || '📝'}
+                        {featuredPost.categories?.emoji || '📝'}
                       </span>
                     </div>
                   )}
@@ -103,31 +105,30 @@ export default async function BlogPage({ searchParams }: Props) {
                   </div>
                 </div>
 
-                {/* Content */}
                 <div className="p-8 md:p-10 lg:p-12 flex flex-col justify-center">
                   <div className="flex items-center gap-2 mb-4">
                     <span
                       className="px-2.5 py-0.5 text-xs font-semibold rounded-full"
                       style={{
-                        backgroundColor: `${CATEGORIES[featuredPost.category as keyof typeof CATEGORIES]?.color || '#64748b'}15`,
-                        color: CATEGORIES[featuredPost.category as keyof typeof CATEGORIES]?.color || '#64748b',
+                        backgroundColor: `${featuredPost.categories?.color || '#64748b'}15`,
+                        color: featuredPost.categories?.color || '#64748b',
                       }}
                     >
-                      {CATEGORIES[featuredPost.category as keyof typeof CATEGORIES]?.icon} {CATEGORIES[featuredPost.category as keyof typeof CATEGORIES]?.name}
+                      {featuredPost.categories?.emoji} {featuredPost.categories?.name}
                     </span>
                   </div>
                   <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-surface-900 mb-4 group-hover:text-teal-600 transition-colors text-balance">
                     {featuredPost.title}
                   </h2>
                   <p className="text-surface-500 mb-6 line-clamp-3 text-lg leading-relaxed">
-                    {featuredPost.description}
+                    {featuredPost.excerpt}
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4 text-sm text-surface-400">
-                      <span>{new Date(featuredPost.date).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                      <span>{new Date(featuredPost.published_at || featuredPost.created_at).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                       <span className="flex items-center gap-1">
                         <Clock className="w-3.5 h-3.5" />
-                        {featuredPost.readingTime}
+                        {featuredPost.reading_time || 5} min
                       </span>
                     </div>
                     <span className="flex items-center gap-1.5 text-sm text-teal-600 font-medium group-hover:gap-3 transition-all">
@@ -155,53 +156,56 @@ export default async function BlogPage({ searchParams }: Props) {
             )}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {posts.map(post => {
-                const catConfig = CATEGORIES[post.category as keyof typeof CATEGORIES];
+                const catConfig = post.categories;
                 return (
                   <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
                     <article className="h-full flex flex-col">
-                      {/* Image */}
                       <div className="aspect-[16/10] bg-surface-100 rounded-xl overflow-hidden relative mb-4">
-                        {post.image ? (
+                        {post.featured_image ? (
                           <img
-                            src={post.image}
-                            alt={post.imageAlt || post.title}
+                            src={post.featured_image}
+                            alt={post.image_alt || post.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             loading="lazy"
                           />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-surface-100 to-surface-200 flex items-center justify-center">
                             <span className="text-5xl opacity-30">
-                              {catConfig?.icon || '📝'}
+                              {catConfig?.emoji || '📝'}
                             </span>
                           </div>
                         )}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       </div>
 
-                      {/* Category */}
                       <div className="mb-2">
                         <span
                           className="text-xs font-semibold uppercase tracking-wider"
                           style={{ color: catConfig?.color || '#64748b' }}
                         >
-                          {catConfig?.icon} {catConfig?.name || post.category}
+                          {catConfig?.emoji} {catConfig?.name}
                         </span>
                       </div>
 
-                      {/* Title */}
                       <h3 className="font-display font-bold text-surface-900 text-lg mb-2 group-hover:text-teal-600 transition-colors line-clamp-2 text-balance flex-1">
                         {post.title}
                       </h3>
 
-                      {/* Date */}
                       <p className="text-sm text-surface-400">
-                        {new Date(post.date).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        {new Date(post.published_at || post.created_at).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </p>
                     </article>
                   </Link>
                 );
               })}
             </div>
+
+            {/* In-feed Ad after a few posts */}
+            {posts.length > 3 && (
+              <div className="mt-12">
+                <AdBanner slot="XXXXXXXXXX" />
+              </div>
+            )}
           </section>
         ) : (
           <div className="text-center py-20">
@@ -214,8 +218,8 @@ export default async function BlogPage({ searchParams }: Props) {
           </div>
         )}
 
-        {/* Recommended section — Dataiku style */}
-        {!category && (
+        {/* Recommended section */}
+        {!categorySlug && (
           <section className="py-16 border-t border-surface-100">
             <div className="text-center mb-10">
               <p className="label-uppercase mb-3">Explorar más</p>
@@ -266,7 +270,6 @@ export default async function BlogPage({ searchParams }: Props) {
           </section>
         )}
 
-        {/* Newsletter CTA */}
         <section className="pb-16">
           <Newsletter />
         </section>

@@ -1,8 +1,4 @@
-export async function generateStaticParams() {
-  const posts = getAllPosts();
-  return posts.map(post => ({ slug: post.slug }));
-}
-
+import { getPosts, getPostBySlug, getRelatedPosts } from '@/lib/supabase';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -11,11 +7,15 @@ import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypeHighlight from 'rehype-highlight';
 import { Clock, Calendar, Tag, Share2 } from 'lucide-react';
-import { getPostBySlug, getAllPosts, getRelatedPosts, CATEGORIES } from '@/lib/blog';
 import { generatePostMetadata, generateArticleSchema, generateBreadcrumbSchema } from '@/lib/seo';
 import BlogCard from '@/components/BlogCard';
 import Newsletter from '@/components/Newsletter';
-import { AdInArticle } from '@/components/AdSense';
+import { AdInArticle, AdSidebar, AdBanner } from '@/components/AdSense';
+
+export async function generateStaticParams() {
+  const { posts } = await getPosts();
+  return posts.map(post => ({ slug: post.slug }));
+}
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -47,25 +47,42 @@ const mdxComponents = {
     </a>
   ),
   YouTube: ({ id }: { id: string }) => (
-    <div className="video-container">
+    <div className="video-container flex justify-center my-6">
       <iframe
         src={`https://www.youtube.com/embed/${id}`}
         title="YouTube video"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
         loading="lazy"
+        className="w-full max-w-3xl aspect-video rounded-xl shadow-lg border border-surface-200"
       />
     </div>
   ),
 };
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
+  if (!post) return {};
+
+  // Here we map Supabase post format to legacy for SEO generation
+  return generatePostMetadata({
+    title: post.meta_title || post.title,
+    description: post.meta_description || post.excerpt || '',
+    slug: post.slug,
+    image: post.featured_image,
+    date: post.published_at || post.created_at,
+    author: post.author,
+  });
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (!post) notFound();
 
-  const relatedPosts = getRelatedPosts(slug, 3);
-  const categoryConfig = CATEGORIES[post.category as keyof typeof CATEGORIES];
+  const relatedPosts = post.category_id ? await getRelatedPosts(post.id, post.category_id, 3) : [];
+  const categoryConfig = post.categories;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://freecloud.pe';
 
   const breadcrumbs = [
@@ -79,7 +96,15 @@ export default async function BlogPostPage({ params }: Props) {
       {/* Structured Data */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateArticleSchema(post)) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateArticleSchema({
+            title: post.title,
+            description: post.excerpt || '',
+            image: post.featured_image,
+            date: post.published_at || post.created_at,
+            author: post.author,
+          }))
+        }}
       />
       <script
         type="application/ld+json"
@@ -95,7 +120,7 @@ export default async function BlogPostPage({ params }: Props) {
           <span>/</span>
           {categoryConfig && (
             <>
-              <Link href={`/blog?cat=${post.category}`} className="hover:text-teal-600 transition-colors">
+              <Link href={`/blog?cat=${categoryConfig.slug}`} className="hover:text-teal-600 transition-colors">
                 {categoryConfig.name}
               </Link>
               <span>/</span>
@@ -111,48 +136,34 @@ export default async function BlogPostPage({ params }: Props) {
             <header className="mb-8">
               {categoryConfig && (
                 <Link
-                  href={`/blog?cat=${post.category}`}
+                  href={`/blog?cat=${categoryConfig.slug}`}
                   className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full mb-4"
                   style={{
-                    backgroundColor: `${categoryConfig.color}15`,
-                    color: categoryConfig.color,
+                    backgroundColor: `${categoryConfig.color || '#3b82f6'}15`,
+                    color: categoryConfig.color || '#3b82f6',
                   }}
                 >
-                  {categoryConfig.icon} {categoryConfig.name}
+                  {categoryConfig.emoji} {categoryConfig.name}
                 </Link>
               )}
               <h1 className="text-3xl md:text-4xl font-display font-bold text-surface-900 mb-4 text-balance">
                 {post.title}
               </h1>
               <p className="text-lg text-surface-500 mb-5">
-                {post.description}
+                {post.excerpt}
               </p>
               <div className="flex flex-wrap items-center gap-4 text-sm text-surface-400 pb-6 border-b border-surface-100">
                 <span className="flex items-center gap-1.5">
                   <Calendar className="w-4 h-4" />
-                  {new Date(post.date).toLocaleDateString('es-PE', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  {new Date(post.published_at || post.created_at).toLocaleDateString('es-PE', { day: 'numeric', month: 'long', year: 'numeric' })}
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Clock className="w-4 h-4" />
-                  {post.readingTime}
+                  {post.reading_time || 5} min
                 </span>
                 <span>Por {post.author}</span>
               </div>
             </header>
-
-            {/* YouTube video if exists */}
-            {post.youtubeId && (
-              <div className="mb-8">
-                <div className="video-container">
-                  <iframe
-                    src={`https://www.youtube.com/embed/${post.youtubeId}`}
-                    title={post.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                </div>
-              </div>
-            )}
 
             {/* Post content */}
             <div className="prose-blog">
@@ -172,7 +183,7 @@ export default async function BlogPostPage({ params }: Props) {
             <AdInArticle slot="XXXXXXXXXX" />
 
             {/* Tags */}
-            {post.tags.length > 0 && (
+            {post.tags && post.tags.length > 0 && (
               <div className="flex flex-wrap items-center gap-2 mt-8 pt-6 border-t border-surface-100">
                 <Tag className="w-4 h-4 text-surface-400" />
                 {post.tags.map(tag => (
@@ -184,22 +195,6 @@ export default async function BlogPostPage({ params }: Props) {
                     {tag}
                   </Link>
                 ))}
-              </div>
-            )}
-
-            {/* Related product CTA */}
-            {post.relatedProduct && (
-              <div className="mt-8 p-6 bg-gradient-to-r from-accent-50 to-accent-100/50 border border-accent-200 rounded-2xl">
-                <h3 className="font-display font-bold text-surface-900 mb-2">
-                  📦 Recurso relacionado
-                </h3>
-                <p className="text-surface-600 text-sm mb-3">{post.relatedProduct}</p>
-                <a
-                  href={post.relatedProductUrl || '/recursos'}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-accent-600 text-white font-semibold text-sm rounded-full hover:bg-accent-700 transition-colors"
-                >
-                  Descargar recurso
-                </a>
               </div>
             )}
 
@@ -216,7 +211,17 @@ export default async function BlogPostPage({ params }: Props) {
                 </h2>
                 <div className="grid md:grid-cols-3 gap-4">
                   {relatedPosts.map(rp => (
-                    <BlogCard key={rp.slug} post={rp} />
+                    <BlogCard key={rp.slug} post={{
+                      title: rp.title,
+                      slug: rp.slug,
+                      description: rp.excerpt || '',
+                      category: rp.categories?.slug || '',
+                      date: rp.published_at || rp.created_at,
+                      image: rp.featured_image,
+                      readingTime: `${rp.reading_time || 5} min`,
+                      featured: rp.featured,
+                      // We map the category configs from Supabase just for BlogCard compatibility
+                    } as any} dbCategory={rp.categories} />
                   ))}
                 </div>
               </div>
@@ -232,13 +237,10 @@ export default async function BlogPostPage({ params }: Props) {
                   MR
                 </div>
                 <div>
-                  <p className="font-display font-semibold text-surface-900 text-sm">Miguel Angel Rivera</p>
-                  <p className="text-xs text-surface-500">Ing. Civil &amp; Sistemas</p>
+                  <p className="font-display font-semibold text-surface-900 text-sm">{post.author}</p>
+                  <p className="text-xs text-surface-500">Autor</p>
                 </div>
               </div>
-              <p className="text-xs text-surface-500">
-                Ingeniero civil y de sistemas. Especialista en BIM, desarrollo de software y análisis estructural.
-              </p>
             </div>
 
             {/* Share */}
@@ -276,7 +278,7 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* Sidebar Ad */}
             <div className="sticky top-20">
-              <AdInArticle slot="XXXXXXXXXX" />
+              <AdSidebar slot="XXXXXXXXXX" />
             </div>
           </aside>
         </div>

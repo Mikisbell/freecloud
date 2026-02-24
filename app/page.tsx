@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight, BookOpen, Download, Calculator, Code, Cpu, FileSpreadsheet } from 'lucide-react';
-import { getAllPosts, CATEGORIES } from '@/lib/blog';
+import { getPosts, getCategories } from '@/lib/supabase';
 import BlogCard from '@/components/BlogCard';
 import Newsletter from '@/components/Newsletter';
 import TabShowcase from '@/components/TabShowcase';
@@ -12,8 +12,13 @@ const TOOLS = [
   { name: 'Programas HP Prime', href: '/recursos?type=hp-prime', icon: Cpu, desc: 'Hardy Cross, análisis estructural y más' },
 ];
 
-export default function HomePage() {
-  const posts = getAllPosts();
+export default async function HomePage() {
+  const [postsRes, dbCategories] = await Promise.all([
+    getPosts({ limit: 7 }),
+    getCategories()
+  ]);
+
+  const posts = postsRes.posts;
   const featuredPost = posts.find(p => p.featured) || posts[0];
   const recentPosts = posts.filter(p => p.slug !== featuredPost?.slug).slice(0, 6);
 
@@ -67,7 +72,7 @@ export default function HomePage() {
       {featuredPost && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-8">
           <div className="reveal">
-            <BlogCard post={featuredPost} featured />
+            <BlogCard post={featuredPost as any} dbCategory={featuredPost.categories} featured />
           </div>
         </section>
       )}
@@ -92,7 +97,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {recentPosts.map((post, i) => (
               <div key={post.slug} className="reveal" style={{ transitionDelay: `${i * 100}ms` }}>
-                <BlogCard post={post} />
+                <BlogCard post={post as any} dbCategory={post.categories} />
               </div>
             ))}
           </div>
@@ -113,14 +118,14 @@ export default function HomePage() {
             </h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {Object.entries(CATEGORIES).map(([key, cat], i) => (
+            {dbCategories.map((cat, i) => (
               <Link
-                key={key}
-                href={`/blog?cat=${key}`}
+                key={cat.id}
+                href={`/blog?cat=${cat.slug}`}
                 className="reveal group flex flex-col items-center gap-3 p-5 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-teal-500/50 hover:bg-teal-500/10 transition-all duration-200"
                 style={{ transitionDelay: `${i * 60}ms` }}
               >
-                <span className="text-3xl">{cat.icon}</span>
+                <span className="text-3xl">{cat.emoji || '📝'}</span>
                 <span className="text-sm font-medium text-surface-300 group-hover:text-teal-400 transition-colors text-center">
                   {cat.name}
                 </span>

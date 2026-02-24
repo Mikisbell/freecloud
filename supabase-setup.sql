@@ -58,6 +58,26 @@ CREATE POLICY "Auth users can read views" ON page_views
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_subscribers_email ON subscribers(email);
 CREATE INDEX IF NOT EXISTS idx_subscribers_created ON subscribers(created_at DESC);
+
+-- Contacts (contact form messages)
+CREATE TABLE IF NOT EXISTS contacts (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  service TEXT,
+  message TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE contacts ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Anyone can submit contact form" ON contacts
+  FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Auth users can read contacts" ON contacts
+  FOR SELECT USING (auth.role() = 'authenticated');
+
+CREATE INDEX IF NOT EXISTS idx_contacts_created ON contacts(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_downloads_product ON downloads(product_slug);
 CREATE INDEX IF NOT EXISTS idx_downloads_created ON downloads(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_page_views_path ON page_views(path);

@@ -1,16 +1,17 @@
 import Link from 'next/link';
 import { Clock, ArrowRight } from 'lucide-react';
-import { BlogPost, CATEGORIES } from '@/lib/blog';
+import { Category } from '@/lib/supabase';
 
 interface BlogCardProps {
-  post: BlogPost;
+  post: any;
   featured?: boolean;
+  dbCategory?: Category | null;
 }
 
-export default function BlogCard({ post, featured = false }: BlogCardProps) {
-  const categoryConfig = CATEGORIES[post.category as keyof typeof CATEGORIES];
-  const categoryName = categoryConfig?.name || post.category;
-  const categoryIcon = categoryConfig?.icon || '📝';
+export default function BlogCard({ post, featured = false, dbCategory }: BlogCardProps) {
+  const categoryName = dbCategory?.name || post.category || 'Categoría';
+  const categoryIcon = dbCategory?.emoji || '📝';
+  const categoryColor = dbCategory?.color || '#64748b';
 
   if (featured) {
     return (
@@ -69,8 +70,8 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
             <span
               className="px-2.5 py-0.5 text-xs font-semibold rounded-full"
               style={{
-                backgroundColor: `${categoryConfig?.color || '#64748b'}15`,
-                color: categoryConfig?.color || '#64748b',
+                backgroundColor: `${categoryColor}15`,
+                color: categoryColor,
               }}
             >
               {categoryIcon} {categoryName}

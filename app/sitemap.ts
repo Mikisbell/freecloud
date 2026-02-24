@@ -1,13 +1,15 @@
 import { MetadataRoute } from 'next';
-import { getAllPosts } from '@/lib/blog';
+import { getPosts } from '@/lib/supabase';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://freecloud.pe';
-  const posts = getAllPosts();
+
+  // Use async getPosts from Supabase
+  const { posts } = await getPosts();
 
   const blogEntries = posts.map(post => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.updated || post.date),
+    lastModified: new Date(post.updated_at || post.published_at || post.created_at),
     changeFrequency: 'weekly' as const,
     priority: post.featured ? 0.9 : 0.7,
   }));
