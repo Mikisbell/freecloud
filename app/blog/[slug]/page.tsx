@@ -7,7 +7,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypeHighlight from 'rehype-highlight';
 import { Clock, Calendar, Tag, Share2 } from 'lucide-react';
-import { generatePostMetadata, generateArticleSchema, generateBreadcrumbSchema } from '@/lib/seo';
+import { generatePostMetadata, generateArticleSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/seo';
 import BlogCard from '@/components/BlogCard';
 import Newsletter from '@/components/Newsletter';
 import { AdInArticle, AdSidebar, AdBanner } from '@/components/AdSense';
@@ -93,23 +93,29 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <>
-      {/* Structured Data */}
+      {/* Article Schema - passes full post for correct @id */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(generateArticleSchema({
-            title: post.title,
-            description: post.excerpt || '',
-            image: post.featured_image,
-            date: post.published_at || post.created_at,
-            author: post.author,
-          }))
+          __html: JSON.stringify(generateArticleSchema(post))
         }}
       />
+      {/* Breadcrumb Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(generateBreadcrumbSchema(breadcrumbs)) }}
       />
+      {/* FAQPage Schema - uses key_question + key_answer from post */}
+      {post.key_question && post.key_answer && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateFAQSchema([
+              { question: post.key_question, answer: post.key_answer }
+            ]))
+          }}
+        />
+      )}
 
       <article className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {/* Breadcrumbs */}
