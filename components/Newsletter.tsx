@@ -39,7 +39,7 @@ export default function Newsletter({ variant = 'card' }: NewsletterProps) {
 
   if (status === 'success') {
     return (
-      <div className={`flex items-center gap-2 ${variant === 'inline' ? 'text-white' : 'text-teal-600'}`}>
+      <div className={`flex items-center gap-2 ${variant === 'inline' ? 'text-white' : 'text-fc-navy'}`}>
         <CheckCircle className="w-5 h-5" />
         <span className="text-sm font-medium">{message}</span>
       </div>
@@ -60,7 +60,7 @@ export default function Newsletter({ variant = 'card' }: NewsletterProps) {
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="px-5 py-2.5 bg-white text-teal-700 font-semibold text-sm rounded-full hover:bg-teal-50 transition-colors disabled:opacity-50 flex items-center gap-2"
+          className="px-5 py-2.5 bg-white text-fc-navy-deep font-semibold text-sm rounded-full hover:bg-fc-blue/5 transition-colors disabled:opacity-50 flex items-center gap-2"
         >
           {status === 'loading' ? (
             <Loader2 className="w-4 h-4 animate-spin" />
@@ -76,7 +76,7 @@ export default function Newsletter({ variant = 'card' }: NewsletterProps) {
   }
 
   return (
-    <div className="bg-gradient-to-br from-teal-50 to-teal-100/50 border border-teal-200 rounded-2xl p-6">
+    <div className="bg-gradient-to-br from-fc-blue/5 to-fc-cyan/10/50 border border-fc-cyan/20 rounded-2xl p-6">
       <h3 className="font-display font-bold text-surface-900 text-lg mb-1">
         📩 Newsletter semanal
       </h3>
@@ -89,13 +89,13 @@ export default function Newsletter({ variant = 'card' }: NewsletterProps) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="tu@email.com"
-          className="flex-1 px-4 py-2.5 border border-surface-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+          className="flex-1 px-4 py-2.5 border border-surface-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-fc-blue focus:border-fc-blue"
           required
         />
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="px-5 py-2.5 bg-teal-500 text-white font-semibold text-sm rounded-full hover:bg-teal-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+          className="px-5 py-2.5 bg-fc-blue text-white font-semibold text-sm rounded-full hover:bg-fc-navy transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {status === 'loading' ? (
             <Loader2 className="w-4 h-4 animate-spin" />

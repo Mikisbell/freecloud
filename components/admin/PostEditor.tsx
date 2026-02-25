@@ -248,7 +248,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                             value={formData.slug}
                             onChange={handleChange}
                             placeholder="url-del-post"
-                            className="flex-1 bg-transparent border-0 text-teal-400 text-xs sm:text-sm focus-visible:ring-0 p-0 h-auto font-mono"
+                            className="flex-1 bg-transparent border-0 text-fc-cyan text-xs sm:text-sm focus-visible:ring-0 p-0 h-auto font-mono"
                         />
                     </div>
                 </div>
@@ -288,7 +288,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                         size="sm"
                         variant={showPreview ? "default" : "secondary"}
                         onClick={() => setShowPreview(!showPreview)}
-                        className={`h-8 text-xs shrink-0 ${showPreview ? 'bg-teal-500/20 text-teal-400 hover:bg-teal-500/30' : 'bg-white/[0.04] text-white/60 hover:text-white hover:bg-white/[0.08]'}`}
+                        className={`h-8 text-xs shrink-0 ${showPreview ? 'bg-fc-blue/20 text-fc-cyan hover:bg-fc-blue/30' : 'bg-white/[0.04] text-white/60 hover:text-white hover:bg-white/[0.08]'}`}
                     >
                         <Eye className="w-3.5 h-3.5 mr-1.5" />
                         {showPreview ? 'Editando' : 'Preview'}
@@ -297,7 +297,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
 
                 <div className="flex-1 overflow-hidden relative bg-[#08080f]/50">
                     {showPreview ? (
-                        <div className="absolute inset-0 overflow-y-auto p-4 sm:p-6 prose prose-invert prose-p:text-white/70 prose-headings:text-white prose-a:text-teal-400 prose-pre:bg-white/[0.03] prose-pre:border prose-pre:border-white/[0.06] max-w-none custom-scrollbar">
+                        <div className="absolute inset-0 overflow-y-auto p-4 sm:p-6 prose prose-invert prose-p:text-white/70 prose-headings:text-white prose-a:text-fc-cyan prose-pre:bg-white/[0.03] prose-pre:border prose-pre:border-white/[0.06] max-w-none custom-scrollbar">
                             <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
                                 {formData.content || '*Aún no hay contenido... Escribe algo para ver la previsualización.*'}
                             </ReactMarkdown>
@@ -338,7 +338,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                                 <Button
                                     onClick={() => handleSave('published')}
                                     disabled={saving || (isEditing && !dirty)}
-                                    className={`w-full h-11 transition-all ${isEditing && !dirty ? 'bg-white/[0.04] text-white/30' : 'bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white shadow-lg shadow-teal-500/20'}`}
+                                    className={`w-full h-11 transition-all ${isEditing && !dirty ? 'bg-white/[0.04] text-white/30' : 'bg-gradient-to-r from-fc-blue to-fc-navy hover:from-fc-cyan hover:to-fc-blue text-white shadow-lg shadow-fc-blue/20'}`}
                                 >
                                     <Save className="w-4 h-4 mr-2" />
                                     {saving ? 'Actualizando...' : 'Actualizar Publicación'}
@@ -357,7 +357,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                                 <Button
                                     onClick={() => handleSave('published')}
                                     disabled={saving}
-                                    className="w-full h-11 transition-all bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white shadow-lg shadow-teal-500/20"
+                                    className="w-full h-11 transition-all bg-gradient-to-r from-fc-blue to-fc-navy hover:from-fc-cyan hover:to-fc-blue text-white shadow-lg shadow-fc-blue/20"
                                 >
                                     <Sparkles className="w-4 h-4 mr-2" />
                                     {saving ? 'Publicando...' : '¡Publicar Ahora!'}
@@ -386,7 +386,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                             </div>
                         )}
                         {lastSaved && (
-                            <div className="flex justify-between text-teal-400/80 mt-2">
+                            <div className="flex justify-between text-fc-cyan/80 mt-2">
                                 <span>Autoguardado:</span>
                                 <span>{lastSaved.toLocaleTimeString()}</span>
                             </div>
@@ -522,7 +522,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                             name="category_id"
                             value={formData.category_id}
                             onChange={handleChange}
-                            className="w-full bg-white/[0.04] border border-white/[0.08] rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-teal-500/50 min-h-10 cursor-pointer appearance-none"
+                            className="w-full bg-white/[0.04] border border-white/[0.08] rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-fc-blue/50 min-h-10 cursor-pointer appearance-none"
                         >
                             <option value="" className="bg-[#08080f]">Selecciona Categoría...</option>
                             {categories.map(c => <option key={c.id} value={c.id} className="bg-[#08080f]">{c.emoji} {c.name}</option>)}
@@ -531,7 +531,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
 
                     <div className="space-y-2">
                         <Label className="text-white/50 text-xs">Etiquetas (Tags)</Label>
-                        <div className="bg-white/[0.04] border border-white/[0.08] rounded-md p-1.5 min-h-[44px] flex flex-wrap gap-1.5 focus-within:ring-1 focus-within:ring-teal-500/50 transition-colors">
+                        <div className="bg-white/[0.04] border border-white/[0.08] rounded-md p-1.5 min-h-[44px] flex flex-wrap gap-1.5 focus-within:ring-1 focus-within:ring-fc-blue/50 transition-colors">
                             {(formData.tags || []).map((tag, idx) => (
                                 <Badge key={idx} variant="secondary" className="bg-white/[0.06] text-white/80 hover:bg-white/[0.1] border-0 text-[11px] px-2 py-0.5 font-normal">
                                     {tag}
@@ -550,7 +550,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                     </div>
 
                     <label className="flex items-center gap-3 p-3 bg-white/[0.02] border border-white/[0.04] rounded-lg cursor-pointer hover:bg-white/[0.04] transition-colors">
-                        <input type="checkbox" name="featured" checked={formData.featured} onChange={handleChange} className="w-4 h-4 bg-white/10 border-white/20 rounded text-teal-500 focus:ring-teal-500/50" />
+                        <input type="checkbox" name="featured" checked={formData.featured} onChange={handleChange} className="w-4 h-4 bg-white/10 border-white/20 rounded text-fc-blue focus:ring-fc-blue/50" />
                         <div className="flex flex-col">
                             <span className="text-sm font-medium text-white/90">Destacado (Hero)</span>
                             <span className="text-[10px] text-white/40">Aparecerá grande al inicio del blog</span>
@@ -563,7 +563,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                             <Button
                                 variant="ghost"
                                 size="sm"
-                                className="h-6 text-[10px] text-teal-400 hover:text-teal-300 hover:bg-teal-500/10 px-2"
+                                className="h-6 text-[10px] text-fc-cyan hover:text-fc-cyan-light hover:bg-fc-blue/10 px-2"
                                 onClick={(e) => {
                                     e.preventDefault();
                                     const input = document.createElement('input');
@@ -691,7 +691,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                     onClick={() => handleSave(formData.status === 'published' ? 'published' : 'draft')}
                     disabled={saving || (isEditing && !dirty)}
                     size="sm"
-                    className={`lg:hidden h-9 ${isEditing && !dirty ? 'bg-white/[0.04] text-white/30' : 'bg-gradient-to-r from-teal-500 to-teal-600 text-white border-0'}`}
+                    className={`lg:hidden h-9 ${isEditing && !dirty ? 'bg-white/[0.04] text-white/30' : 'bg-gradient-to-r from-fc-blue to-fc-navy text-white border-0'}`}
                 >
                     <Save className="w-3.5 h-3.5 mr-1.5" />
                     {saving ? '...' : (formData.status === 'published' ? 'Actualizar' : 'Borrador')}
@@ -708,10 +708,10 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
             <div className="lg:hidden">
                 <Tabs defaultValue="editor" className="w-full">
                     <TabsList className="grid w-full grid-cols-2 bg-white/[0.04] p-1 border border-white/[0.06] mb-4">
-                        <TabsTrigger value="editor" className="data-[state=active]:bg-teal-500/20 data-[state=active]:text-teal-400 text-white/60">
+                        <TabsTrigger value="editor" className="data-[state=active]:bg-fc-blue/20 data-[state=active]:text-fc-cyan text-white/60">
                             <PenLine className="w-4 h-4 mr-2" /> Editor
                         </TabsTrigger>
-                        <TabsTrigger value="config" className="data-[state=active]:bg-teal-500/20 data-[state=active]:text-teal-400 text-white/60">
+                        <TabsTrigger value="config" className="data-[state=active]:bg-fc-blue/20 data-[state=active]:text-fc-cyan text-white/60">
                             <Settings2 className="w-4 h-4 mr-2" /> Config
                         </TabsTrigger>
                     </TabsList>

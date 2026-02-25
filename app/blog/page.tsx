@@ -92,14 +92,14 @@ export default async function BlogPage({ searchParams }: Props) {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-teal-500/10 to-teal-600/20 flex items-center justify-center">
+                    <div className="w-full h-full bg-gradient-to-br from-fc-cyan/10 to-fc-blue/20 flex items-center justify-center">
                       <span className="text-7xl opacity-40">
                         {featuredPost.categories?.emoji || '📝'}
                       </span>
                     </div>
                   )}
                   <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 bg-teal-500 text-white text-xs font-semibold rounded-full">
+                    <span className="px-3 py-1 bg-fc-gold text-white text-xs font-semibold rounded-full">
                       Destacado
                     </span>
                   </div>
@@ -117,7 +117,7 @@ export default async function BlogPage({ searchParams }: Props) {
                       {featuredPost.categories?.emoji} {featuredPost.categories?.name}
                     </span>
                   </div>
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-surface-900 mb-4 group-hover:text-teal-600 transition-colors text-balance">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-surface-900 mb-4 group-hover:text-fc-blue transition-colors text-balance">
                     {featuredPost.title}
                   </h2>
                   <p className="text-surface-500 mb-6 line-clamp-3 text-lg leading-relaxed">
@@ -131,7 +131,7 @@ export default async function BlogPage({ searchParams }: Props) {
                         {featuredPost.reading_time || 5} min
                       </span>
                     </div>
-                    <span className="flex items-center gap-1.5 text-sm text-teal-600 font-medium group-hover:gap-3 transition-all">
+                    <span className="flex items-center gap-1.5 text-sm text-fc-blue font-medium group-hover:gap-3 transition-all">
                       Leer <ArrowRight className="w-4 h-4" />
                     </span>
                   </div>
@@ -187,7 +187,7 @@ export default async function BlogPage({ searchParams }: Props) {
                         </span>
                       </div>
 
-                      <h3 className="font-display font-bold text-surface-900 text-lg mb-2 group-hover:text-teal-600 transition-colors line-clamp-2 text-balance flex-1">
+                      <h3 className="font-display font-bold text-surface-900 text-lg mb-2 group-hover:text-fc-blue transition-colors line-clamp-2 text-balance flex-1">
                         {post.title}
                       </h3>
 
@@ -212,7 +212,7 @@ export default async function BlogPage({ searchParams }: Props) {
             <p className="text-surface-400 text-lg mb-4">
               No hay artículos en esta categoría aún.
             </p>
-            <Link href="/blog" className="text-teal-600 font-medium hover:underline">
+            <Link href="/blog" className="text-fc-blue font-medium hover:underline">
               Ver todos los artículos
             </Link>
           </div>
@@ -228,41 +228,41 @@ export default async function BlogPage({ searchParams }: Props) {
               </h2>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
-              <Link href="/recursos" className="group block p-6 bg-gradient-to-br from-teal-50 to-white border border-teal-100 rounded-2xl hover:shadow-lg hover:-translate-y-1 transition-all">
+              <Link href="/recursos" className="group block p-6 bg-gradient-to-br from-fc-cyan/5 to-white border border-fc-cyan/10 rounded-2xl hover:shadow-lg hover:-translate-y-1 transition-all">
                 <span className="text-3xl mb-3 block">📦</span>
-                <h3 className="font-display font-bold text-surface-900 mb-1 group-hover:text-teal-600 transition-colors">
+                <h3 className="font-display font-bold text-surface-900 mb-1 group-hover:text-fc-blue transition-colors">
                   Recursos y Plantillas
                 </h3>
                 <p className="text-sm text-surface-500 mb-3">
                   Plantillas Excel, scripts Python y familias Revit para tu día a día.
                 </p>
-                <span className="text-sm text-teal-600 font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+                <span className="text-sm text-fc-blue font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
                   Explorar <ArrowRight className="w-4 h-4" />
                 </span>
               </Link>
 
               <Link href="/apps" className="group block p-6 bg-gradient-to-br from-surface-50 to-white border border-surface-100 rounded-2xl hover:shadow-lg hover:-translate-y-1 transition-all">
                 <span className="text-3xl mb-3 block">🧮</span>
-                <h3 className="font-display font-bold text-surface-900 mb-1 group-hover:text-teal-600 transition-colors">
+                <h3 className="font-display font-bold text-surface-900 mb-1 group-hover:text-fc-blue transition-colors">
                   Web Apps Gratis
                 </h3>
                 <p className="text-sm text-surface-500 mb-3">
                   Calculadora sísmica E.030, predimensionamiento y más herramientas online.
                 </p>
-                <span className="text-sm text-teal-600 font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+                <span className="text-sm text-fc-blue font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
                   Usar ahora <ArrowRight className="w-4 h-4" />
                 </span>
               </Link>
 
               <Link href="/sobre-mi" className="group block p-6 bg-gradient-to-br from-surface-50 to-white border border-surface-100 rounded-2xl hover:shadow-lg hover:-translate-y-1 transition-all">
                 <span className="text-3xl mb-3 block">👨‍💻</span>
-                <h3 className="font-display font-bold text-surface-900 mb-1 group-hover:text-teal-600 transition-colors">
+                <h3 className="font-display font-bold text-surface-900 mb-1 group-hover:text-fc-blue transition-colors">
                   Sobre el Autor
                 </h3>
                 <p className="text-sm text-surface-500 mb-3">
                   Conoce a Miguel Angel Rivera — Ing. Civil & Sistemas, Huancayo.
                 </p>
-                <span className="text-sm text-teal-600 font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+                <span className="text-sm text-fc-blue font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
                   Conocer más <ArrowRight className="w-4 h-4" />
                 </span>
               </Link>

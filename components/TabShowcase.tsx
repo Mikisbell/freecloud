@@ -103,7 +103,7 @@ export default function TabShowcase() {
               <div>
                 <Link
                   href={tab.href}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-teal-500 text-white text-sm font-bold tracking-wider uppercase rounded-full hover:bg-teal-600 transition-colors shadow-lg shadow-teal-500/20"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-fc-blue text-white text-sm font-bold tracking-wider uppercase rounded-full hover:bg-fc-navy transition-colors shadow-lg shadow-fc-blue/20"
                 >
                   {tab.cta}
                 </Link>

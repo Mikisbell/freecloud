@@ -78,7 +78,7 @@ export default function CategoriesClientTable({ initialCategories }: { initialCa
     const InlineForm = ({ layout = 'desktop' }: { layout?: 'mobile' | 'desktop' }) => {
         if (layout === 'mobile') {
             return (
-                <div className="p-3.5 bg-white/[0.03] border-b border-teal-500/20">
+                <div className="p-3.5 bg-white/[0.03] border-b border-fc-blue/20">
                     <div className="space-y-3">
                         <div className="flex gap-2">
                             <Input
@@ -106,7 +106,7 @@ export default function CategoriesClientTable({ initialCategories }: { initialCa
                             <input type="color" value={formData.color} onChange={e => setFormData({ ...formData, color: e.target.value })} className="w-10 h-10 rounded cursor-pointer bg-transparent border-0 shrink-0" />
                         </div>
                         <div className="flex gap-2">
-                            <Button size="sm" onClick={handleSave} className="flex-1 bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 border-0 h-10">
+                            <Button size="sm" onClick={handleSave} className="flex-1 bg-fc-blue/20 text-fc-cyan hover:bg-fc-blue/30 border-0 h-10">
                                 <Check className="w-4 h-4 mr-1" /> Guardar
                             </Button>
                             <Button size="sm" variant="ghost" onClick={handleCancel} className="text-white/40 hover:text-white h-10">
@@ -129,7 +129,7 @@ export default function CategoriesClientTable({ initialCategories }: { initialCa
                     onClick={handleCreate}
                     disabled={isCreating}
                     size="sm"
-                    className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white border-0 min-h-10 sm:min-h-9 text-xs"
+                    className="bg-gradient-to-r from-fc-blue to-fc-navy hover:from-fc-cyan hover:to-fc-blue text-white border-0 min-h-10 sm:min-h-9 text-xs"
                 >
                     <PlusCircle className="w-3.5 h-3.5 mr-1.5" />
                     Nueva Categoría
@@ -216,7 +216,7 @@ export default function CategoriesClientTable({ initialCategories }: { initialCa
                                     <TableCell className="text-center text-white/30 text-sm">0</TableCell>
                                     <TableCell className="text-right">
                                         <div className="flex justify-end gap-1.5">
-                                            <button onClick={handleSave} className="p-1.5 bg-teal-500/15 text-teal-400 rounded-md hover:bg-teal-500/25 transition-colors"><Check className="w-4 h-4" /></button>
+                                            <button onClick={handleSave} className="p-1.5 bg-fc-blue/15 text-fc-cyan rounded-md hover:bg-fc-blue/25 transition-colors"><Check className="w-4 h-4" /></button>
                                             <button onClick={handleCancel} className="p-1.5 bg-white/[0.04] text-white/40 rounded-md hover:bg-white/[0.08] transition-colors"><X className="w-4 h-4" /></button>
                                         </div>
                                     </TableCell>
@@ -228,14 +228,14 @@ export default function CategoriesClientTable({ initialCategories }: { initialCa
                                     <TableRow key={cat.id} className="border-white/[0.04] hover:bg-white/[0.02] transition-colors">
                                         <TableCell className="text-center text-2xl">
                                             {editing ? (
-                                                <Input type="text" value={formData.emoji} onChange={e => setFormData({ ...formData, emoji: e.target.value })} className="w-12 bg-white/[0.04] border-teal-500/30 text-center text-lg p-1" />
+                                                <Input type="text" value={formData.emoji} onChange={e => setFormData({ ...formData, emoji: e.target.value })} className="w-12 bg-white/[0.04] border-fc-blue/30 text-center text-lg p-1" />
                                             ) : cat.emoji}
                                         </TableCell>
                                         <TableCell>
                                             {editing ? (
                                                 <div className="space-y-1.5">
-                                                    <Input type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="bg-white/[0.04] border-teal-500/30 text-white text-sm h-8" />
-                                                    <Input type="text" value={formData.slug} onChange={e => setFormData({ ...formData, slug: e.target.value })} className="bg-white/[0.04] border-teal-500/30 text-white text-xs font-mono h-8" />
+                                                    <Input type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="bg-white/[0.04] border-fc-blue/30 text-white text-sm h-8" />
+                                                    <Input type="text" value={formData.slug} onChange={e => setFormData({ ...formData, slug: e.target.value })} className="bg-white/[0.04] border-fc-blue/30 text-white text-xs font-mono h-8" />
                                                 </div>
                                             ) : (
                                                 <div>
@@ -259,7 +259,7 @@ export default function CategoriesClientTable({ initialCategories }: { initialCa
                                         <TableCell className="text-right">
                                             {editing ? (
                                                 <div className="flex justify-end gap-1.5">
-                                                    <button onClick={handleSave} className="p-1.5 bg-teal-500/15 text-teal-400 rounded-md hover:bg-teal-500/25 transition-colors"><Check className="w-4 h-4" /></button>
+                                                    <button onClick={handleSave} className="p-1.5 bg-fc-blue/15 text-fc-cyan rounded-md hover:bg-fc-blue/25 transition-colors"><Check className="w-4 h-4" /></button>
                                                     <button onClick={handleCancel} className="p-1.5 bg-white/[0.04] text-white/40 rounded-md hover:bg-white/[0.08] transition-colors"><X className="w-4 h-4" /></button>
                                                 </div>
                                             ) : (

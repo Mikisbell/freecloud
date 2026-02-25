@@ -226,7 +226,7 @@
   }
 
   .prose-blog a {
-    @apply text-teal-600 underline underline-offset-2 decoration-teal-300 hover:decoration-teal-600 transition-colors;
+    @apply text-fc-navy underline underline-offset-2 decoration-fc-cyan-light hover:decoration-fc-navy transition-colors;
   }
 
   .prose-blog ul,
@@ -251,7 +251,7 @@
   }
 
   .prose-blog blockquote {
-    @apply border-l-4 border-teal-400 pl-4 py-1 my-6 italic text-surface-600 bg-teal-50 rounded-r-lg;
+    @apply border-l-4 border-fc-cyan pl-4 py-1 my-6 italic text-surface-600 bg-fc-blue/5 rounded-r-lg;
   }
 
   .prose-blog pre {
@@ -259,7 +259,7 @@
   }
 
   .prose-blog code:not(pre code) {
-    @apply bg-surface-100 text-teal-700 px-1.5 py-0.5 rounded text-sm font-mono;
+    @apply bg-surface-100 text-fc-navy-deep px-1.5 py-0.5 rounded text-sm font-mono;
   }
 
   .prose-blog table {

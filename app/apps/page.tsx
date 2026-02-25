@@ -58,17 +58,17 @@ export default function AppsPage() {
             href={app.href}
             className={`group block p-6 bg-white border rounded-xl transition-all ${
               app.status === 'live'
-                ? 'border-surface-100 hover:border-teal-300 hover:shadow-lg card-hover'
+                ? 'border-surface-100 hover:border-fc-cyan-light hover:shadow-lg card-hover'
                 : 'border-dashed border-surface-200 opacity-60 pointer-events-none'
             }`}
           >
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-teal-50 rounded-xl flex items-center justify-center group-hover:bg-teal-100 transition-colors flex-shrink-0">
-                <app.icon className="w-6 h-6 text-teal-600" />
+              <div className="w-12 h-12 bg-fc-blue/5 rounded-xl flex items-center justify-center group-hover:bg-fc-cyan/10 transition-colors flex-shrink-0">
+                <app.icon className="w-6 h-6 text-fc-navy" />
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <h2 className="font-display font-bold text-surface-900 group-hover:text-teal-600 transition-colors">
+                  <h2 className="font-display font-bold text-surface-900 group-hover:text-fc-navy transition-colors">
                     {app.title}
                   </h2>
                   {app.status === 'pronto' && (

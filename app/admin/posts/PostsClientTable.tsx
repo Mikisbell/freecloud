@@ -83,7 +83,7 @@ export default function PostsClientTable({
                             <select
                                 value={statusFilter}
                                 onChange={(e) => setStatusFilter(e.target.value as any)}
-                                className="w-full sm:w-auto bg-white/[0.03] border border-white/[0.06] rounded-md pl-8 pr-4 py-2 text-sm text-white appearance-none focus:outline-none focus:ring-1 focus:ring-teal-500/50 cursor-pointer transition-colors min-h-10 sm:min-h-9"
+                                className="w-full sm:w-auto bg-white/[0.03] border border-white/[0.06] rounded-md pl-8 pr-4 py-2 text-sm text-white appearance-none focus:outline-none focus:ring-1 focus:ring-fc-blue/50 cursor-pointer transition-colors min-h-10 sm:min-h-9"
                             >
                                 <option value="all">Todos los estados</option>
                                 <option value="published">Publicados</option>
@@ -93,7 +93,7 @@ export default function PostsClientTable({
                         <select
                             value={categoryFilter}
                             onChange={(e) => setCategoryFilter(e.target.value)}
-                            className="w-full sm:w-auto bg-white/[0.03] border border-white/[0.06] rounded-md px-3 py-2 text-sm text-white appearance-none focus:outline-none focus:ring-1 focus:ring-teal-500/50 cursor-pointer transition-colors max-w-full sm:max-w-[200px] truncate min-h-10 sm:min-h-9"
+                            className="w-full sm:w-auto bg-white/[0.03] border border-white/[0.06] rounded-md px-3 py-2 text-sm text-white appearance-none focus:outline-none focus:ring-1 focus:ring-fc-blue/50 cursor-pointer transition-colors max-w-full sm:max-w-[200px] truncate min-h-10 sm:min-h-9"
                         >
                             <option value="all">Todas las categorías</option>
                             {categories.map(cat => (
@@ -141,7 +141,7 @@ export default function PostsClientTable({
                                             <Link href={`/blog/${post.slug}`} target="_blank" className="p-2 text-white/20 hover:text-white/60 transition-colors min-h-9 min-w-9 flex items-center justify-center">
                                                 <ExternalLink className="w-3.5 h-3.5" />
                                             </Link>
-                                            <Link href={`/admin/posts/${post.id}/edit`} className="p-2 text-teal-400/50 hover:text-teal-400 transition-colors min-h-9 min-w-9 flex items-center justify-center">
+                                            <Link href={`/admin/posts/${post.id}/edit`} className="p-2 text-fc-cyan/50 hover:text-fc-cyan transition-colors min-h-9 min-w-9 flex items-center justify-center">
                                                 <Edit className="w-3.5 h-3.5" />
                                             </Link>
                                             <button onClick={() => handleDelete(post.id)} className="p-2 text-red-400/40 hover:text-red-400 transition-colors min-h-9 min-w-9 flex items-center justify-center">
@@ -192,7 +192,7 @@ export default function PostsClientTable({
                                                     <Link href={`/blog/${post.slug}`} target="_blank" className="p-1.5 text-white/20 hover:text-white/60 transition-colors rounded-md hover:bg-white/[0.04]">
                                                         <ExternalLink className="w-4 h-4" />
                                                     </Link>
-                                                    <Link href={`/admin/posts/${post.id}/edit`} className="p-1.5 text-teal-400/50 hover:text-teal-400 transition-colors rounded-md hover:bg-teal-400/[0.06]">
+                                                    <Link href={`/admin/posts/${post.id}/edit`} className="p-1.5 text-fc-cyan/50 hover:text-fc-cyan transition-colors rounded-md hover:bg-fc-cyan/[0.06]">
                                                         <Edit className="w-4 h-4" />
                                                     </Link>
                                                     <button onClick={() => handleDelete(post.id)} className="p-1.5 text-red-400/40 hover:text-red-400 transition-colors rounded-md hover:bg-red-400/[0.06]">

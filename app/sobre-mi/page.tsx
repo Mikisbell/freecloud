@@ -30,7 +30,7 @@ export default function SobreMiPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start gap-8 mb-12">
-        <div className="w-32 h-32 bg-gradient-to-br from-teal-500 to-teal-700 rounded-2xl flex items-center justify-center text-white text-4xl font-display font-bold shadow-xl shadow-teal-500/20 flex-shrink-0">
+        <div className="w-32 h-32 bg-gradient-to-br from-fc-blue to-fc-navy-deep rounded-2xl flex items-center justify-center text-white text-4xl font-display font-bold shadow-xl shadow-fc-blue/20 flex-shrink-0">
           MR
         </div>
         <div>
@@ -51,9 +51,9 @@ export default function SobreMiPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
         {STATS.map(stat => (
-          <div key={stat.label} className="bg-teal-50 rounded-xl p-4 text-center">
-            <p className="text-2xl font-display font-bold text-teal-700">{stat.number}</p>
-            <p className="text-xs text-teal-600 font-medium">{stat.label}</p>
+          <div key={stat.label} className="bg-fc-blue/5 rounded-xl p-4 text-center">
+            <p className="text-2xl font-display font-bold text-fc-navy-deep">{stat.number}</p>
+            <p className="text-xs text-fc-navy font-medium">{stat.label}</p>
           </div>
         ))}
       </div>
@@ -112,7 +112,7 @@ export default function SobreMiPage() {
               </div>
               <div className="h-2 bg-surface-100 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-teal-500 to-teal-600 rounded-full transition-all duration-1000"
+                  className="h-full bg-gradient-to-r from-fc-blue to-fc-navy rounded-full transition-all duration-1000"
                   style={{ width: `${skill.level}%` }}
                 />
               </div>

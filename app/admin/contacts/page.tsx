@@ -65,7 +65,7 @@ export default function ContactsPage() {
                     <p className="text-xs sm:text-sm text-white/40 mt-1 ml-[42px] sm:ml-[46px]">Mensajes desde la página web</p>
                 </div>
                 {unreadCount > 0 && (
-                    <Badge variant="secondary" className="bg-teal-500/10 text-teal-400 border-0 text-xs self-start sm:self-auto">
+                    <Badge variant="secondary" className="bg-fc-blue/10 text-fc-cyan border-0 text-xs self-start sm:self-auto">
                         {unreadCount} no leídos
                     </Badge>
                 )}
@@ -73,7 +73,7 @@ export default function ContactsPage() {
 
             {loading ? (
                 <div className="flex justify-center items-center h-64">
-                    <div className="animate-spin rounded-full h-7 w-7 border-2 border-teal-500 border-t-transparent" />
+                    <div className="animate-spin rounded-full h-7 w-7 border-2 border-fc-blue border-t-transparent" />
                 </div>
             ) : contacts.length === 0 ? (
                 <Card className="bg-white/[0.02] border-white/[0.06]">
@@ -99,10 +99,10 @@ export default function ContactsPage() {
                                         </button>
                                         <div className="flex-1 min-w-0">
                                             <h3 className="text-sm font-semibold text-white truncate">{selectedContact.name}</h3>
-                                            <a href={`mailto:${selectedContact.email}`} className="text-xs text-teal-400 truncate block">{selectedContact.email}</a>
+                                            <a href={`mailto:${selectedContact.email}`} className="text-xs text-fc-cyan truncate block">{selectedContact.email}</a>
                                         </div>
                                         {!selectedContact.read && (
-                                            <Button size="sm" variant="ghost" onClick={(e) => handleMarkAsRead(selectedContact.id, e)} className="text-white/40 hover:text-teal-400 text-xs min-h-9">
+                                            <Button size="sm" variant="ghost" onClick={(e) => handleMarkAsRead(selectedContact.id, e)} className="text-white/40 hover:text-fc-cyan text-xs min-h-9">
                                                 <CheckCircle className="w-3.5 h-3.5 mr-1" /> Leído
                                             </Button>
                                         )}
@@ -134,10 +134,10 @@ export default function ContactsPage() {
                                             className="w-full text-left p-3.5 flex items-start gap-3 hover:bg-white/[0.02] transition-colors"
                                         >
                                             <div className="relative shrink-0">
-                                                <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold capitalize ${!contact.read ? 'bg-teal-500/20 text-teal-300' : 'bg-white/[0.05] text-white/30'}`}>
+                                                <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold capitalize ${!contact.read ? 'bg-fc-blue/20 text-fc-cyan-light' : 'bg-white/[0.05] text-white/30'}`}>
                                                     {contact.name.charAt(0)}
                                                 </div>
-                                                {!contact.read && <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-teal-400 border-2 border-[#0d0d1a] rounded-full" />}
+                                                {!contact.read && <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-fc-cyan border-2 border-[#0d0d1a] rounded-full" />}
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex justify-between items-center mb-0.5">
@@ -172,13 +172,13 @@ export default function ContactsPage() {
                                         <button
                                             key={contact.id}
                                             onClick={() => handleSelectContact(contact)}
-                                            className={`w-full text-left p-4 flex items-start gap-3 hover:bg-white/[0.03] transition-colors ${selectedContact?.id === contact.id ? 'bg-white/[0.04] border-l-2 border-teal-400' : 'border-l-2 border-transparent'}`}
+                                            className={`w-full text-left p-4 flex items-start gap-3 hover:bg-white/[0.03] transition-colors ${selectedContact?.id === contact.id ? 'bg-white/[0.04] border-l-2 border-fc-cyan' : 'border-l-2 border-transparent'}`}
                                         >
                                             <div className="relative shrink-0">
-                                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold capitalize ${!contact.read ? 'bg-teal-500/20 text-teal-300' : 'bg-white/[0.05] text-white/30'}`}>
+                                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold capitalize ${!contact.read ? 'bg-fc-blue/20 text-fc-cyan-light' : 'bg-white/[0.05] text-white/30'}`}>
                                                     {contact.name.charAt(0)}
                                                 </div>
-                                                {!contact.read && <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-teal-400 border-2 border-[#0d0d1a] rounded-full" />}
+                                                {!contact.read && <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-fc-cyan border-2 border-[#0d0d1a] rounded-full" />}
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex justify-between items-center mb-0.5">
@@ -206,7 +206,7 @@ export default function ContactsPage() {
                                             <div>
                                                 <h3 className="text-lg font-semibold text-white">{selectedContact.name}</h3>
                                                 <div className="flex items-center gap-2 text-xs text-white/30 mt-0.5">
-                                                    <a href={`mailto:${selectedContact.email}`} className="text-teal-400 hover:underline">{selectedContact.email}</a>
+                                                    <a href={`mailto:${selectedContact.email}`} className="text-fc-cyan hover:underline">{selectedContact.email}</a>
                                                     <span>•</span>
                                                     <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {new Date(selectedContact.created_at!).toLocaleString('es-PE')}</span>
                                                 </div>
@@ -214,7 +214,7 @@ export default function ContactsPage() {
                                         </div>
                                         <div className="flex gap-2">
                                             {!selectedContact.read && (
-                                                <Button size="sm" variant="ghost" onClick={(e) => handleMarkAsRead(selectedContact.id, e)} className="text-white/40 hover:text-teal-400 text-xs">
+                                                <Button size="sm" variant="ghost" onClick={(e) => handleMarkAsRead(selectedContact.id, e)} className="text-white/40 hover:text-fc-cyan text-xs">
                                                     <CheckCircle className="w-3.5 h-3.5 mr-1.5" /> Marcar Leído
                                                 </Button>
                                             )}

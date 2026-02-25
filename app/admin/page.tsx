@@ -62,7 +62,7 @@ export default async function AdminDashboard() {
                     <h1 className="text-xl sm:text-2xl font-bold font-grotesk text-white tracking-tight">Dashboard</h1>
                     <p className="text-xs sm:text-sm text-white/40 mt-0.5">Visión general de tu contenido en FreeCloud</p>
                 </div>
-                <Button asChild className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white shadow-lg shadow-teal-500/20 hover:shadow-teal-500/30 border-0 min-h-11 w-full sm:w-auto">
+                <Button asChild className="bg-gradient-to-r from-fc-blue to-fc-navy hover:from-fc-cyan hover:to-fc-blue text-white shadow-lg shadow-fc-blue/20 hover:shadow-fc-blue/30 border-0 min-h-11 w-full sm:w-auto">
                     <Link href="/admin/posts/new">
                         <Edit3 className="w-4 h-4 mr-2" />
                         Nuevo Post
@@ -102,7 +102,7 @@ export default async function AdminDashboard() {
                                 </div>
                                 <CardTitle className="text-sm font-semibold text-white">Últimos Posts</CardTitle>
                             </div>
-                            <Link href="/admin/posts" className="text-xs text-teal-400 hover:text-teal-300 transition-colors flex items-center gap-1">
+                            <Link href="/admin/posts" className="text-xs text-fc-cyan hover:text-fc-cyan-light transition-colors flex items-center gap-1">
                                 Ver todos <ArrowRight className="w-3 h-3" />
                             </Link>
                         </div>
@@ -115,7 +115,7 @@ export default async function AdminDashboard() {
                                         <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-white/20" />
                                     </div>
                                     <p className="text-sm text-white/30">No hay posts todavía</p>
-                                    <Link href="/admin/posts/new" className="text-xs text-teal-400 mt-2 inline-block hover:underline">
+                                    <Link href="/admin/posts/new" className="text-xs text-fc-cyan mt-2 inline-block hover:underline">
                                         ¡Empieza a escribir! →
                                     </Link>
                                 </div>
@@ -136,7 +136,7 @@ export default async function AdminDashboard() {
                                             <Badge variant={post.status === 'published' ? 'default' : 'secondary'} className={`text-[10px] ${post.status === 'published' ? 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20' : 'bg-amber-500/10 text-amber-400 hover:bg-amber-500/20'} border-0`}>
                                                 {post.status === 'published' ? 'Live' : 'Draft'}
                                             </Badge>
-                                            <Link href={`/admin/posts/${post.id}/edit`} className="text-xs text-white/25 hover:text-teal-400 transition-colors hidden sm:inline">
+                                            <Link href={`/admin/posts/${post.id}/edit`} className="text-xs text-white/25 hover:text-fc-cyan transition-colors hidden sm:inline">
                                                 Editar
                                             </Link>
                                         </div>
@@ -157,7 +157,7 @@ export default async function AdminDashboard() {
                                 </div>
                                 <CardTitle className="text-sm font-semibold text-white">Últimos Mensajes</CardTitle>
                             </div>
-                            <Link href="/admin/contacts" className="text-xs text-teal-400 hover:text-teal-300 transition-colors flex items-center gap-1">
+                            <Link href="/admin/contacts" className="text-xs text-fc-cyan hover:text-fc-cyan-light transition-colors flex items-center gap-1">
                                 Ir a Bandeja <ArrowRight className="w-3 h-3" />
                             </Link>
                         </div>
@@ -177,7 +177,7 @@ export default async function AdminDashboard() {
                                     <div key={contact.id} className="px-4 sm:px-5 py-3 sm:py-4 hover:bg-white/[0.02] transition-colors">
                                         <div className="flex justify-between items-start mb-2">
                                             <div className="flex items-center gap-2.5">
-                                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 ${!contact.read ? 'bg-teal-500/20 text-teal-300' : 'bg-white/[0.05] text-white/40'}`}>
+                                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 ${!contact.read ? 'bg-fc-blue/20 text-fc-cyan-light' : 'bg-white/[0.05] text-white/40'}`}>
                                                     {contact.name.charAt(0).toUpperCase()}
                                                 </div>
                                                 <div className="min-w-0">
@@ -189,7 +189,7 @@ export default async function AdminDashboard() {
                                                 <span className="text-[10px] text-white/20 hidden sm:inline">
                                                     {new Date(contact.created_at!).toLocaleDateString('es-PE', { day: 'numeric', month: 'short' })}
                                                 </span>
-                                                {!contact.read && <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />}
+                                                {!contact.read && <span className="w-2 h-2 rounded-full bg-fc-cyan animate-pulse" />}
                                             </div>
                                         </div>
                                         <p className="text-xs text-white/35 line-clamp-2 ml-[42px]">

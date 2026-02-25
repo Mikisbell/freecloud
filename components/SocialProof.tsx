@@ -22,7 +22,7 @@ export default function SocialProof() {
                             className="flex-1 min-w-[140px] flex flex-col items-center text-center py-2 md:py-0 animate-fade-in"
                             style={{ animationDelay: `${i * 100}ms` }}
                         >
-                            <div className="text-2xl font-display font-black text-teal-600 leading-none">
+                            <div className="text-2xl font-display font-black text-fc-navy leading-none">
                                 {stat.value}
                                 <span className="text-lg">{stat.suffix}</span>
                                 {stat.flag && <span className="ml-1 text-lg">{stat.flag}</span>}

@@ -18,14 +18,14 @@ export default async function LoginPage({
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#08080f] p-4 relative overflow-hidden">
             {/* Background effects */}
-            <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-teal-500/[0.04] rounded-full blur-[150px] pointer-events-none" />
+            <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-fc-blue/[0.04] rounded-full blur-[150px] pointer-events-none" />
             <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-violet-500/[0.03] rounded-full blur-[120px] pointer-events-none" />
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:64px_64px] pointer-events-none" />
 
             <div className="w-full max-w-sm relative z-10 animate-fade-in">
                 {/* Logo */}
                 <div className="mb-8 text-center">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center mx-auto mb-4 shadow-2xl shadow-teal-500/20">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-fc-cyan to-fc-navy flex items-center justify-center mx-auto mb-4 shadow-2xl shadow-fc-blue/20">
                         <Code className="w-7 h-7 text-white" />
                     </div>
                     <h1 className="text-2xl font-bold font-grotesk text-white tracking-tight">
@@ -51,7 +51,7 @@ export default async function LoginPage({
                                     name="email"
                                     type="email"
                                     required
-                                    className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-teal-500/50 min-h-11"
+                                    className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-fc-blue/50 min-h-11"
                                     placeholder="tu@email.com"
                                 />
                             </div>
@@ -63,7 +63,7 @@ export default async function LoginPage({
                                     name="password"
                                     type="password"
                                     required
-                                    className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-teal-500/50 min-h-11"
+                                    className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-fc-blue/50 min-h-11"
                                     placeholder="••••••••"
                                 />
                             </div>
@@ -76,7 +76,7 @@ export default async function LoginPage({
 
                             <Button
                                 formAction={login}
-                                className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white shadow-lg shadow-teal-500/20 border-0 mt-2 min-h-11 font-semibold"
+                                className="w-full bg-gradient-to-r from-fc-blue to-fc-navy hover:from-fc-cyan hover:to-fc-blue text-white shadow-lg shadow-fc-blue/20 border-0 mt-2 min-h-11 font-semibold"
                             >
                                 Acceder al Panel
                             </Button>

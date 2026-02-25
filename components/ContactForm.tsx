@@ -36,12 +36,12 @@ export default function ContactForm() {
   }
 
   const inputClass =
-    'w-full px-4 py-3 bg-surface-800 border border-surface-700 rounded-xl text-white placeholder-surface-500 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all';
+    'w-full px-4 py-3 bg-surface-800 border border-surface-700 rounded-xl text-white placeholder-surface-500 text-sm focus:outline-none focus:ring-2 focus:ring-fc-blue focus:border-transparent transition-all';
 
   if (status === 'success') {
     return (
       <div className="flex flex-col items-center justify-center py-10 text-center">
-        <CheckCircle className="w-12 h-12 text-teal-400 mb-4" />
+        <CheckCircle className="w-12 h-12 text-fc-cyan mb-4" />
         <h3 className="text-white font-display font-bold text-xl mb-2">
           ¡Mensaje recibido!
         </h3>
@@ -123,7 +123,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="w-full sm:w-auto px-8 py-3 bg-teal-500 text-white font-semibold text-sm rounded-full hover:bg-teal-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-teal-500/20"
+        className="w-full sm:w-auto px-8 py-3 bg-fc-blue text-white font-semibold text-sm rounded-full hover:bg-fc-cyan disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-fc-blue/20"
       >
         {status === 'loading' ? 'Enviando...' : 'Enviar mensaje →'}
       </button>

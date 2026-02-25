@@ -7,10 +7,10 @@ import TabShowcase from '@/components/TabShowcase';
 import SocialProof from '@/components/SocialProof';
 
 const TOOLS = [
-  { name: 'Calculadora Sísmica E.030', href: '/apps/calculadora-sismica', icon: Calculator, desc: 'Calcula fuerza cortante basal según norma peruana' },
-  { name: 'Plantillas Excel', href: '/recursos?type=excel', icon: FileSpreadsheet, desc: 'Diseño sísmico, metrados y predimensionamiento' },
-  { name: 'Scripts Python + Revit', href: '/recursos?type=python', icon: Code, desc: 'Automatiza tareas repetitivas en BIM' },
-  { name: 'Programas HP Prime', href: '/recursos?type=hp-prime', icon: Cpu, desc: 'Hardy Cross, análisis estructural y más' },
+  { name: 'Autodesk Revit', href: '/recursos?type=revit', iconUrl: '/revit.png', desc: 'Plantillas BIM, modelos y familias paramétricas para diseño.' },
+  { name: 'Python API', href: '/recursos?type=python', iconUrl: '/python.svg', desc: 'Scripts para automatizar tareas repetitivas en Revit y BIM.' },
+  { name: 'Dynamo', href: '/recursos?type=dynamo', iconUrl: '/Dynamo.png', desc: 'Programación visual y flujos de trabajo de ingeniería.' },
+  { name: 'Civil 3D', href: '/recursos?type=civil3d', iconUrl: '/civil.png', desc: 'Herramientas de topografía y diseño vial normativo.' },
 ];
 
 const TESTIMONIALS = [
@@ -19,21 +19,21 @@ const TESTIMONIALS = [
     name: 'Carlos Quispe',
     role: 'Ingeniero Civil — Lima',
     initials: 'CQ',
-    color: 'bg-teal-500',
+    color: 'bg-fc-gold',
   },
   {
     quote: 'La plantilla de metrados es exactamente lo que buscaba. Tiene el formato correcto para licitaciones públicas y me salvó en un proyecto urgente.',
     name: 'Ana Flores',
     role: 'Residente de Obra — Arequipa',
     initials: 'AF',
-    color: 'bg-blue-500',
+    color: 'bg-fc-blue',
   },
   {
     quote: 'El post de Robot Structural vs ETABS es el más completo que encontré en español. Me ayudó a elegir el software correcto para mi empresa.',
     name: 'Diego Mamani',
     role: 'Jefe de Proyectos — Cusco',
     initials: 'DM',
-    color: 'bg-emerald-500',
+    color: 'bg-fc-navy',
   },
 ];
 
@@ -81,8 +81,8 @@ export default async function HomePage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-36">
           <div className="max-w-3xl">
             {/* Badge urgencia */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-500/10 border border-teal-500/20 text-teal-300 text-xs font-semibold rounded-full mb-8 backdrop-blur-sm animate-fade-in">
-              <span className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-fc-blue/10 border border-fc-blue/20 text-fc-cyan-light text-xs font-semibold rounded-full mb-8 backdrop-blur-sm animate-fade-in">
+              <span className="w-2 h-2 bg-fc-cyan rounded-full animate-pulse" />
               <span className="font-slogan tracking-[0.2em] text-xs uppercase">BIM OBLIGATORIO EN PERÚ — AGOSTO 2026</span>
             </div>
 
@@ -99,7 +99,7 @@ export default async function HomePage() {
 
             {/* CTAs primarios */}
             <div className="flex flex-wrap gap-4 animate-slide-up stagger-2">
-              <Link href="/blog" className="btn-pill-primary text-base px-7 py-3.5 shadow-lg shadow-teal-500/20 hover:shadow-teal-500/40 transition-all">
+              <Link href="/blog" className="btn-pill-primary text-base px-7 py-3.5 shadow-lg shadow-fc-blue/20 hover:shadow-fc-blue/40 transition-all">
                 <BookOpen className="w-5 h-5" />
                 Ver Tutoriales
               </Link>
@@ -146,7 +146,7 @@ export default async function HomePage() {
             </div>
             <Link
               href="/blog"
-              className="flex items-center gap-1 text-sm text-teal-600 font-semibold hover:gap-2 transition-all pb-1"
+              className="flex items-center gap-1 text-sm text-fc-blue font-semibold hover:gap-2 transition-all pb-1"
             >
               Ver todos <ArrowRight className="w-4 h-4" />
             </Link>
@@ -168,7 +168,7 @@ export default async function HomePage() {
       <section className="bg-surface-50 py-24 border-y border-surface-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16 reveal">
-            <p className="label-uppercase mb-2 text-teal-600">Comunidad</p>
+            <p className="label-uppercase mb-2 text-fc-gold">Comunidad</p>
             <h2 className="text-3xl md:text-4xl font-display font-bold text-surface-900">
               Lo que dicen los ingenieros
             </h2>
@@ -207,7 +207,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 reveal">
-            <p className="label-uppercase mb-2 text-teal-400">Categorías</p>
+            <p className="label-uppercase mb-2 text-fc-cyan">Categorías</p>
             <h2 className="text-3xl md:text-4xl font-display font-bold">
               Explora por tema
             </h2>
@@ -217,11 +217,11 @@ export default async function HomePage() {
               <Link
                 key={cat.id}
                 href={`/blog?cat=${cat.slug}`}
-                className="reveal group flex flex-col items-center justify-center gap-4 p-6 bg-white/5 backdrop-blur-sm rounded-none border border-white/10 hover:border-teal-400 hover:bg-teal-500/10 transition-all duration-300 hover:scale-105"
+                className="reveal group flex flex-col items-center justify-center gap-4 p-6 bg-white/5 backdrop-blur-sm rounded-none border border-white/10 hover:border-fc-cyan hover:bg-fc-cyan/10 transition-all duration-300 hover:scale-105"
                 style={{ transitionDelay: `${i * 60}ms` }}
               >
                 <span className="text-4xl transform group-hover:scale-110 transition-transform duration-300">{cat.emoji || '📝'}</span>
-                <span className="text-sm font-bold text-surface-200 group-hover:text-teal-400 transition-colors text-center">
+                <span className="text-sm font-bold text-surface-200 group-hover:text-fc-cyan transition-colors text-center">
                   {cat.name}
                 </span>
               </Link>
@@ -234,7 +234,7 @@ export default async function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-24">
         <div className="mb-14 reveal">
           <div className="text-center max-w-3xl mx-auto">
-            <p className="label-uppercase mb-3 text-teal-600">Herramientas</p>
+            <p className="label-uppercase mb-3 text-fc-blue">Herramientas</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-surface-900 mb-6">
               Recursos para agilizar<br />tu trabajo diario
             </h2>
@@ -251,10 +251,10 @@ export default async function HomePage() {
               className="reveal group p-6 dataiku-card h-full flex flex-col"
               style={{ transitionDelay: `${i * 80}ms` }}
             >
-              <div className="w-14 h-14 bg-surface-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-teal-50 group-hover:scale-110 transition-all duration-300">
-                <tool.icon className="w-7 h-7 text-teal-600" />
+              <div className="w-14 h-14 bg-surface-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-fc-cyan/10 group-hover:scale-110 transition-all duration-300 overflow-hidden p-2 border border-transparent group-hover:border-fc-cyan/20">
+                <img src={tool.iconUrl} alt={tool.name} className="w-full h-full object-contain" />
               </div>
-              <h3 className="font-display font-bold text-surface-900 text-lg mb-2 group-hover:text-teal-600 transition-colors">
+              <h3 className="font-display font-bold text-surface-900 text-lg mb-2 group-hover:text-fc-blue transition-colors">
                 {tool.name}
               </h3>
               <p className="text-sm text-surface-500 leading-relaxed">
@@ -269,7 +269,7 @@ export default async function HomePage() {
       <section className="bg-surface-50 py-24 border-t border-surface-100">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16 reveal">
-            <p className="label-uppercase mb-2 text-teal-600">Preguntas</p>
+            <p className="label-uppercase mb-2 text-fc-blue">Preguntas</p>
             <h2 className="text-3xl md:text-4xl font-display font-bold text-surface-900">
               ¿Tienes dudas?
             </h2>
@@ -278,12 +278,12 @@ export default async function HomePage() {
             {FAQS.map((faq, i) => (
               <details
                 key={i}
-                className="group bg-white border border-dataiku-border hover:border-teal-300 rounded-none overflow-hidden shadow-sm transition-colors dataiku-card"
+                className="group bg-white border border-dataiku-border hover:border-fc-cyan-light rounded-none overflow-hidden shadow-sm transition-colors dataiku-card"
               >
-                <summary className="flex items-center justify-between gap-4 px-6 md:px-8 py-5 cursor-pointer font-bold text-surface-900 group-hover:text-teal-700 transition-colors list-none select-none">
+                <summary className="flex items-center justify-between gap-4 px-6 md:px-8 py-5 cursor-pointer font-bold text-surface-900 group-hover:text-fc-blue transition-colors list-none select-none">
                   <span className="text-base md:text-lg">{faq.q}</span>
-                  <div className="w-8 h-8 rounded-full bg-surface-100 flex items-center justify-center shrink-0 group-open:bg-teal-100 transition-colors">
-                    <ChevronDown className="w-5 h-5 text-surface-500 group-open:text-teal-600 group-open:rotate-180 transition-all duration-300" />
+                  <div className="w-8 h-8 rounded-full bg-surface-100 flex items-center justify-center shrink-0 group-open:bg-fc-cyan/20 transition-colors">
+                    <ChevronDown className="w-5 h-5 text-surface-500 group-open:text-fc-blue group-open:rotate-180 transition-all duration-300" />
                   </div>
                 </summary>
                 <div className="px-6 md:px-8 pb-6 text-surface-600 leading-relaxed pt-2">
@@ -296,17 +296,17 @@ export default async function HomePage() {
       </section>
 
       {/* ── FINAL CTA DRAMÁTICO (Elemento 10) ── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-surface-950 via-surface-900 to-surface-800 py-24 border-t-4 border-teal-500">
+      <section className="relative overflow-hidden bg-gradient-to-br from-fc-navy-deep via-surface-900 to-surface-800 py-24 border-t-4 border-fc-gold">
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-96 bg-teal-500/20 rounded-full blur-[150px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-96 bg-fc-cyan/20 rounded-full blur-[150px] pointer-events-none" />
 
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center reveal">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-500/20 text-teal-300 text-xs font-bold rounded-full mb-8 backdrop-blur-sm border border-teal-500/30">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-fc-gold/10 text-fc-gold text-xs font-bold rounded-full mb-8 backdrop-blur-sm border border-fc-gold/30">
             ÚNETE A +500 INGENIEROS
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-black text-white mb-6 leading-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-brand font-black text-white mb-6 leading-tight">
             Aprende BIM antes de que<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-teal-200">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-fc-cyan to-fc-cyan-light">
               se vuelva obligatorio
             </span>
           </h2>

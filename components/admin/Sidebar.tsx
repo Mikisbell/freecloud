@@ -23,12 +23,12 @@ function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate
             {/* Logo */}
             <div className="p-5 mb-2">
                 <Link href="/admin" className="flex items-center gap-3 group" onClick={onNavigate}>
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center shadow-lg shadow-teal-500/20 group-hover:shadow-teal-500/40 transition-all duration-300 shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-fc-cyan to-fc-navy flex items-center justify-center shadow-lg shadow-fc-blue/20 group-hover:shadow-fc-blue/40 transition-all duration-300 shrink-0">
                         <span className="text-white font-bold text-sm font-grotesk">FC</span>
                     </div>
                     <div>
                         <h1 className="text-[15px] font-bold font-grotesk text-white leading-tight">FreeCloud</h1>
-                        <p className="text-[10px] text-teal-400/70 font-medium tracking-widest uppercase">Admin Panel</p>
+                        <p className="text-[10px] text-fc-cyan/70 font-medium tracking-widest uppercase">Admin Panel</p>
                     </div>
                 </Link>
             </div>
@@ -50,16 +50,16 @@ function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate
                             href={item.href}
                             onClick={onNavigate}
                             className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200 relative min-h-11 ${isActive
-                                ? 'bg-gradient-to-r from-teal-500/15 to-transparent text-teal-400 shadow-sm'
+                                ? 'bg-gradient-to-r from-fc-blue/15 to-transparent text-fc-cyan shadow-sm'
                                 : 'text-white/50 hover:text-white/90 hover:bg-white/[0.04]'
                                 }`}
                         >
                             {isActive && (
-                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-teal-400 rounded-r-full" />
+                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-fc-cyan rounded-r-full" />
                             )}
-                            <item.icon className={`w-[18px] h-[18px] shrink-0 transition-colors ${isActive ? 'text-teal-400' : 'text-white/30 group-hover:text-white/60'}`} />
+                            <item.icon className={`w-[18px] h-[18px] shrink-0 transition-colors ${isActive ? 'text-fc-cyan' : 'text-white/30 group-hover:text-white/60'}`} />
                             <span className="flex-1">{item.name}</span>
-                            {isActive && <ChevronRight className="w-3.5 h-3.5 text-teal-400/50" />}
+                            {isActive && <ChevronRight className="w-3.5 h-3.5 text-fc-cyan/50" />}
                         </Link>
                     )
                 })}
@@ -95,7 +95,7 @@ export function MobileHeader({ pathname }: { pathname: string }) {
     return (
         <header className="lg:hidden sticky top-0 z-50 flex items-center justify-between h-14 px-4 bg-[#0f0f1a]/95 backdrop-blur-md border-b border-white/[0.06]">
             <Link href="/admin" className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-fc-cyan to-fc-navy flex items-center justify-center">
                     <span className="text-white font-bold text-xs font-grotesk">FC</span>
                 </div>
                 <span className="text-sm font-bold font-grotesk text-white">FreeCloud</span>
