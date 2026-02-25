@@ -72,11 +72,11 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ── HERO (Elemento 3 + 4) — Dark con teal glow ── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-surface-950 via-surface-900 to-teal-900">
+      {/* ── HERO ── */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-fc-navy-deep via-fc-navy to-fc-blue">
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.07]" />
-        <div className="absolute top-20 right-20 w-80 h-80 bg-teal-500/20 rounded-full blur-[100px] animate-float" />
-        <div className="absolute bottom-10 left-10 w-60 h-60 bg-teal-400/10 rounded-full blur-[80px] animate-float" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-20 right-20 w-80 h-80 bg-fc-cyan/15 rounded-full blur-[100px] animate-float" />
+        <div className="absolute bottom-10 left-10 w-60 h-60 bg-fc-gold/10 rounded-full blur-[80px] animate-float" style={{ animationDelay: '3s' }} />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-36">
           <div className="max-w-3xl">

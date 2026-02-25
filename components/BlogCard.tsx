@@ -16,7 +16,7 @@ export default function BlogCard({ post, featured = false, dbCategory }: BlogCar
   if (featured) {
     return (
       <Link href={`/blog/${post.slug}`} className="group block">
-        <article className="relative bg-gradient-to-br from-surface-900 to-teal-900 rounded-2xl overflow-hidden card-hover">
+        <article className="relative bg-gradient-to-br from-fc-navy to-fc-blue rounded-2xl overflow-hidden card-hover">
           <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
           <div className="relative p-8 md:p-10">
             <div className="flex items-center gap-2 mb-4">
@@ -35,7 +35,7 @@ export default function BlogCard({ post, featured = false, dbCategory }: BlogCar
             </p>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4 text-sm text-surface-400">
-                <span>{new Date(post.date).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                <span>{(() => { const d = new Date(post.created_at ?? post.date); return isNaN(d.getTime()) ? '' : d.toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' }); })()}</span>
                 <span className="flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5" />
                   {post.readingTime}
@@ -84,7 +84,7 @@ export default function BlogCard({ post, featured = false, dbCategory }: BlogCar
             {post.description}
           </p>
           <div className="flex items-center justify-between text-xs text-surface-400 pt-3 border-t border-surface-100">
-            <span>{new Date(post.date).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+            <span>{(() => { const d = new Date(post.created_at ?? post.date); return isNaN(d.getTime()) ? '' : d.toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' }); })()}</span>
             <span className="flex items-center gap-1">
               <Clock className="w-3 h-3" />
               {post.readingTime}

@@ -6,15 +6,15 @@
 - Environments: .env.local
 
   Creating an optimized production build ...
-Ô£ô Compiled successfully in 6.2s
+Ô£ô Compiled successfully in 6.8s
   Running TypeScript ...
   Collecting page data using 11 workers ...
   Generating static pages using 11 workers (0/31) ...
   Generating static pages using 11 workers (7/31) 
-LaTeX-incompatible input and strict mode is set to 'warn': % comment has no terminating newline; LaTeX would fail because of commenting the end of math mode (e.g. $) [commentAtEnd]
   Generating static pages using 11 workers (15/31) 
   Generating static pages using 11 workers (23/31) 
-Ô£ô Generating static pages using 11 workers (31/31) in 1881.2ms
+LaTeX-incompatible input and strict mode is set to 'warn': % comment has no terminating newline; LaTeX would fail because of commenting the end of math mode (e.g. $) [commentAtEnd]
+Ô£ô Generating static pages using 11 workers (31/31) in 1657.1ms
   Finalizing page optimization ...
 
 Route (app)
