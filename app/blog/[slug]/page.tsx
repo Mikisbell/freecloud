@@ -29,7 +29,7 @@ interface Props {
 const mdxComponents = {
   Callout: ({ type = 'info', children }: { type?: 'info' | 'warning' | 'tip'; children: React.ReactNode }) => {
     const styles = {
-      info: 'bg-teal-50 border-teal-400 text-teal-800',
+      info: 'bg-fc-blue/5 border-fc-cyan text-fc-navy-deep',
       warning: 'bg-amber-50 border-amber-400 text-amber-800',
       tip: 'bg-emerald-50 border-emerald-400 text-emerald-800',
     };
@@ -44,7 +44,7 @@ const mdxComponents = {
   DownloadButton: ({ href, label }: { href: string; label: string }) => (
     <a
       href={href}
-      className="inline-flex items-center gap-2 px-5 py-3 bg-teal-500 text-white font-semibold rounded-full hover:bg-teal-600 transition-colors my-4"
+      className="inline-flex items-center gap-2 px-5 py-3 bg-fc-blue text-white font-semibold rounded-full hover:bg-fc-navy transition-colors my-4"
       target="_blank"
       rel="noopener"
     >
@@ -128,13 +128,13 @@ export default async function BlogPostPage({ params }: Props) {
       <article className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {/* Breadcrumbs */}
         <nav className="flex items-center gap-2 text-sm text-surface-400 mb-6">
-          <Link href="/" className="hover:text-teal-600 transition-colors">Inicio</Link>
+          <Link href="/" className="hover:text-fc-navy transition-colors">Inicio</Link>
           <span>/</span>
-          <Link href="/blog" className="hover:text-teal-600 transition-colors">Blog</Link>
+          <Link href="/blog" className="hover:text-fc-navy transition-colors">Blog</Link>
           <span>/</span>
           {categoryConfig && (
             <>
-              <Link href={`/blog?cat=${categoryConfig.slug}`} className="hover:text-teal-600 transition-colors">
+              <Link href={`/blog?cat=${categoryConfig.slug}`} className="hover:text-fc-navy transition-colors">
                 {categoryConfig.name}
               </Link>
               <span>/</span>
@@ -195,7 +195,7 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* CTA de Producto (Hotmart/Gato) — Se muestra si está configurado desde el editor */}
             {post.cta_product_url && (
-              <div className="my-10 p-6 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200">
+              <div className="my-10 p-6 rounded-2xl bg-gradient-to-r from-emerald-50 to-fc-blue/5 border-2 border-emerald-200">
                 <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-1">🛠 Herramienta relacionada</p>
                 <h3 className="text-lg font-bold text-surface-900 mb-2">
                   {post.cta_product_name || 'Descarga la herramienta'}
@@ -234,7 +234,7 @@ export default async function BlogPostPage({ params }: Props) {
                       <Link
                         key={tag}
                         href={`/blog?tag=${tag}`}
-                        className="px-3 py-1 bg-surface-100 text-surface-600 text-xs font-semibold rounded-full hover:bg-teal-50 hover:text-teal-600 transition-colors"
+                        className="px-3 py-1 bg-surface-100 text-surface-600 text-xs font-semibold rounded-full hover:bg-fc-blue/5 hover:text-fc-navy transition-colors"
                       >
                         {tag}
                       </Link>
@@ -263,7 +263,7 @@ export default async function BlogPostPage({ params }: Props) {
                   <p className="text-surface-600 text-sm leading-relaxed mb-4 max-w-2xl">
                     Ayudo a ingenieros y empresas a optimizar sus procesos mediante tecnología, plantillas avanzadas y automatización BIM. Fundador de FreeCloud.pe.
                   </p>
-                  <Link href="/contacto" className="inline-flex items-center gap-2 text-teal-600 font-semibold text-sm hover:gap-3 transition-all">
+                  <Link href="/contacto" className="inline-flex items-center gap-2 text-fc-navy font-semibold text-sm hover:gap-3 transition-all">
                     Trabajemos juntos <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
@@ -305,8 +305,8 @@ export default async function BlogPostPage({ params }: Props) {
             {/* Author */}
             <div className="bg-surface-50 rounded-xl p-5">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-700 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                  MR
+                <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 border-2 border-surface-200">
+                  <img src="/me.png" alt={post.author} className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <p className="font-display font-semibold text-surface-900 text-sm">{post.author}</p>

@@ -30,8 +30,8 @@ export default function SobreMiPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start gap-8 mb-12">
-        <div className="w-32 h-32 bg-gradient-to-br from-fc-blue to-fc-navy-deep rounded-2xl flex items-center justify-center text-white text-4xl font-display font-bold shadow-xl shadow-fc-blue/20 flex-shrink-0">
-          MR
+        <div className="w-32 h-32 rounded-2xl overflow-hidden shadow-xl shadow-fc-blue/20 flex-shrink-0 border-2 border-fc-gold">
+          <img src="/me.png" alt="Miguel Angel Rivera Ospina" className="w-full h-full object-cover" />
         </div>
         <div>
           <h1 className="text-3xl md:text-4xl font-display font-bold text-surface-900 mb-2">
