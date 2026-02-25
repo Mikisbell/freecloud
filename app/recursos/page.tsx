@@ -26,7 +26,7 @@ const PRODUCTS = [
     priceUsd: '$5',
     iconUrl: '/BIM 360.png',
     category: 'Metrados',
-    href: 'https://pay.hotmart.com/V12345678X', // Placeholder - user will update
+    href: 'mailto:admin@freecloud.pe?subject=Consulta%20sobre%20Plantilla%20Excel%20Metrados',
     tags: ['Metrados', 'Excel', 'Presupuesto'],
     badge: '⭐ Nuevo',
   },
@@ -37,7 +37,7 @@ const PRODUCTS = [
     priceUsd: '$10',
     iconUrl: '/Dynamo.png',
     category: 'HP Prime',
-    href: 'https://pay.hotmart.com/H87654321Y', // Placeholder - user will update
+    href: 'mailto:admin@freecloud.pe?subject=Consulta%20sobre%20Pack%20HP%20Prime',
     tags: ['HP Prime', 'Hardy Cross', 'Hidráulica'],
   },
   {
@@ -47,7 +47,7 @@ const PRODUCTS = [
     priceUsd: '$15',
     iconUrl: '/python.svg',
     category: 'Python',
-    href: '#', // Placeholder
+    href: 'mailto:admin@freecloud.pe?subject=Consulta%20sobre%20Scripts%20Python',
     tags: ['Python', 'Revit API', 'Automatización'],
   },
   {
@@ -57,7 +57,7 @@ const PRODUCTS = [
     priceUsd: '$12',
     iconUrl: '/revit.png',
     category: 'Revit',
-    href: '#', // Placeholder
+    href: 'mailto:admin@freecloud.pe?subject=Consulta%20sobre%20Familias%20Revit',
     tags: ['Revit', 'Familias', 'Estructuras'],
   },
   {
@@ -67,7 +67,7 @@ const PRODUCTS = [
     priceUsd: '$18',
     iconUrl: '/BIM 360.png',
     category: 'BIM',
-    href: '#', // Placeholder
+    href: 'mailto:admin@freecloud.pe?subject=Consulta%20sobre%20Plantilla%20PEB',
     tags: ['BIM', 'PEB', 'Gestión'],
     badge: '💼 Para Empresas',
   },
@@ -209,7 +209,7 @@ export default function RecursosPage() {
             creación de scripts Python a medida, y desarrollo de plantillas o macros exclusivas para tu empresa.
           </p>
           <a
-            href="mailto:mateo@freecloud.pe"
+            href="mailto:admin@freecloud.pe"
             className="inline-flex items-center gap-2 px-8 py-4 bg-fc-blue text-white font-bold rounded-full hover:bg-fc-navy hover:shadow-xl shadow-fc-blue/20 transition-all duration-300 text-lg"
           >
             Hablemos de tu proyecto

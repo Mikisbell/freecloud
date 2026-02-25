@@ -64,7 +64,7 @@ export default function Footer() {
               <a href="https://youtube.com/@mikisbell" target="_blank" rel="noopener" className="w-9 h-9 bg-surface-800 hover:bg-fc-navy rounded-lg flex items-center justify-center transition-colors">
                 <Youtube className="w-4 h-4" />
               </a>
-              <a href="mailto:contacto@freecloud.pe" target="_blank" rel="noopener" className="w-9 h-9 bg-surface-800 hover:bg-fc-navy rounded-lg flex items-center justify-center transition-colors">
+              <a href="mailto:admin@freecloud.pe" target="_blank" rel="noopener" className="w-9 h-9 bg-surface-800 hover:bg-fc-navy rounded-lg flex items-center justify-center transition-colors">
                 <Mail className="w-4 h-4" />
               </a>
             </div>

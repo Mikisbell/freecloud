@@ -116,7 +116,7 @@ export default function ContactForm() {
       {status === 'error' && (
         <div className="flex items-center gap-2 text-red-400 text-sm">
           <AlertCircle className="w-4 h-4 flex-shrink-0" />
-          <span>Ocurrió un error. Intenta de nuevo o escribe a contacto@freecloud.pe</span>
+          <span>Ocurrió un error. Intenta de nuevo o escribe a admin@freecloud.pe</span>
         </div>
       )}
 
