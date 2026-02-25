@@ -6,27 +6,46 @@
 - Environments: .env.local
 
   Creating an optimized production build ...
+Ô£ô Compiled successfully in 7.6s
+  Running TypeScript ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/31) ...
+  Generating static pages using 11 workers (7/31) 
+  Generating static pages using 11 workers (15/31) 
+  Generating static pages using 11 workers (23/31) 
+LaTeX-incompatible input and strict mode is set to 'warn': % comment has no terminating newline; LaTeX would fail because of commenting the end of math mode (e.g. $) [commentAtEnd]
+Ô£ô Generating static pages using 11 workers (31/31) in 1712.6ms
+  Finalizing page optimization ...
 
-> Build error occurred
-Error: Turbopack build failed with 1 errors:
-./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: E:\FREECLOUD\FREECLOUD-IA\PROYECTOS\freecloud\app\globals.css:155:5: The `ease-[cubic-bezier(0.4,0,0.2,1)]` class does not exist. If `ease-[cubic-bezier(0.4,0,0.2,1)]` is a custom class, make sure it is defined within a `@layer` directive.
-    at Input.error (node_modules/postcss/lib/input.js:135:16) [E:\FREECLOUD\FREECLOUD-IA\PROYECTOS\freecloud\.next\build\chunks\node_modules_fe693df6._.js:4651:22]
-    at AtRule.error (node_modules/postcss/lib/node.js:146:32) [E:\FREECLOUD\FREECLOUD-IA\PROYECTOS\freecloud\.next\build\chunks\node_modules_fe693df6._.js:928:38]
-    [at processApply (E:\FREECLOUD\FREECLOUD-IA\PROYECTOS\freecloud\node_modules\tailwindcss\lib\lib\expandApplyAtRules.js:380:29)]
-    [at E:\FREECLOUD\FREECLOUD-IA\PROYECTOS\freecloud\node_modules\tailwindcss\lib\lib\expandApplyAtRules.js:551:9]
-    [at E:\FREECLOUD\FREECLOUD-IA\PROYECTOS\freecloud\node_modules\tailwindcss\lib\processTailwindFeatures.js:55:50]
-    [at async plugins (E:\FREECLOUD\FREECLOUD-IA\PROYECTOS\freecloud\node_modules\tailwindcss\lib\plugin.js:38:17)]
-    at async LazyResult.runAsync (node_modules/postcss/lib/lazy-result.js:293:11) [E:\FREECLOUD\FREECLOUD-IA\PROYECTOS\freecloud\.next\build\chunks\node_modules_fe693df6._.js:6206:21]
-    at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34) [E:\FREECLOUD\FREECLOUD-IA\PROYECTOS\freecloud\.next\build\chunks\[root-of-the-server]__51225daf._.js:147:36]
-    at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23) [E:\FREECLOUD\FREECLOUD-IA\PROYECTOS\freecloud\.next\build\chunks\[root-of-the-server]__974941ed._.js:443:31]
+Route (app)
+Ôöî Ôùï /
+Ôö£ Ôùï /_not-found
+Ôö£ Ôùï /admin
+Ôö£ Ôùï /admin/categories
+Ôö£ Ôùï /admin/contacts
+Ôö£ ãÆ /admin/login
+Ôö£ Ôùï /admin/posts
+Ôö£ ãÆ /admin/posts/[id]/edit
+Ôö£ Ôùï /admin/posts/new
+Ôö£ ãÆ /api/contact
+Ôö£ ãÆ /api/newsletter
+Ôö£ Ôùï /apps
+Ôö£ Ôùï /apps/calculadora-sismica
+Ôö£ ãÆ /blog
+Ôö£ ÔùÅ /blog/[slug]
+Ôöé Ôö£ /blog/predimensionamiento-columnas-vigas-e060-practico
+Ôöé Ôö£ /blog/excel-plantilla-metrados-obra-automatica
+Ôöé Ôö£ /blog/revit-api-python-pyrevit-programacion-bim
+Ôöé Ôöö [+10 more paths]
+Ôö£ Ôùï /recursos
+Ôö£ Ôùï /robots.txt
+Ôö£ Ôùï /sitemap.xml
+Ôöö Ôùï /sobre-mi
 
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
 
+ãÆ Proxy (Middleware)
 
-    at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34) [E:\FREECLOUD\FREECLOUD-IA\PROYECTOS\freecloud\.next\build\chunks\[root-of-the-server]__51225daf._.js:147:36])
-    at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23) [E:\FREECLOUD\FREECLOUD-IA\PROYECTOS\freecloud\.next\build\chunks\[root-of-the-server]__974941ed._.js:443:31])
+Ôùï  (Static)   prerendered as static content
+ÔùÅ  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ãÆ  (Dynamic)  server-rendered on demand
+

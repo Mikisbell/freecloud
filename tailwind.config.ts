@@ -42,6 +42,37 @@ const config: Config = {
 					background: '#F4F6F9',
 					border: '#E2E8F0'
 				},
+
+				// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+				// FC — FreeCloud Brand Design Tokens
+				// Extraídos del logo oficial FreeCloud
+				// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+				fc: {
+					// Familia Azul (Nube principal)
+					'cyan': '#29ABE2',  // Nube mid-tone — Primario vibrante
+					'cyan-light': '#00D4FF',  // Nube highlight — Acentos brillantes
+					'blue': '#1565C0',  // Nube sombra — Hover / profundidad
+					'navy': '#003F8A',  // Nube base — Textos, fondos oscuros
+					'navy-deep': '#00265A',  // Sombra extrema — Headers dark
+
+					// Familia Dorado (Edificios + "FREE")
+					'gold': '#D4940A',  // "FREE" principal — CTAs, badges
+					'gold-dark': '#C8860A',  // Hover de oro — Botones hover
+					'gold-light': '#F0B429',  // Tono claro ámbar — Highlights
+					'gold-muted': '#B8903C',  // Tono apagado — Secondary label
+
+					// Neutros de marca
+					'white': '#FFFFFF',
+					'surface': '#F5F7FA',  // Fondo general suave
+					'border': '#D6E4F0',  // Bordes sutiles azulados
+					'text': '#0C2340',  // Texto primario ultra-oscuro
+					'text-muted': '#4A6285',  // Texto secundario azulado
+
+					// Semánticos / estados
+					'success': '#1A8F5E',  // Éxito (verde neutro)
+					'warning': '#D4940A',  // Warning == gold (coherente)
+					'error': '#C0392B',  // Error rojo
+				},
 				accent: {
 					'50': '#fff7ed',
 					'100': '#ffeed4',

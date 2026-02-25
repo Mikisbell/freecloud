@@ -4,39 +4,66 @@
 
 @layer base {
   :root {
-    --color-brand: #1a6df5;
-    --color-accent: #ff7a0d;
-    --color-teal: #2ab1ac;
-    --color-teal-light: #d2f7f5;
-    --color-teal-dark: #1d7371;
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     * FC — FreeCloud Design System CSS Variables
+     * Fuente: Logo oficial FreeCloud (análisis cromático)
+     * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+    /* Familia Azul — Nube del logo */
+    --fc-cyan: #29ABE2;
+    --fc-cyan-light: #00D4FF;
+    --fc-blue: #1565C0;
+    --fc-navy: #003F8A;
+    --fc-navy-deep: #00265A;
+
+    /* Familia Dorada — "FREE" + Edificios del logo */
+    --fc-gold: #D4940A;
+    --fc-gold-dark: #C8860A;
+    --fc-gold-light: #F0B429;
+    --fc-gold-muted: #B8903C;
+
+    /* Neutros de marca */
+    --fc-surface: #F5F7FA;
+    --fc-border: #D6E4F0;
+    --fc-text: #0C2340;
+    --fc-text-muted: #4A6285;
+
+    /* Semánticos legacy (compatibilidad) */
+    --color-brand: #1565C0;
+    --color-accent: #D4940A;
+    --color-teal: #29ABE2;
+    --color-teal-light: #bce9fa;
+    --color-teal-dark: #1565C0;
     --color-bg: #ffffff;
-    --color-bg-alt: #f8fafc;
-    --color-text: #0f172a;
-    --color-text-muted: #64748b;
-    --color-border: #e2e8f0;
+    --color-bg-alt: #F5F7FA;
+    --color-text: #0C2340;
+    --color-text-muted: #4A6285;
+    --color-border: #D6E4F0;
+
+    /* ShadCN / Radix vars */
     --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --foreground: 214 91% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 214 91% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
+    --popover-foreground: 214 91% 10%;
+    --primary: 208 75% 46%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 213 36% 95%;
+    --secondary-foreground: 214 91% 10%;
+    --muted: 213 36% 95%;
+    --muted-foreground: 213 30% 42%;
+    --accent: 42 91% 44%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
+    --border: 210 30% 84%;
+    --input: 210 30% 84%;
+    --ring: 208 75% 46%;
     --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
+    --chart-2: 208 75% 46%;
     --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
+    --chart-4: 42 91% 44%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
@@ -52,7 +79,7 @@
   }
 
   ::selection {
-    @apply bg-teal-100 text-teal-900;
+    @apply bg-fc-cyan text-white;
   }
 
   .dark {
