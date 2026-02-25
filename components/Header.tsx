@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
-import { Menu, X, Code, ChevronDown, ArrowRight } from 'lucide-react';
+import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
 
 const NAV_ITEMS = [
   { label: 'Blog', href: '/blog' },
@@ -79,9 +79,11 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 bg-gradient-to-br from-fc-navy to-fc-blue rounded-lg flex items-center justify-center shadow-md shadow-fc-navy/20 group-hover:shadow-fc-blue/40 transition-shadow">
-              <Code className="w-5 h-5 text-white" />
-            </div>
+            <img
+              src="/logo.png"
+              alt="FreeCloud logo"
+              className="h-10 w-auto object-contain"
+            />
             <div className="flex flex-col">
               <span className="font-brand font-black text-lg text-fc-navy leading-tight">
                 <span style={{ color: '#D4940A' }}>FREE</span><span style={{ color: '#1565C0' }}>CLOUD</span>
@@ -103,8 +105,8 @@ export default function Header() {
                   onMouseLeave={handleMouseLeave}
                 >
                   <button className={`flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${megaOpen
-                      ? 'text-fc-blue bg-fc-cyan/10'
-                      : 'text-surface-600 hover:text-fc-blue hover:bg-fc-cyan/10'
+                    ? 'text-fc-blue bg-fc-cyan/10'
+                    : 'text-surface-600 hover:text-fc-blue hover:bg-fc-cyan/10'
                     }`}>
                     {item.label}
                     <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${megaOpen ? 'rotate-180' : ''}`} />
