@@ -83,11 +83,11 @@ export default async function HomePage() {
             {/* Badge urgencia */}
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-500/10 border border-teal-500/20 text-teal-300 text-xs font-semibold rounded-full mb-8 backdrop-blur-sm animate-fade-in">
               <span className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" />
-              BIM OBLIGATORIO EN PERÚ — AGOSTO 2026
+              <span className="font-slogan tracking-[0.2em] text-xs uppercase">BIM OBLIGATORIO EN PERÚ — AGOSTO 2026</span>
             </div>
 
             {/* H1 masivo con staggered animation */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-black text-white mb-6 leading-[1.05] text-balance animate-slide-up">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-brand font-black text-white mb-6 leading-[1.05] text-balance animate-slide-up">
               BIM, Ingeniería Civil y{' '}
               <span className="gradient-text">Tecnología</span>
             </h1>

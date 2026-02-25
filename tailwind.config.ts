@@ -139,6 +139,7 @@ const config: Config = {
 				}
 			},
 			fontFamily: {
+				// Sistema actual
 				display: [
 					'var(--font-display)',
 					'system-ui',
@@ -152,7 +153,18 @@ const config: Config = {
 				mono: [
 					'var(--font-mono)',
 					'monospace'
-				]
+				],
+				// FC Brand Fonts — Logo oficial FreeCloud
+				brand: [
+					'var(--font-brand)', // Montserrat Black — "FREECLOUD"
+					'system-ui',
+					'sans-serif'
+				],
+				slogan: [
+					'var(--font-slogan)', // Rajdhani — "NUNCA PARES DE CONSTRUIR."
+					'system-ui',
+					'sans-serif'
+				],
 			},
 			typography: {
 				DEFAULT: {

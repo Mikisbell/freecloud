@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { DM_Sans, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
+import { DM_Sans, Space_Grotesk, JetBrains_Mono, Montserrat, Rajdhani } from 'next/font/google';
 import { generateSiteMetadata, generateWebsiteSchema } from '@/lib/seo';
 import LayoutShell from '@/components/LayoutShell';
 import AdSenseLoader from '@/components/AdSenseLoader';
@@ -29,13 +29,33 @@ const fontMono = JetBrains_Mono({
   weight: ['400', '500'],
 });
 
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// FC Brand Fonts — Extraidas del logo oficial FreeCloud
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+// Montserrat Black (900) — coincide con "FREECLOUD" del logo
+const fontBrand = Montserrat({
+  subsets: ['latin'],
+  variable: '--font-brand',
+  display: 'swap',
+  weight: ['400', '500', '600', '700', '800', '900'],
+});
+
+// Rajdhani SemiBold — coincide con "NUNCA PARES DE CONSTRUIR." del logo
+const fontSlogan = Rajdhani({
+  subsets: ['latin'],
+  variable: '--font-slogan',
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+});
+
 export const metadata: Metadata = generateSiteMetadata();
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID;
 
   return (
-    <html lang="es" suppressHydrationWarning data-scroll-behavior="smooth" className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable}`}>
+    <html lang="es" suppressHydrationWarning data-scroll-behavior="smooth" className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable} ${fontBrand.variable} ${fontSlogan.variable}`}>
       <body suppressHydrationWarning className="font-body antialiased min-h-screen flex flex-col">
         <LayoutShell>
           {children}
