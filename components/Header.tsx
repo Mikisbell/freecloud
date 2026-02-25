@@ -73,21 +73,20 @@ export default function Header() {
   };
 
   return (
-    <header className={`sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b transition-all duration-200 ${
-      scrolled ? 'border-surface-200 shadow-sm' : 'border-transparent'
-    }`}>
+    <header className={`sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b transition-all duration-200 ${scrolled ? 'border-surface-200 shadow-sm' : 'border-transparent'
+      }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 bg-gradient-to-br from-teal-500 to-teal-700 rounded-lg flex items-center justify-center shadow-md shadow-teal-500/20 group-hover:shadow-teal-500/40 transition-shadow">
+            <div className="w-9 h-9 bg-gradient-to-br from-fc-navy to-fc-blue rounded-lg flex items-center justify-center shadow-md shadow-fc-navy/20 group-hover:shadow-fc-blue/40 transition-shadow">
               <Code className="w-5 h-5 text-white" />
             </div>
             <div className="flex flex-col">
-              <span className="font-display font-bold text-lg text-surface-900 leading-tight">
-                FreeCloud
+              <span className="font-brand font-black text-lg text-fc-navy leading-tight">
+                <span style={{ color: '#D4940A' }}>FREE</span><span style={{ color: '#1565C0' }}>CLOUD</span>
               </span>
-              <span className="text-[10px] text-surface-400 font-medium tracking-wider uppercase leading-none">
+              <span className="text-[10px] text-fc-text-muted font-slogan tracking-[0.18em] uppercase leading-none">
                 BIM &amp; Ingeniería
               </span>
             </div>
@@ -103,11 +102,10 @@ export default function Header() {
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <button className={`flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                    megaOpen
-                      ? 'text-teal-600 bg-teal-50'
-                      : 'text-surface-600 hover:text-teal-600 hover:bg-teal-50'
-                  }`}>
+                  <button className={`flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${megaOpen
+                      ? 'text-fc-blue bg-fc-cyan/10'
+                      : 'text-surface-600 hover:text-fc-blue hover:bg-fc-cyan/10'
+                    }`}>
                     {item.label}
                     <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${megaOpen ? 'rotate-180' : ''}`} />
                   </button>
@@ -116,7 +114,7 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="px-3 py-2 text-sm font-medium text-surface-600 hover:text-teal-600 rounded-lg hover:bg-teal-50 transition-all duration-200"
+                  className="px-3 py-2 text-sm font-medium text-surface-600 hover:text-fc-blue rounded-lg hover:bg-fc-cyan/10 transition-all duration-200"
                 >
                   {item.label}
                 </Link>
@@ -125,7 +123,7 @@ export default function Header() {
             {/* CTA */}
             <Link
               href="/recursos"
-              className="ml-3 px-5 py-2 bg-teal-500 text-white text-sm font-semibold rounded-full hover:bg-surface-900 transition-all duration-200 shadow-sm"
+              className="ml-3 px-5 py-2 bg-fc-gold text-white text-sm font-semibold rounded-full hover:bg-fc-gold-dark transition-all duration-200 shadow-sm shadow-fc-gold/25"
             >
               Descargar Gratis
             </Link>
@@ -164,7 +162,7 @@ export default function Header() {
                       <li key={link.href}>
                         <Link
                           href={link.href}
-                          className="flex items-center gap-2.5 px-2 py-2 -mx-2 rounded-lg text-sm text-surface-600 hover:text-teal-600 hover:bg-white transition-all duration-150"
+                          className="flex items-center gap-2.5 px-2 py-2 -mx-2 rounded-lg text-sm text-surface-600 hover:text-fc-blue hover:bg-white transition-all duration-150"
                           onClick={() => setMegaOpen(false)}
                         >
                           <span className="text-base">{link.icon}</span>
@@ -192,7 +190,7 @@ export default function Header() {
                   <p className="text-sm text-surface-500 mb-0.5">
                     {MEGA_MENU.featured.description}
                   </p>
-                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-600 uppercase tracking-wider group-hover:gap-2.5 transition-all">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-fc-gold uppercase tracking-wider group-hover:gap-2.5 transition-all">
                     <ArrowRight className="w-3.5 h-3.5" />
                     {MEGA_MENU.featured.cta}
                   </span>
@@ -221,7 +219,7 @@ export default function Header() {
                       <Link
                         key={link.href}
                         href={link.href}
-                        className="block px-6 py-2 text-sm text-surface-600 hover:text-teal-600"
+                        className="block px-6 py-2 text-sm text-surface-600 hover:text-fc-blue"
                         onClick={() => setMobileOpen(false)}
                       >
                         {link.icon} {link.label}
@@ -234,7 +232,7 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="block px-3 py-2.5 text-sm font-medium text-surface-700 hover:text-teal-600"
+                className="block px-3 py-2.5 text-sm font-medium text-surface-700 hover:text-fc-blue"
                 onClick={() => setMobileOpen(false)}
               >
                 {item.label}
@@ -244,7 +242,7 @@ export default function Header() {
           <div className="px-3 pt-3">
             <Link
               href="/recursos"
-              className="block w-full text-center px-4 py-2.5 bg-teal-500 text-white text-sm font-semibold rounded-full"
+              className="block w-full text-center px-4 py-2.5 bg-fc-gold text-white text-sm font-semibold rounded-full hover:bg-fc-gold-dark transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               Descargar Gratis
