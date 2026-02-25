@@ -10,10 +10,11 @@ import rehypeHighlight from 'rehype-highlight';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
-import { Clock, Calendar, Tag, Share2 } from 'lucide-react';
+import { Clock, Calendar, Tag, Share2, ArrowRight } from 'lucide-react';
 import { generatePostMetadata, generateArticleSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/seo';
 import BlogCard from '@/components/BlogCard';
 import Newsletter from '@/components/Newsletter';
+import ShareButtons from '@/components/ShareButtons';
 import { AdInArticle, AdSidebar, AdBanner } from '@/components/AdSense';
 
 export async function generateStaticParams() {
@@ -222,24 +223,55 @@ export default async function BlogPostPage({ params }: Props) {
             <AdInArticle slot="XXXXXXXXXX" />
 
 
-            {/* Tags */}
-            {post.tags && post.tags.length > 0 && (
-              <div className="flex flex-wrap items-center gap-2 mt-8 pt-6 border-t border-surface-100">
-                <Tag className="w-4 h-4 text-surface-400" />
-                {post.tags.map(tag => (
-                  <Link
-                    key={tag}
-                    href={`/blog?tag=${tag}`}
-                    className="px-3 py-1 bg-surface-100 text-surface-600 text-sm rounded-full hover:bg-teal-50 hover:text-teal-600 transition-colors"
-                  >
-                    {tag}
-                  </Link>
-                ))}
+            {/* Tags, Share & Author Bio */}
+            <div className="mt-12 pt-8 border-t border-surface-100">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+                {/* Tags */}
+                {post.tags && post.tags.length > 0 ? (
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Tag className="w-4 h-4 text-surface-400" />
+                    {post.tags.map(tag => (
+                      <Link
+                        key={tag}
+                        href={`/blog?tag=${tag}`}
+                        className="px-3 py-1 bg-surface-100 text-surface-600 text-xs font-semibold rounded-full hover:bg-teal-50 hover:text-teal-600 transition-colors"
+                      >
+                        {tag}
+                      </Link>
+                    ))}
+                  </div>
+                ) : <div />}
+
+                {/* Share Buttons */}
+                <ShareButtons url={`https://freecloud.pe/blog/${post.slug}`} title={post.title} />
               </div>
-            )}
+
+              {/* Author Bio */}
+              <div className="bg-surface-50 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row gap-6 items-center md:items-start mb-12 border border-surface-100">
+                <img
+                  src="/me.jpg"
+                  alt={post.author || "Mateo"}
+                  className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover shadow-md border-4 border-white"
+                />
+                <div className="text-center md:text-left flex-1">
+                  <h3 className="text-lg font-display font-bold text-surface-900 mb-1">
+                    {post.author || "Mateo Code"}
+                  </h3>
+                  <p className="text-xs text-surface-500 mb-4 font-bold uppercase tracking-wider">
+                    Ingeniero Civil & Desarrollador
+                  </p>
+                  <p className="text-surface-600 text-sm leading-relaxed mb-4 max-w-2xl">
+                    Ayudo a ingenieros y empresas a optimizar sus procesos mediante tecnología, plantillas avanzadas y automatización BIM. Fundador de FreeCloud.pe.
+                  </p>
+                  <Link href="/contacto" className="inline-flex items-center gap-2 text-teal-600 font-semibold text-sm hover:gap-3 transition-all">
+                    Trabajemos juntos <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+            </div>
 
             {/* Newsletter CTA */}
-            <div className="mt-10">
+            <div className="mt-6">
               <Newsletter />
             </div>
 

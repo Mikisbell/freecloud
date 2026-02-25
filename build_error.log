@@ -1,0 +1,23 @@
+
+> freecloud-blog@1.0.0 build
+> next build
+
+Ôû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+Ô£ô Compiled successfully in 5.7s
+  Running TypeScript ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/31) ...
+  Generating static pages using 11 workers (7/31) 
+Error occurred prerendering page "/blog/plan-ejecucion-bim-peb-guia". Read more: https://nextjs.org/docs/messages/prerender-error
+Error: Event handlers cannot be passed to Client Component props.
+  {onClick: function onClick, className: ..., title: ..., children: ...}
+            ^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>) {
+  digest: '1126165834'
+}
+Export encountered an error on /blog/[slug]/page: /blog/plan-ejecucion-bim-peb-guia, exiting the build.
+Ô¿» Next.js build worker exited with code: 1 and signal: null
