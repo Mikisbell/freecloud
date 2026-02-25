@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import { Post, Category, createPost, updatePost, uploadImage } from '@/lib/supabase'
-import { Save, Eye, ArrowLeft, Image as ImageIcon, Sparkles, Check, X, Settings2, PenLine, Loader2, Upload } from 'lucide-react'
+import { Save, Eye, ArrowLeft, Image as ImageIcon, Sparkles, Check, X, Settings2, PenLine, Loader2, Upload, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -75,6 +75,9 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
         status: post?.status || 'draft',
         featured: post?.featured || false,
         author: post?.author || 'Miguel Angel Rivera',
+        cta_product_name: post?.cta_product_name || '',
+        cta_product_url: post?.cta_product_url || '',
+        cta_product_price: post?.cta_product_price || '',
     })
 
     const [saving, setSaving] = useState(false)
@@ -603,6 +606,60 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                             className="bg-white/[0.04] border-white/[0.08] text-white text-xs h-9"
                         />
                     </div>
+                </CardContent>
+            </Card>
+
+            {/* 5. Producto CTA (Hotmart / Gumroad) */}
+            <Card className="bg-[#1A2E1A]/50 border-emerald-500/20 relative overflow-hidden backdrop-blur-sm">
+                <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+                    <ShoppingCart className="w-24 h-24 text-emerald-400" />
+                </div>
+                <CardHeader className="pb-3 border-b border-emerald-500/10">
+                    <CardTitle className="text-base text-emerald-300 flex items-center gap-2">
+                        <ShoppingCart className="w-4 h-4" /> Producto a Vender
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-4 space-y-4 relative z-10">
+                    <p className="text-[11px] text-emerald-200/50">Si rellenas estos campos, aparecerá automáticamente un bloque de compra al final del post.</p>
+                    <div className="space-y-2">
+                        <Label className="text-emerald-200/70 text-xs">Nombre del Producto</Label>
+                        <Input
+                            type="text"
+                            name="cta_product_name"
+                            value={formData.cta_product_name}
+                            onChange={handleChange}
+                            placeholder="Ej: Plantilla Excel E.030"
+                            className="bg-black/20 border-emerald-500/20 text-white text-sm h-10 focus-visible:ring-emerald-500/50"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label className="text-emerald-200/70 text-xs">Precio (texto libre)</Label>
+                        <Input
+                            type="text"
+                            name="cta_product_price"
+                            value={formData.cta_product_price}
+                            onChange={handleChange}
+                            placeholder="Ej: $7 USD"
+                            className="bg-black/20 border-emerald-500/20 text-white text-sm h-10 focus-visible:ring-emerald-500/50"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label className="text-emerald-200/70 text-xs">URL de Compra (Hotmart)</Label>
+                        <Input
+                            type="text"
+                            name="cta_product_url"
+                            value={formData.cta_product_url}
+                            onChange={handleChange}
+                            placeholder="https://pay.hotmart.com/..."
+                            className="bg-black/20 border-emerald-500/20 text-white text-sm h-10 font-mono focus-visible:ring-emerald-500/50"
+                        />
+                    </div>
+                    {formData.cta_product_url && (
+                        <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
+                            <p className="text-[11px] text-emerald-300 font-medium mb-1">Vista previa del CTA:</p>
+                            <p className="text-xs text-white/70">👉 <span className="text-emerald-300 underline">{formData.cta_product_name || 'Tu Producto'} — {formData.cta_product_price || 'Precio'}</span></p>
+                        </div>
+                    )}
                 </CardContent>
             </Card>
         </div>

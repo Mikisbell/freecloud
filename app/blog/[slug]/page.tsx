@@ -2,6 +2,7 @@ import { getPosts, getPostBySlug, getRelatedPosts } from '@/lib/supabase';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Script from 'next/script';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
@@ -97,20 +98,23 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <>
       {/* Article Schema - passes full post for correct @id */}
-      <script
+      <Script
+        id={`article-schema-${post.id}`}
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(generateArticleSchema(post))
         }}
       />
       {/* Breadcrumb Schema */}
-      <script
+      <Script
+        id={`breadcrumb-schema-${post.id}`}
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(generateBreadcrumbSchema(breadcrumbs)) }}
       />
       {/* FAQPage Schema - uses key_question + key_answer from post */}
       {post.key_question && post.key_answer && (
-        <script
+        <Script
+          id={`faq-schema-${post.id}`}
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(generateFAQSchema([
@@ -188,8 +192,35 @@ export default async function BlogPostPage({ params }: Props) {
               />
             </div>
 
+            {/* CTA de Producto (Hotmart/Gato) — Se muestra si está configurado desde el editor */}
+            {post.cta_product_url && (
+              <div className="my-10 p-6 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200">
+                <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-1">🛠 Herramienta relacionada</p>
+                <h3 className="text-lg font-bold text-surface-900 mb-2">
+                  {post.cta_product_name || 'Descarga la herramienta'}
+                </h3>
+                <p className="text-sm text-surface-600 mb-4">
+                  Automatiza lo que aprendiste en este artículo. Descarga la plantilla/herramienta lista para usar en tu próximo proyecto.
+                </p>
+                <a
+                  href={post.cta_product_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-colors text-sm"
+                >
+                  👉 Descargar ahora
+                  {post.cta_product_price && (
+                    <span className="ml-1 px-2 py-0.5 bg-white/20 rounded-full text-xs">
+                      {post.cta_product_price}
+                    </span>
+                  )}
+                </a>
+              </div>
+            )}
+
             {/* Ad in article */}
             <AdInArticle slot="XXXXXXXXXX" />
+
 
             {/* Tags */}
             {post.tags && post.tags.length > 0 && (

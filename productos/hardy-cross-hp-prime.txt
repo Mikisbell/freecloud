@@ -1,0 +1,90 @@
+// ==========================================
+// PROGRAMA: HARDY CROSS (Distribución de Momentos)
+// CALCULADORA: HP Prime (HP PPL)
+// AUTOR: FreeCloud - Ing. Civil
+// ==========================================
+
+EXPORT HardyCross()
+BEGIN
+  // Variables locales
+  LOCAL n, iter;
+  LOCAL K, DF, M, dM;
+  LOCAL i, sum_M, error, max_iter, tol;
+
+  // Header
+  PRINT();
+  PRINT("============================");
+  PRINT("  METODO DE HARDY CROSS");
+  PRINT("  Distribución de Momentos");
+  PRINT("============================");
+
+  // Input de datos iniciales
+  INPUT(n, "Número de Elementos", "n = ", "Ingrese n (ej. 4)");
+  
+  K := MAKEMAT(0, n, 1);
+  DF := MAKEMAT(0, n, 1);
+  M := MAKEMAT(0, n, 1);
+  
+  PRINT("--- INGRESO DE DATOS ---");
+  FOR i FROM 1 TO n DO
+    INPUT(K(i,1), "Rigidez K"+i, "K"+i+"=");
+    INPUT(M(i,1), "Momento Fijo M"+i, "M"+i+"=");
+  END;
+
+  // Calculo de factores de distribución (DF)
+  LOCAL sum_K := 0;
+  FOR i FROM 1 TO n DO
+    sum_K := sum_K + K(i,1);
+  END;
+  
+  FOR i FROM 1 TO n DO
+    DF(i,1) := K(i,1) / sum_K;
+  END;
+
+  PRINT("Factores de Distribucion:");
+  FOR i FROM 1 TO n DO
+    PRINT("DF"+i+" = " + ROUND(DF(i,1)*100, 2) + "%");
+  END;
+
+  // Parámetros iteración
+  max_iter := 20;
+  tol := 0.01;
+  error := 100;
+  iter := 0;
+  
+  PRINT("--- ITERACIONES ---");
+  
+  WHILE (error > tol) AND (iter < max_iter) DO
+    iter := iter + 1;
+    sum_M := 0;
+    
+    // Sumamos los momentos en el nudo
+    FOR i FROM 1 TO n DO
+      sum_M := sum_M + M(i,1);
+    END;
+    
+    error := ABS(sum_M);
+    
+    // Si ya balanceamos, salimos
+    IF error <= tol THEN
+      BREAK;
+    END;
+
+    // Distribuimos el momento desequilibrado
+    FOR i FROM 1 TO n DO
+      dM := -sum_M * DF(i,1);
+      M(i,1) := M(i,1) + dM;
+    END;
+  END;
+  
+  PRINT(" ");
+  PRINT("--- RESULTADOS FINALES ---");
+  PRINT("Iteraciones: " + iter);
+  
+  FOR i FROM 1 TO n DO
+    PRINT("M"+i+" = " + ROUND(M(i,1), 3) + " Ton-m");
+  END;
+  
+  PRINT("============================");
+  RETURN M;
+END;

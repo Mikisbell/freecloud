@@ -177,6 +177,10 @@ export interface Post {
   updated_at: string;
   published_at?: string;
   categories?: Category; // For joined queries
+  // Monetization CTA
+  cta_product_name?: string;
+  cta_product_url?: string;
+  cta_product_price?: string;
 }
 
 export async function getCategories() {
