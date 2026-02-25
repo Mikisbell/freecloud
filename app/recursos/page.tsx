@@ -13,7 +13,7 @@ const PRODUCTS = [
     description: 'Hoja de cálculo completa para análisis sísmico estático y dinámico según norma peruana E.030. Incluye espectro, fuerzas por piso y derivas.',
     price: 'S/ 25',
     priceUsd: '$7',
-    iconUrl: '/civil.png', // Usando icono Civil por ser del área estructural/sismica
+    iconUrl: '/excel.svg',
     category: 'Ing. Sísmica',
     href: 'https://pay.hotmart.com/E98246344E?checkoutMode=10', // link update from previous instruction
     tags: ['E.030', 'Sísmica', 'Excel'],
@@ -24,7 +24,7 @@ const PRODUCTS = [
     description: 'Plantilla profesional de metrados con formatos de partidas según normativa peruana. Incluye macros para resumen automático de acero.',
     price: 'S/ 20',
     priceUsd: '$5',
-    iconUrl: '/BIM 360.png',
+    iconUrl: '/excel.svg',
     category: 'Metrados',
     href: 'mailto:admin@freecloud.pe?subject=Consulta%20sobre%20Plantilla%20Excel%20Metrados',
     tags: ['Metrados', 'Excel', 'Presupuesto'],
@@ -35,7 +35,7 @@ const PRODUCTS = [
     description: 'Programa completo para el método de Hardy Cross. Incluye cálculo automático de caudales corregidos y presiones en nodos.',
     price: 'S/ 35',
     priceUsd: '$10',
-    iconUrl: '/Dynamo.png',
+    iconUrl: '/hp.svg',
     category: 'HP Prime',
     href: 'mailto:admin@freecloud.pe?subject=Consulta%20sobre%20Pack%20HP%20Prime',
     tags: ['HP Prime', 'Hardy Cross', 'Hidráulica'],
