@@ -56,7 +56,7 @@ export default function TabShowcase() {
   const tab = TABS[activeTab];
 
   return (
-    <section className="py-20 bg-surface-50">
+    <section className="py-24 bg-surface-50 border-t border-b border-dataiku-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Section heading */}
         <div className="text-center mb-12 reveal">
@@ -71,11 +71,10 @@ export default function TabShowcase() {
             <button
               key={t.id}
               onClick={() => setActiveTab(i)}
-              className={`relative px-6 py-4 text-xs sm:text-sm font-semibold tracking-wider uppercase whitespace-nowrap transition-colors duration-200 ${
-                activeTab === i
-                  ? 'text-surface-900'
-                  : 'text-surface-400 hover:text-surface-600'
-              }`}
+              className={`relative px-6 py-4 text-xs sm:text-sm font-semibold tracking-wider uppercase whitespace-nowrap transition-colors duration-200 ${activeTab === i
+                ? 'text-surface-900'
+                : 'text-surface-400 hover:text-surface-600'
+                }`}
             >
               {t.label}
               {/* Active indicator */}
@@ -87,7 +86,7 @@ export default function TabShowcase() {
         </div>
 
         {/* Tab content */}
-        <div className="bg-surface-100/50 rounded-b-2xl rounded-t-none overflow-hidden">
+        <div className="bg-white border text-left border-dataiku-border overflow-hidden dataiku-card mt-[-1px]">
           <div
             className="grid md:grid-cols-2 gap-8 md:gap-12 p-8 md:p-12 lg:p-16"
             key={tab.id}
@@ -111,13 +110,10 @@ export default function TabShowcase() {
               </div>
             </div>
 
-            {/* Right — Visual card with colored border glow */}
+            {/* Right — Visual card with sharp edges */}
             <div className="flex items-center justify-center">
               <div
-                className="relative w-full max-w-md aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl"
-                style={{
-                  boxShadow: `0 25px 60px -12px ${tab.color}30, 0 0 0 1px ${tab.color}20`,
-                }}
+                className="relative w-full max-w-md aspect-[4/3] overflow-hidden shadow-dataiku-hover border border-dataiku-border bg-white"
               >
                 {/* Colored border glow */}
                 <div
@@ -128,12 +124,12 @@ export default function TabShowcase() {
                   }}
                 />
                 {/* Content card */}
-                <div className="relative h-full bg-white m-[2px] rounded-[14px] flex flex-col items-center justify-center p-8">
-                  {/* Top bar mimicking an app UI */}
-                  <div className="absolute top-0 left-0 right-0 h-10 bg-surface-900 rounded-t-[14px] flex items-center px-4 gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                <div className="relative h-full bg-dataiku-background flex flex-col items-center justify-center p-8">
+                  {/* Top bar mimicking a rigid enterprise app UI */}
+                  <div className="absolute top-0 left-0 right-0 h-10 bg-dataiku-navy flex items-center px-4 gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-surface-500" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-surface-500" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-surface-500" />
                     <span className="ml-3 text-[10px] text-surface-400 font-mono">freecloud.pe</span>
                   </div>
                   {/* Main icon/visual */}
@@ -175,6 +171,6 @@ export default function TabShowcase() {
           </div>
         </div>
       </div>
-    </section>
+    </section >
   );
 }

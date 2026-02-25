@@ -84,7 +84,7 @@ export default function RecursosPage() {
   return (
     <div className="bg-surface-50 min-h-screen pb-24">
       {/* ── HERO DE CONVERSIÓN ── */}
-      <section className="bg-surface-900 text-white relative overflow-hidden pb-16 pt-20">
+      <section className="bg-dataiku-navy text-white relative overflow-hidden pb-16 pt-20 border-b-4 border-teal-500">
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.1]" />
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-teal-500/20 rounded-full blur-[120px] pointer-events-none" />
 
@@ -112,7 +112,7 @@ export default function RecursosPage() {
 
       {/* ── ALERTA DE HERRAMIENTAS GRATUITAS ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-8 relative z-20 mb-16">
-        <div className="bg-white rounded-2xl shadow-xl shadow-surface-900/5 border border-surface-100 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="dataiku-card p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-teal-50 rounded-full flex items-center justify-center shrink-0">
               <span className="text-2xl">🆓</span>
@@ -138,7 +138,7 @@ export default function RecursosPage() {
           {PRODUCTS.map((product, i) => (
             <div
               key={product.title}
-              className="group bg-white rounded-2xl border-2 border-surface-100 hover:border-teal-500 transition-all duration-300 hover:shadow-2xl hover:shadow-teal-500/10 hover:-translate-y-1 flex flex-col overflow-hidden animate-slide-up"
+              className="group dataiku-card flex flex-col overflow-hidden animate-slide-up"
               style={{ animationDelay: `${i * 100}ms` }}
             >
               <div className="p-6 md:p-8 flex-1 flex flex-col">
@@ -187,7 +187,7 @@ export default function RecursosPage() {
                     href={product.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3.5 bg-surface-900 text-white font-bold rounded-full hover:bg-teal-600 hover:shadow-lg hover:shadow-teal-500/30 transition-all duration-300 group-hover:scale-105"
+                    className="inline-flex items-center gap-2 px-6 py-3.5 bg-dataiku-navy text-white font-bold rounded-full hover:bg-teal-600 hover:shadow-lg hover:shadow-teal-500/30 transition-all duration-300 group-hover:scale-105 btn-pill"
                   >
                     <Download className="w-5 h-5" />
                     Obtener
@@ -199,7 +199,7 @@ export default function RecursosPage() {
         </div>
 
         {/* ── SERVICIOS PERSONALIZADOS ── */}
-        <div className="mt-20 text-center bg-white border border-surface-200 shadow-sm rounded-3xl p-10 md:p-14 max-w-4xl mx-auto relative overflow-hidden">
+        <div className="mt-20 text-center dataiku-card shadow-sm p-10 md:p-14 max-w-4xl mx-auto relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-teal-50 rounded-full blur-[80px] -z-10" />
           <h2 className="font-display font-black text-surface-900 text-3xl mb-4">
             ¿Necesitas una solución a medida?

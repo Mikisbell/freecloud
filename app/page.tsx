@@ -177,7 +177,7 @@ export default async function HomePage() {
             {TESTIMONIALS.map((t, i) => (
               <div
                 key={t.name}
-                className="reveal bg-white rounded-2xl p-8 border border-surface-200 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative"
+                className="reveal dataiku-card p-8 relative"
                 style={{ transitionDelay: `${i * 100}ms` }}
               >
                 {/* Quote marks */}
@@ -217,7 +217,7 @@ export default async function HomePage() {
               <Link
                 key={cat.id}
                 href={`/blog?cat=${cat.slug}`}
-                className="reveal group flex flex-col items-center justify-center gap-4 p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-teal-400 hover:bg-teal-500/10 transition-all duration-300 hover:scale-105"
+                className="reveal group flex flex-col items-center justify-center gap-4 p-6 bg-white/5 backdrop-blur-sm rounded-none border border-white/10 hover:border-teal-400 hover:bg-teal-500/10 transition-all duration-300 hover:scale-105"
                 style={{ transitionDelay: `${i * 60}ms` }}
               >
                 <span className="text-4xl transform group-hover:scale-110 transition-transform duration-300">{cat.emoji || '📝'}</span>
@@ -248,7 +248,7 @@ export default async function HomePage() {
             <Link
               key={tool.href}
               href={tool.href}
-              className="reveal group p-6 bg-white border-2 border-surface-100 rounded-2xl hover:border-teal-500 hover:shadow-xl hover:shadow-teal-500/10 transition-all duration-300 h-full flex flex-col"
+              className="reveal group p-6 dataiku-card h-full flex flex-col"
               style={{ transitionDelay: `${i * 80}ms` }}
             >
               <div className="w-14 h-14 bg-surface-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-teal-50 group-hover:scale-110 transition-all duration-300">
@@ -278,7 +278,7 @@ export default async function HomePage() {
             {FAQS.map((faq, i) => (
               <details
                 key={i}
-                className="group bg-white border border-surface-200 hover:border-teal-300 rounded-2xl overflow-hidden shadow-sm transition-colors"
+                className="group bg-white border border-dataiku-border hover:border-teal-300 rounded-none overflow-hidden shadow-sm transition-colors dataiku-card"
               >
                 <summary className="flex items-center justify-between gap-4 px-6 md:px-8 py-5 cursor-pointer font-bold text-surface-900 group-hover:text-teal-700 transition-colors list-none select-none">
                   <span className="text-base md:text-lg">{faq.q}</span>
@@ -313,7 +313,7 @@ export default async function HomePage() {
           <p className="text-surface-300 text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
             Recibe tutoriales prácticos, plantillas y novedades sobre automatización y estructuras en Perú directo a tu email. Sin spam, solo valor.
           </p>
-          <div className="bg-white/5 backdrop-blur-sm p-4 rounded-2xl border border-white/10 shadow-2xl">
+          <div className="bg-dataiku-navy backdrop-blur-sm p-4 rounded-none border border-white/10 shadow-dataiku-hover">
             <Newsletter />
           </div>
           <p className="mt-6 text-surface-500 text-sm">

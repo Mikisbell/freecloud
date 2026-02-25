@@ -54,6 +54,7 @@
   ::selection {
     @apply bg-teal-100 text-teal-900;
   }
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -83,12 +84,13 @@
 }
 
 @layer components {
+
   /* === SCROLL-TRIGGERED REVEAL ANIMATIONS === */
   .reveal {
     opacity: 0;
     transform: translateY(40px);
     transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .reveal.revealed {
@@ -100,7 +102,7 @@
     opacity: 0;
     transform: translateX(-40px);
     transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .reveal-left.revealed {
@@ -112,7 +114,7 @@
     opacity: 0;
     transform: scale(0.95);
     transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .reveal-scale.revealed {
@@ -138,7 +140,8 @@
     @apply bg-surface-900 text-white;
   }
 
-  .section-dark h2, .section-dark h3 {
+  .section-dark h2,
+  .section-dark h3 {
     @apply text-white;
   }
 
@@ -150,7 +153,18 @@
     @apply text-xs font-semibold tracking-widest uppercase text-teal-500;
   }
 
-  /* === CARD HOVER (Teal shadow) === */
+  /* === DATAIKU CARD === */
+  .dataiku-card {
+    @apply bg-white border border-dataiku-border transition-all duration-300 ease-in-out;
+    border-radius: 0px;
+    /* Dataiku's sharp geometry */
+  }
+
+  .dataiku-card:hover {
+    @apply -translate-y-[5px] shadow-dataiku-hover;
+  }
+
+  /* === CARD HOVER (Legacy Teal shadow) === */
   .card-hover {
     @apply transition-all duration-200;
   }
@@ -188,7 +202,8 @@
     @apply text-teal-600 underline underline-offset-2 decoration-teal-300 hover:decoration-teal-600 transition-colors;
   }
 
-  .prose-blog ul, .prose-blog ol {
+  .prose-blog ul,
+  .prose-blog ol {
     @apply mb-4 pl-6;
   }
 
@@ -253,11 +268,25 @@
   }
 
   /* === STAGGER DELAYS === */
-  .stagger-1 { animation-delay: 0.1s; }
-  .stagger-2 { animation-delay: 0.2s; }
-  .stagger-3 { animation-delay: 0.3s; }
-  .stagger-4 { animation-delay: 0.4s; }
-  .stagger-5 { animation-delay: 0.5s; }
+  .stagger-1 {
+    animation-delay: 0.1s;
+  }
+
+  .stagger-2 {
+    animation-delay: 0.2s;
+  }
+
+  .stagger-3 {
+    animation-delay: 0.3s;
+  }
+
+  .stagger-4 {
+    animation-delay: 0.4s;
+  }
+
+  .stagger-5 {
+    animation-delay: 0.5s;
+  }
 }
 
 @layer utilities {
@@ -270,6 +299,7 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
