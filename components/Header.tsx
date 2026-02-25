@@ -82,7 +82,7 @@ export default function Header() {
             <img
               src="/logo.png"
               alt="FreeCloud logo"
-              className="h-10 w-auto object-contain"
+              className="h-14 w-auto object-contain"
             />
             <div className="flex flex-col">
               <span className="font-brand font-black text-lg text-fc-navy leading-tight">

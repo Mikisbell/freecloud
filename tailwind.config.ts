@@ -51,15 +51,15 @@ const config: Config = {
 					// Familia Azul (Nube principal)
 					'cyan': '#29ABE2',  // Nube mid-tone — Primario vibrante
 					'cyan-light': '#00D4FF',  // Nube highlight — Acentos brillantes
-					'blue': '#1565C0',  // Nube sombra — Hover / profundidad
+					'blue': '#0078C8',  // Nube sombra (píxel real del logo)
 					'navy': '#003F8A',  // Nube base — Textos, fondos oscuros
 					'navy-deep': '#00265A',  // Sombra extrema — Headers dark
 
-					// Familia Dorado (Edificios + "FREE")
-					'gold': '#D4940A',  // "FREE" principal — CTAs, badges
-					'gold-dark': '#C8860A',  // Hover de oro — Botones hover
-					'gold-light': '#F0B429',  // Tono claro ámbar — Highlights
-					'gold-muted': '#B8903C',  // Tono apagado — Secondary label
+					// Familia Dorado (Edificios del logo — píxeles reales)
+					'gold': '#C87800',  // Dorado real del logo (edificios)
+					'gold-dark': '#A86400',  // Hover oscuro
+					'gold-light': '#E09600',  // Highlight ámbar cálido
+					'gold-muted': '#B88040',  // Tono apagado
 
 					// Neutros de marca
 					'white': '#FFFFFF',

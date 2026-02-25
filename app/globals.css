@@ -12,15 +12,15 @@
     /* Familia Azul — Nube del logo */
     --fc-cyan: #29ABE2;
     --fc-cyan-light: #00D4FF;
-    --fc-blue: #1565C0;
+    --fc-blue: #0078C8;
     --fc-navy: #003F8A;
     --fc-navy-deep: #00265A;
 
-    /* Familia Dorada — "FREE" + Edificios del logo */
-    --fc-gold: #D4940A;
-    --fc-gold-dark: #C8860A;
-    --fc-gold-light: #F0B429;
-    --fc-gold-muted: #B8903C;
+    /* Familia Dorada — Edificios del logo (píxeles reales) */
+    --fc-gold: #C87800;
+    --fc-gold-dark: #A86400;
+    --fc-gold-light: #E09600;
+    --fc-gold-muted: #B88040;
 
     /* Neutros de marca */
     --fc-surface: #F5F7FA;
