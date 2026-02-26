@@ -39,7 +39,7 @@ const nextConfig = {
               // Fuentes
               "font-src 'self' https://fonts.gstatic.com",
               // Imágenes: self + supabase + youtube + google + data URIs
-              "img-src 'self' data: blob: https://*.supabase.co https://img.youtube.com https://www.google.com https://www.gstatic.com https://pagead2.googlesyndication.com https://*.googleusercontent.com https://adservice.google.com",
+              "img-src 'self' data: blob: https://*.supabase.co https://img.youtube.com https://www.google.com https://www.gstatic.com https://pagead2.googlesyndication.com https://*.googleusercontent.com https://adservice.google.com https://*.adtrafficquality.google",
               // Frames: solo YouTube y Google AdSense
               "frame-src https://www.youtube-nocookie.com https://www.youtube.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://*.adtrafficquality.google",
               // Conexiones: self + supabase + google + vercel analytics
