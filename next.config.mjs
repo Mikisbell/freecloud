@@ -41,7 +41,7 @@ const nextConfig = {
               // Imágenes: self + supabase + youtube + google + data URIs
               "img-src 'self' data: blob: https://*.supabase.co https://img.youtube.com https://www.google.com https://www.gstatic.com https://pagead2.googlesyndication.com https://*.googleusercontent.com https://adservice.google.com",
               // Frames: solo YouTube y Google AdSense
-              "frame-src https://www.youtube-nocookie.com https://www.youtube.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com",
+              "frame-src https://www.youtube-nocookie.com https://www.youtube.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://*.adtrafficquality.google",
               // Conexiones: self + supabase + google + vercel analytics
               "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://vitals.vercel-insights.com https://pagead2.googlesyndication.com https://adservice.google.com https://ep1.adtrafficquality.google",
               "object-src 'none'",
