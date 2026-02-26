@@ -9,8 +9,7 @@
         }
       ],
       "destination": "https://freecloud.pe/:path*",
-      "permanent": true,
-      "statusCode": 308
+      "permanent": true
     }
   ]
 }
