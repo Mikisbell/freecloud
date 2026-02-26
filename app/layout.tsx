@@ -61,10 +61,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </LayoutShell>
         {adsenseId && <AdSenseLoader clientId={adsenseId} />}
-        <Script
-          id="website-schema"
+        <script
           type="application/ld+json"
-          strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(generateWebsiteSchema()) }}
         />
         <Analytics />

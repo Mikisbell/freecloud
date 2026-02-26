@@ -104,10 +104,14 @@ export default function Header() {
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <button className={`flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${megaOpen
-                    ? 'text-fc-blue bg-fc-cyan/10'
-                    : 'text-surface-600 hover:text-fc-blue hover:bg-fc-cyan/10'
-                    }`}>
+                  <button
+                    className={`flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${megaOpen
+                      ? 'text-fc-blue bg-fc-cyan/10'
+                      : 'text-surface-600 hover:text-fc-blue hover:bg-fc-cyan/10'
+                      }`}
+                    aria-expanded={megaOpen}
+                    aria-haspopup="true"
+                  >
                     {item.label}
                     <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${megaOpen ? 'rotate-180' : ''}`} />
                   </button>
@@ -133,8 +137,10 @@ export default function Header() {
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden p-2 text-surface-600"
+            className="md:hidden p-2 text-surface-600 focus:outline-none"
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-expanded={mobileOpen}
+            aria-label={mobileOpen ? 'Cerrar menú' : 'Abrir menú principal'}
           >
             {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>

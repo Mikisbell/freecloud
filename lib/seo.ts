@@ -93,7 +93,7 @@ export function generateArticleSchema(post: Partial<Post>) {
 
   return {
     '@context': 'https://schema.org',
-    '@type': 'TechArticle',
+    '@type': 'Article',
     headline: title,
     description: description,
     image: image,

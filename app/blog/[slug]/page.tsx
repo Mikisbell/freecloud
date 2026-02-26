@@ -15,7 +15,7 @@ import { generatePostMetadata, generateArticleSchema, generateBreadcrumbSchema, 
 import BlogCard from '@/components/BlogCard';
 import Newsletter from '@/components/Newsletter';
 import ShareButtons from '@/components/ShareButtons';
-import { AdInArticle, AdSidebar, AdBanner } from '@/components/AdSense';
+import GoogleAd from '@/components/GoogleAd';
 
 export async function generateStaticParams() {
   const { posts } = await getPosts();
@@ -99,23 +99,20 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <>
       {/* Article Schema - passes full post for correct @id */}
-      <Script
-        id={`article-schema-${post.id}`}
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(generateArticleSchema(post))
         }}
       />
       {/* Breadcrumb Schema */}
-      <Script
-        id={`breadcrumb-schema-${post.id}`}
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(generateBreadcrumbSchema(breadcrumbs)) }}
       />
       {/* FAQPage Schema - uses key_question + key_answer from post */}
       {post.key_question && post.key_answer && (
-        <Script
-          id={`faq-schema-${post.id}`}
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(generateFAQSchema([
@@ -220,7 +217,7 @@ export default async function BlogPostPage({ params }: Props) {
             )}
 
             {/* Ad in article */}
-            <AdInArticle slot="XXXXXXXXXX" />
+            <GoogleAd adSlot="XXXXXXXXXX" adStyle={{ display: 'block', minHeight: '300px' }} />
 
 
             {/* Tags, Share & Author Bio */}
@@ -350,7 +347,7 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* Sidebar Ad */}
             <div className="sticky top-20">
-              <AdSidebar slot="XXXXXXXXXX" />
+              <GoogleAd adSlot="XXXXXXXXXX" adStyle={{ display: 'block', minHeight: '600px' }} />
             </div>
           </aside>
         </div>
