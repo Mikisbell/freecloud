@@ -57,6 +57,16 @@ const mdxComponents = {
   YouTube: ({ id, title }: { id: string; title?: string }) => (
     <YouTubeFacade id={id} title={title} />
   ),
+  InArticleAd: () => (
+    <div className="my-10">
+      <GoogleAd
+        adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE || ''}
+        adFormat="fluid"
+        adLayout="in-article"
+        reservedHeight={200}
+      />
+    </div>
+  ),
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -174,9 +184,19 @@ export default async function BlogPostPage({ params }: Props) {
             </header>
 
             {/* Post content */}
-            <div className="prose-blog">
+            <div className="prose-blog relative">
               <MDXRemote
-                source={post.content}
+                source={(() => {
+                  let headCount = 0;
+                  // Inyectamos un componente especial de AdSense antes de cada sección H2 par
+                  return (post.content || '').replace(/\n## /g, (match) => {
+                    headCount++;
+                    if (headCount >= 2 && headCount % 2 === 0) {
+                      return '\n\n<InArticleAd />\n\n## ';
+                    }
+                    return match;
+                  });
+                })()}
                 components={mdxComponents}
                 options={{
                   mdxOptions: {
@@ -213,14 +233,15 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
             )}
 
-            {/* Ad in article — in-article format (slot configurado en NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE) */}
-            <GoogleAd
-              adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE || ''}
-              adFormat="fluid"
-              adLayout="in-article"
-              reservedHeight={200}
-            />
-
+            {/* Ad in article fallback al final del articulo si el contenido fue muy corto (0-1 titulos) */}
+            <div className="mt-8 mb-4">
+              <GoogleAd
+                adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE || ''}
+                adFormat="fluid"
+                adLayout="in-article"
+                reservedHeight={200}
+              />
+            </div>
 
             {/* Tags, Share & Author Bio */}
             <div className="mt-12 pt-8 border-t border-surface-100">

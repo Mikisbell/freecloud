@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { Fragment } from 'react';
 import { getPosts, getCategories } from '@/lib/supabase';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -159,64 +160,73 @@ export default async function BlogPage({ searchParams }: Props) {
               </div>
             )}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.map(post => {
+              {posts.map((post, index) => {
                 const catConfig = post.categories;
                 return (
-                  <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
-                    <article className="h-full flex flex-col">
-                      <div className="aspect-[16/10] bg-surface-100 rounded-xl overflow-hidden relative mb-4">
-                        {post.featured_image ? (
-                          <Image
-                            src={post.featured_image}
-                            alt={post.image_alt || post.title}
-                            fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            className="object-cover group-hover:scale-105 transition-transform duration-500"
-                            loading="lazy"
+                  <Fragment key={post.slug}>
+                    <Link href={`/blog/${post.slug}`} className="group block">
+                      <article className="h-full flex flex-col">
+                        <div className="aspect-[16/10] bg-surface-100 rounded-xl overflow-hidden relative mb-4">
+                          {post.featured_image ? (
+                            <Image
+                              src={post.featured_image}
+                              alt={post.image_alt || post.title}
+                              fill
+                              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                              className="object-cover group-hover:scale-105 transition-transform duration-500"
+                              loading="lazy"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-surface-100 to-surface-200 flex items-center justify-center">
+                              <span className="text-5xl opacity-30">
+                                {catConfig?.emoji || '📝'}
+                              </span>
+                            </div>
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        </div>
+
+                        <div className="mb-2">
+                          <span
+                            className="text-xs font-semibold uppercase tracking-wider"
+                            style={{ color: catConfig?.color || '#64748b' }}
+                          >
+                            {catConfig?.emoji} {catConfig?.name}
+                          </span>
+                        </div>
+
+                        <h3 className="font-display font-bold text-surface-900 text-lg mb-2 group-hover:text-fc-blue transition-colors line-clamp-2 text-balance flex-1">
+                          {post.title}
+                        </h3>
+
+                        <p className="text-sm text-surface-400">
+                          {new Date(post.published_at || post.created_at).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        </p>
+                      </article>
+                    </Link>
+
+                    {/* Inyectamos In-Feed Ad en la grilla después de cada 4 posts (o cada 5ta posición) */}
+                    {(index + 1) % 4 === 0 && (
+                      <div className="h-full min-h-[350px] bg-gradient-to-b from-surface-50 to-white rounded-xl border border-surface-100 overflow-hidden flex flex-col">
+                        <div className="bg-surface-100 px-3 py-1.5 border-b border-surface-200">
+                          <p className="text-[10px] font-bold text-surface-400 uppercase tracking-widest text-center">Espacio Patrocinado</p>
+                        </div>
+                        <div className="flex-1 p-4 flex flex-col justify-center">
+                          <GoogleAd
+                            adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_INFEED || ''}
+                            adFormat="fluid"
+                            adLayoutKey="-69+dp-1a-bl+i7"
+                            reservedHeight={300}
                           />
-                        ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-surface-100 to-surface-200 flex items-center justify-center">
-                            <span className="text-5xl opacity-30">
-                              {catConfig?.emoji || '📝'}
-                            </span>
-                          </div>
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        </div>
                       </div>
-
-                      <div className="mb-2">
-                        <span
-                          className="text-xs font-semibold uppercase tracking-wider"
-                          style={{ color: catConfig?.color || '#64748b' }}
-                        >
-                          {catConfig?.emoji} {catConfig?.name}
-                        </span>
-                      </div>
-
-                      <h3 className="font-display font-bold text-surface-900 text-lg mb-2 group-hover:text-fc-blue transition-colors line-clamp-2 text-balance flex-1">
-                        {post.title}
-                      </h3>
-
-                      <p className="text-sm text-surface-400">
-                        {new Date(post.published_at || post.created_at).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' })}
-                      </p>
-                    </article>
-                  </Link>
+                    )}
+                  </Fragment>
                 );
               })}
             </div>
 
-            {/* In-feed Ad — formato fluid con layout-key único del slot */}
-            {posts.length > 3 && (
-              <div className="mt-12">
-                <GoogleAd
-                  adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_INFEED || ''}
-                  adFormat="fluid"
-                  adLayoutKey="-69+dp-1a-bl+i7"
-                  reservedHeight={250}
-                />
-              </div>
-            )}
+            {/* In-feed Ads ya están integrados en el grid usando la Inyección Dinámica */}
           </section>
         ) : (
           <div className="text-center py-20">
