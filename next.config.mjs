@@ -43,7 +43,7 @@ const nextConfig = {
               // Frames: solo YouTube y Google AdSense
               "frame-src https://www.youtube-nocookie.com https://www.youtube.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com",
               // Conexiones: self + supabase + google + vercel analytics
-              "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://vitals.vercel-insights.com https://pagead2.googlesyndication.com https://adservice.google.com",
+              "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://vitals.vercel-insights.com https://pagead2.googlesyndication.com https://adservice.google.com https://ep1.adtrafficquality.google",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",

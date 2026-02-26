@@ -44,7 +44,7 @@ const MEGA_MENU = {
     },
   ],
   featured: {
-    image: '/blog/bim-obligatorio-peru.svg',
+    image: '/images/blog/bim-peru-2026.svg',
     title: 'BIM obligatorio en Perú desde 2026',
     description: 'Todo lo que necesitas saber sobre la implementación BIM obligatoria.',
     href: siteConfig.megaMenuFeaturedPost.url,
