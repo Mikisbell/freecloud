@@ -33,7 +33,7 @@ const nextConfig = {
             value: [
               "default-src 'self'",
               // Scripts: self + Google AdSense / Analytics / Fonts + Vercel
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn.vercel-insights.com https://vitals.vercel-insights.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn.vercel-insights.com https://vitals.vercel-insights.com https://*.adtrafficquality.google",
               // Estilos: self + inline (necesario para MDX/Tailwind) + Google Fonts + KaTeX
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               // Fuentes

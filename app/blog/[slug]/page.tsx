@@ -248,7 +248,7 @@ export default async function BlogPostPage({ params }: Props) {
               {/* Author Bio */}
               <div className="bg-surface-50 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row gap-6 items-center md:items-start mb-12 border border-surface-100">
                 <Image
-                  src="/me.jpg"
+                  src="/me.png"
                   alt={post.author || 'Mateo'}
                   width={96}
                   height={96}
@@ -265,7 +265,7 @@ export default async function BlogPostPage({ params }: Props) {
                   <p className="text-surface-600 text-sm leading-relaxed mb-4 max-w-2xl">
                     Ayudo a ingenieros y empresas a optimizar sus procesos mediante tecnología, plantillas avanzadas y automatización BIM. Fundador de FreeCloud.pe.
                   </p>
-                  <Link href="/contacto" className="inline-flex items-center gap-2 text-fc-navy font-semibold text-sm hover:gap-3 transition-all">
+                  <Link href="/sobre-mi" className="inline-flex items-center gap-2 text-fc-navy font-semibold text-sm hover:gap-3 transition-all">
                     Trabajemos juntos <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
