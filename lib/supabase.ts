@@ -1,11 +1,11 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { createBrowserClient } from '@supabase/ssr';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-let browserClient: any = null;
-let serverClient: any = null;
+let browserClient: SupabaseClient | null = null;
+let serverClient: SupabaseClient | null = null;
 
 // Export base client only for server environments
 export const supabase = typeof window === 'undefined' && supabaseUrl && supabaseAnonKey
@@ -68,10 +68,14 @@ export async function trackDownload(productSlug: string, email: string) {
 }
 
 export async function trackPageView(path: string, referrer?: string) {
-  await getClient()
-    .from('page_views')
-    .insert({ path, referrer })
-    .then(() => { });
+  try {
+    const { error } = await getClient()
+      .from('page_views')
+      .insert({ path, referrer });
+    if (error) throw error;
+  } catch (err: any) {
+    console.warn('⚠️ Fallo silenciado en Analytics (ignorar si es high-traffic o adblocker):', err.message);
+  }
 }
 
 // ==========================================
@@ -145,43 +149,7 @@ export async function markContactAsRead(id: string) {
 // CMS (Blog) Functions
 // ==========================================
 
-export interface Category {
-  id: string;
-  name: string;
-  slug: string;
-  description?: string;
-  emoji?: string;
-  color?: string;
-  created_at?: string;
-}
-
-export interface Post {
-  id: string;
-  title: string;
-  slug: string;
-  content: string;
-  excerpt?: string;
-  category_id?: string;
-  tags?: string[];
-  featured_image?: string;
-  image_alt?: string;
-  meta_title?: string;
-  meta_description?: string;
-  key_question?: string;
-  key_answer?: string;
-  status: 'draft' | 'published';
-  featured: boolean;
-  author: string;
-  reading_time?: number;
-  created_at: string;
-  updated_at: string;
-  published_at?: string;
-  categories?: Category; // For joined queries
-  // Monetization CTA
-  cta_product_name?: string;
-  cta_product_url?: string;
-  cta_product_price?: string;
-}
+import { Post, Category } from '@/types/supabase';
 
 export async function getCategories() {
   const { data, error } = await getClient()

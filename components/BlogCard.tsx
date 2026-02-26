@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import { Clock, ArrowRight } from 'lucide-react';
-import { Category } from '@/lib/supabase';
+import { Category } from '@/types/supabase';
+import { Post } from '@/types/supabase';
 
 interface BlogCardProps {
-  post: any;
+  post: Partial<Post>;
   featured?: boolean;
   dbCategory?: Category | null;
 }
@@ -35,7 +36,9 @@ export default function BlogCard({ post, featured = false, dbCategory }: BlogCar
             </p>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4 text-sm text-surface-400">
-                <span>{(() => { const d = new Date(post.created_at ?? post.date); return isNaN(d.getTime()) ? '' : d.toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' }); })()}</span>
+                <time className="flex items-center gap-1.5" dateTime={post.date || post.published_at || post.created_at || new Date().toISOString()}>
+                  {new Intl.DateTimeFormat('es-PE', { month: 'short', day: 'numeric' }).format(new Date(post.date || post.published_at || post.created_at || new Date().toISOString()))}
+                </time>
                 <span className="flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5" />
                   {post.readingTime}
@@ -84,7 +87,9 @@ export default function BlogCard({ post, featured = false, dbCategory }: BlogCar
             {post.description}
           </p>
           <div className="flex items-center justify-between text-xs text-surface-400 pt-3 border-t border-surface-100">
-            <span>{(() => { const d = new Date(post.created_at ?? post.date); return isNaN(d.getTime()) ? '' : d.toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' }); })()}</span>
+            <time dateTime={post.date || post.published_at || post.created_at || new Date().toISOString()}>
+              {new Intl.DateTimeFormat('es-PE', { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(post.date || post.published_at || post.created_at || new Date().toISOString()))}
+            </time>
             <span className="flex items-center gap-1">
               <Clock className="w-3 h-3" />
               {post.readingTime}

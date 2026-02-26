@@ -47,9 +47,11 @@ export function generateSiteMetadata(overrides?: Partial<Metadata>): Metadata {
   };
 }
 
-export function generatePostMetadata(post: any): Metadata {
+import { Post } from '@/types/supabase';
+
+export function generatePostMetadata(post: Partial<Post>): Metadata {
   const title = post.meta_title || post.metaTitle || post.title;
-  const description = post.meta_description || post.metaDescription || post.description || post.excerpt;
+  const description = post.meta_description || post.metaDescription || post.description || post.excerpt || undefined;
   const url = `${SITE_URL}/blog/${post.slug}`;
   const image = post.featured_image || post.image || `${SITE_URL}/og-default.png`;
   const date = post.published_at || post.created_at || post.date;
@@ -66,25 +68,25 @@ export function generatePostMetadata(post: any): Metadata {
       title,
       description,
       siteName: SITE_NAME,
-      publishedTime: date,
-      modifiedTime: post.updated_at || post.updated || date,
+      publishedTime: (date || undefined) as string | undefined,
+      modifiedTime: ((post.updated_at || post.updated || date) || undefined) as string | undefined,
       authors: [post.author || 'Miguel Angel Rivera'],
       tags: tags,
-      images: [{ url: image, width: 1200, height: 630, alt: post.image_alt || post.imageAlt || title }],
+      images: [{ url: image || `${SITE_URL}/og-default.png`, width: 1200, height: 630, alt: post.image_alt || post.imageAlt || title }],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [image],
+      images: [image || `${SITE_URL}/og-default.png`],
     },
     alternates: { canonical: post.canonicalUrl || url },
   };
 }
 
-export function generateArticleSchema(post: any) {
+export function generateArticleSchema(post: Partial<Post>) {
   const title = post.meta_title || post.metaTitle || post.title;
-  const description = post.meta_description || post.metaDescription || post.description || post.excerpt;
+  const description = post.meta_description || post.metaDescription || post.description || post.excerpt || undefined;
   const image = post.featured_image || post.image || `${SITE_URL}/og-default.png`;
   const date = post.published_at || post.created_at || post.date;
   const tags = post.tags || [];

@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
-import { Post, Category, createPost, updatePost, uploadImage } from '@/lib/supabase'
+import { createPost, updatePost, uploadImage } from '@/lib/supabase'
+import { Post, Category } from '@/types/supabase'
 import { Save, Eye, ArrowLeft, Image as ImageIcon, Sparkles, Check, X, Settings2, PenLine, Loader2, Upload, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -459,7 +460,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                         <Label className="text-white/50 text-xs">Excerpt Fallback</Label>
                         <Textarea
                             name="excerpt"
-                            value={formData.excerpt}
+                            value={formData.excerpt || ''}
                             onChange={handleChange}
                             rows={2}
                             placeholder="Para listados del blog"
@@ -485,7 +486,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                         <Input
                             type="text"
                             name="key_question"
-                            value={formData.key_question}
+                            value={formData.key_question || ''}
                             onChange={handleChange}
                             placeholder="Ej: ¿Cómo prepararte para BIM en Perú?"
                             className="bg-black/20 border-blue-500/20 text-white text-sm h-10 focus-visible:ring-blue-500/50"
@@ -500,7 +501,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                         </div>
                         <Textarea
                             name="key_answer"
-                            value={formData.key_answer}
+                            value={formData.key_answer || ''}
                             onChange={handleChange}
                             rows={3}
                             placeholder="Respuesta directa en 1-2 oraciones..."
@@ -592,7 +593,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                         <Input
                             type="text"
                             name="featured_image"
-                            value={formData.featured_image}
+                            value={formData.featured_image || ''}
                             onChange={handleChange}
                             placeholder="/images/blog/mi-imagen.jpg"
                             className="bg-white/[0.04] border-white/[0.08] text-white text-xs font-mono h-9"
@@ -600,7 +601,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                         <Input
                             type="text"
                             name="image_alt"
-                            value={formData.image_alt}
+                            value={formData.image_alt || ''}
                             onChange={handleChange}
                             placeholder="Texto Alt (Accesibilidad/SEO)"
                             className="bg-white/[0.04] border-white/[0.08] text-white text-xs h-9"
@@ -626,7 +627,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                         <Input
                             type="text"
                             name="cta_product_name"
-                            value={formData.cta_product_name}
+                            value={formData.cta_product_name || ''}
                             onChange={handleChange}
                             placeholder="Ej: Plantilla Excel E.030"
                             className="bg-black/20 border-emerald-500/20 text-white text-sm h-10 focus-visible:ring-emerald-500/50"
@@ -637,7 +638,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                         <Input
                             type="text"
                             name="cta_product_price"
-                            value={formData.cta_product_price}
+                            value={formData.cta_product_price || ''}
                             onChange={handleChange}
                             placeholder="Ej: $7 USD"
                             className="bg-black/20 border-emerald-500/20 text-white text-sm h-10 focus-visible:ring-emerald-500/50"
@@ -648,7 +649,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                         <Input
                             type="text"
                             name="cta_product_url"
-                            value={formData.cta_product_url}
+                            value={formData.cta_product_url || ''}
                             onChange={handleChange}
                             placeholder="https://pay.hotmart.com/..."
                             className="bg-black/20 border-emerald-500/20 text-white text-sm h-10 font-mono focus-visible:ring-emerald-500/50"

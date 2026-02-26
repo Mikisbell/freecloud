@@ -293,7 +293,7 @@ export default async function BlogPostPage({ params }: Props) {
                       readingTime: `${rp.reading_time || 5} min`,
                       featured: rp.featured,
                       // We map the category configs from Supabase just for BlogCard compatibility
-                    } as any} dbCategory={rp.categories} />
+                    } as Partial<import('@/types/supabase').Post>} dbCategory={rp.categories} />
                   ))}
                 </div>
               </div>

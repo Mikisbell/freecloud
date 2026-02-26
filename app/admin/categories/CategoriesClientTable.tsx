@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { PlusCircle, Edit, Trash2, Check, X } from 'lucide-react'
-import { Category, createCategory, updateCategory, deleteCategory } from '@/lib/supabase'
+import { createCategory, updateCategory, deleteCategory } from '@/lib/supabase'
+import { Category } from '@/types/supabase'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'

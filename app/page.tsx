@@ -129,7 +129,7 @@ export default async function HomePage() {
       {featuredPost && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-16">
           <div className="reveal">
-            <BlogCard post={featuredPost as any} dbCategory={featuredPost.categories} featured />
+            <BlogCard post={featuredPost as unknown as import('@/types/supabase').Post} dbCategory={featuredPost.categories} featured />
           </div>
         </section>
       )}
@@ -154,7 +154,7 @@ export default async function HomePage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {recentPosts.map((post, i) => (
               <div key={post.slug} className="reveal relative" style={{ transitionDelay: `${i * 100}ms` }}>
-                <BlogCard post={post as any} dbCategory={post.categories} />
+                <BlogCard post={post as unknown as import('@/types/supabase').Post} dbCategory={post.categories} />
               </div>
             ))}
           </div>
