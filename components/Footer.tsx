@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Code, Youtube, Mail, MapPin } from 'lucide-react';
 import Newsletter from './Newsletter';
+import { siteConfig } from '@/config/site';
 
 const FOOTER_LINKS = {
   'Contenido': [
@@ -55,16 +56,16 @@ export default function Footer() {
               <div className="w-8 h-8 bg-gradient-to-br from-fc-cyan to-fc-navy rounded-lg flex items-center justify-center">
                 <Code className="w-4 h-4 text-white" />
               </div>
-              <span className="font-display font-bold text-white">FreeCloud</span>
+              <span className="font-display font-bold text-white">{siteConfig.name}</span>
             </Link>
             <p className="text-sm text-surface-400 mb-4">
-              BIM, ingeniería civil y tecnología. Tutoriales, herramientas y recursos para ingenieros en Perú y Latinoamérica.
+              {siteConfig.description}
             </p>
             <div className="flex items-center gap-3">
-              <a href="https://youtube.com/@mikisbell" target="_blank" rel="noopener" className="w-9 h-9 bg-surface-800 hover:bg-fc-navy rounded-lg flex items-center justify-center transition-colors">
+              <a href={siteConfig.links.youtube} target="_blank" rel="noopener" className="w-9 h-9 bg-surface-800 hover:bg-fc-navy rounded-lg flex items-center justify-center transition-colors">
                 <Youtube className="w-4 h-4" />
               </a>
-              <a href="mailto:admin@freecloud.pe" target="_blank" rel="noopener" className="w-9 h-9 bg-surface-800 hover:bg-fc-navy rounded-lg flex items-center justify-center transition-colors">
+              <a href={`mailto:${siteConfig.contact.email}`} target="_blank" rel="noopener" className="w-9 h-9 bg-surface-800 hover:bg-fc-navy rounded-lg flex items-center justify-center transition-colors">
                 <Mail className="w-4 h-4" />
               </a>
             </div>
@@ -93,11 +94,11 @@ export default function Footer() {
         {/* Bottom */}
         <div className="border-t border-surface-800 mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="text-xs text-surface-500">
-            &copy; {new Date().getFullYear()} FreeCloud. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} {siteConfig.name}. Todos los derechos reservados.
           </p>
           <div className="flex items-center gap-1 text-xs text-surface-500">
             <MapPin className="w-3 h-3" />
-            <span>Huancayo, Perú</span>
+            <span>{siteConfig.contact.location}</span>
           </div>
         </div>
       </div>

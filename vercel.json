@@ -1,9 +1,16 @@
 {
-    "redirects": [
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
         {
-            "source": "https://www.freecloud.pe/(.*)",
-            "destination": "https://freecloud.pe/$1",
-            "permanent": true
+          "type": "host",
+          "value": "www.freecloud.pe"
         }
-    ]
+      ],
+      "destination": "https://freecloud.pe/:path*",
+      "permanent": true,
+      "statusCode": 308
+    }
+  ]
 }

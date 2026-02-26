@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
+import { siteConfig } from '@/config/site';
 
 const NAV_ITEMS = [
   { label: 'Blog', href: '/blog' },
@@ -46,7 +47,7 @@ const MEGA_MENU = {
     image: '/blog/bim-obligatorio-peru.svg',
     title: 'BIM obligatorio en Perú desde 2026',
     description: 'Todo lo que necesitas saber sobre la implementación BIM obligatoria.',
-    href: '/blog/bim-obligatorio-peru-2026',
+    href: siteConfig.megaMenuFeaturedPost.url,
     cta: 'LEER ARTÍCULO',
   },
 };

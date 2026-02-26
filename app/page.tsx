@@ -5,6 +5,7 @@ import BlogCard from '@/components/BlogCard';
 import Newsletter from '@/components/Newsletter';
 import TabShowcase from '@/components/TabShowcase';
 import SocialProof from '@/components/SocialProof';
+import { generateFAQSchema, generateOrganizationSchema } from '@/lib/seo';
 
 const TOOLS = [
   { name: 'Autodesk Revit', href: '/recursos?type=revit', iconUrl: '/revit.png', desc: 'Plantillas BIM, modelos y familias paramétricas para diseño.' },
@@ -70,8 +71,24 @@ export default async function HomePage() {
   const featuredPost = posts.find(p => p.featured) || posts[0];
   const recentPosts = posts.filter(p => p.slug !== featuredPost?.slug).slice(0, 6);
 
+  const faqSchema = generateFAQSchema(
+    FAQS.map(faq => ({ question: faq.q, answer: faq.a }))
+  );
+
+  const orgSchema = generateOrganizationSchema();
+
   return (
     <>
+      {/* FAQPage Schema — activa rich snippets en Google */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      {/* Organization Schema — authority building */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+      />
       {/* ── HERO ── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-fc-navy-deep via-fc-navy to-fc-blue">
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.07]" />

@@ -2,6 +2,7 @@ import { getPosts, getPostBySlug, getRelatedPosts } from '@/lib/supabase';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import Script from 'next/script';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
@@ -16,6 +17,7 @@ import BlogCard from '@/components/BlogCard';
 import Newsletter from '@/components/Newsletter';
 import ShareButtons from '@/components/ShareButtons';
 import GoogleAd from '@/components/GoogleAd';
+import YouTubeFacade from '@/components/YouTubeFacade';
 
 export async function generateStaticParams() {
   const { posts } = await getPosts();
@@ -51,36 +53,11 @@ const mdxComponents = {
       ⬇️ {label}
     </a>
   ),
-  YouTube: ({ id }: { id: string }) => {
-    return (
-      <YouTubePlayer id={id} />
-    );
-  },
+  // Facade pattern: solo carga el iframe al hacer click, mejora LCP y CLS
+  YouTube: ({ id, title }: { id: string; title?: string }) => (
+    <YouTubeFacade id={id} title={title} />
+  ),
 };
-
-// Client Component helper for Lazy Loading YouTube
-function YouTubePlayer({ id }: { id: string }) {
-  return (
-    <div className="video-container flex justify-center my-8 group">
-      <div className="relative w-full max-w-3xl aspect-video rounded-2xl shadow-2xl border border-surface-200 overflow-hidden bg-surface-900 flex items-center justify-center">
-        {/* Usamos un Link real o un simple Script de carga diferida */}
-        <iframe
-          src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=0`}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-          loading="lazy"
-          className="absolute inset-0 w-full h-full"
-        />
-        {/* Overlay de marca sutil para el loading period */}
-        <div className="absolute top-4 right-4 z-10 opacity-50 group-hover:opacity-100 transition-opacity">
-          <div className="px-2 py-1 bg-fc-navy text-[10px] text-white font-bold rounded uppercase tracking-tighter">FreeCloud Tech</div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -236,8 +213,13 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
             )}
 
-            {/* Ad in article */}
-            <GoogleAd adSlot="XXXXXXXXXX" adStyle={{ display: 'block', minHeight: '300px' }} />
+            {/* Ad in article — in-article format (slot configurado en NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE) */}
+            <GoogleAd
+              adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE || ''}
+              adFormat="fluid"
+              adLayout="in-article"
+              reservedHeight={200}
+            />
 
 
             {/* Tags, Share & Author Bio */}
@@ -265,10 +247,13 @@ export default async function BlogPostPage({ params }: Props) {
 
               {/* Author Bio */}
               <div className="bg-surface-50 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row gap-6 items-center md:items-start mb-12 border border-surface-100">
-                <img
+                <Image
                   src="/me.jpg"
-                  alt={post.author || "Mateo"}
+                  alt={post.author || 'Mateo'}
+                  width={96}
+                  height={96}
                   className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover shadow-md border-4 border-white"
+                  priority={false}
                 />
                 <div className="text-center md:text-left flex-1">
                   <h3 className="text-lg font-display font-bold text-surface-900 mb-1">
@@ -323,7 +308,7 @@ export default async function BlogPostPage({ params }: Props) {
             <div className="bg-surface-50 rounded-xl p-5">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 border-2 border-surface-200">
-                  <img src="/me.png" alt={post.author} className="w-full h-full object-cover" />
+                  <Image src="/me.png" alt={post.author || 'Autor'} width={48} height={48} className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <p className="font-display font-semibold text-surface-900 text-sm">{post.author}</p>
@@ -365,9 +350,12 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Sidebar Ad */}
+            {/* Sidebar Ad — slot configurado en NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR */}
             <div className="sticky top-20">
-              <GoogleAd adSlot="XXXXXXXXXX" adStyle={{ display: 'block', minHeight: '600px' }} />
+              <GoogleAd
+                adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR || ''}
+                reservedHeight={600}
+              />
             </div>
           </aside>
         </div>

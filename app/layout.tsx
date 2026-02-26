@@ -13,6 +13,7 @@ const fontDisplay = Space_Grotesk({
   variable: '--font-display',
   display: 'swap',
   weight: ['400', '500', '600', '700'],
+  adjustFontFallback: false,
 });
 
 const fontBody = DM_Sans({
@@ -20,6 +21,7 @@ const fontBody = DM_Sans({
   variable: '--font-body',
   display: 'swap',
   weight: ['400', '500', '600', '700'],
+  adjustFontFallback: false,
 });
 
 const fontMono = JetBrains_Mono({
@@ -27,6 +29,7 @@ const fontMono = JetBrains_Mono({
   variable: '--font-mono',
   display: 'swap',
   weight: ['400', '500'],
+  preload: false, // Solo se usa en bloques de código — no bloquea FCP
 });
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -38,7 +41,8 @@ const fontBrand = Montserrat({
   subsets: ['latin'],
   variable: '--font-brand',
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800', '900'],
+  weight: ['700', '800', '900'], // Solo pesos realmente usados (Black/Bold)
+  preload: false, // Brand font — defer para no bloquear FCP
 });
 
 // Rajdhani SemiBold — coincide con "NUNCA PARES DE CONSTRUIR." del logo
@@ -46,7 +50,8 @@ const fontSlogan = Rajdhani({
   subsets: ['latin'],
   variable: '--font-slogan',
   display: 'swap',
-  weight: ['400', '500', '600', '700'],
+  weight: ['600', '700'], // Solo SemiBold y Bold
+  preload: false, // Solo en hero badge — defer para no bloquear FCP
 });
 
 export const metadata: Metadata = generateSiteMetadata();

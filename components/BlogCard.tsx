@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Clock, ArrowRight } from 'lucide-react';
 import { Category } from '@/types/supabase';
 import { Post } from '@/types/supabase';
@@ -59,10 +60,12 @@ export default function BlogCard({ post, featured = false, dbCategory }: BlogCar
       <article className="bg-white border border-surface-100 rounded-xl overflow-hidden card-hover h-full flex flex-col">
         {post.image && (
           <div className="aspect-video bg-surface-100 overflow-hidden relative">
-            <img
+            <Image
               src={post.image}
-              alt={post.imageAlt || post.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              alt={post.image_alt || post.imageAlt || post.title || 'Imagen del artículo'}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
               loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-surface-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

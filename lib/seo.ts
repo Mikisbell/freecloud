@@ -1,8 +1,10 @@
 import { Metadata } from 'next';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://freecloud.pe';
-const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || 'FreeCloud';
-const DEFAULT_DESCRIPTION = 'BIM, Ingeniería Civil y Tecnología - Tutoriales, herramientas y recursos para ingenieros en Perú y Latinoamérica';
+import { siteConfig } from '@/config/site';
+
+const SITE_URL = siteConfig.url;
+const SITE_NAME = siteConfig.name;
+const DEFAULT_DESCRIPTION = siteConfig.description;
 
 export function generateSiteMetadata(overrides?: Partial<Metadata>): Metadata {
   return {
@@ -136,6 +138,44 @@ export function generateWebsiteSchema() {
       '@type': 'SearchAction',
       target: `${SITE_URL}/blog?q={search_term_string}`,
       'query-input': 'required name=search_term_string',
+    },
+  };
+}
+
+export function generateOrganizationSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': `${SITE_URL}/#organization`,
+    name: SITE_NAME,
+    url: SITE_URL,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${SITE_URL}/logo.png`,
+      width: 200,
+      height: 60,
+    },
+    description: DEFAULT_DESCRIPTION,
+    founder: {
+      '@type': 'Person',
+      name: siteConfig.author,
+      jobTitle: siteConfig.authorTitle,
+      url: `${SITE_URL}/sobre-mi`,
+      sameAs: siteConfig.links.youtube,
+    },
+    sameAs: [
+      siteConfig.links.youtube,
+      siteConfig.links.linkedin,
+      siteConfig.links.facebook,
+    ],
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'technical support',
+      availableLanguage: 'Spanish',
+    },
+    areaServed: {
+      '@type': 'Country',
+      name: 'Perú',
     },
   };
 }

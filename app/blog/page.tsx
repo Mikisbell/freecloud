@@ -1,9 +1,10 @@
 import { Metadata } from 'next';
 import { getPosts, getCategories } from '@/lib/supabase';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, Clock } from 'lucide-react';
 import Newsletter from '@/components/Newsletter';
-import { AdBanner } from '@/components/AdSense';
+import GoogleAd from '@/components/GoogleAd';
 
 export const metadata: Metadata = {
   title: 'Blog - Tutoriales BIM e Ingeniería Civil',
@@ -86,10 +87,13 @@ export default async function BlogPage({ searchParams }: Props) {
               <article className="grid md:grid-cols-2 gap-0 bg-white rounded-2xl overflow-hidden border border-surface-100 card-hover">
                 <div className="aspect-[4/3] md:aspect-auto bg-gradient-to-br from-surface-100 to-surface-50 overflow-hidden relative">
                   {featuredPost.featured_image ? (
-                    <img
+                    <Image
                       src={featuredPost.featured_image}
                       alt={featuredPost.image_alt || featuredPost.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      priority
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-fc-cyan/10 to-fc-blue/20 flex items-center justify-center">
@@ -162,10 +166,12 @@ export default async function BlogPage({ searchParams }: Props) {
                     <article className="h-full flex flex-col">
                       <div className="aspect-[16/10] bg-surface-100 rounded-xl overflow-hidden relative mb-4">
                         {post.featured_image ? (
-                          <img
+                          <Image
                             src={post.featured_image}
                             alt={post.image_alt || post.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
                             loading="lazy"
                           />
                         ) : (
@@ -200,10 +206,15 @@ export default async function BlogPage({ searchParams }: Props) {
               })}
             </div>
 
-            {/* In-feed Ad after a few posts */}
+            {/* In-feed Ad — formato fluid con layout-key único del slot */}
             {posts.length > 3 && (
               <div className="mt-12">
-                <AdBanner slot="XXXXXXXXXX" />
+                <GoogleAd
+                  adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_INFEED || ''}
+                  adFormat="fluid"
+                  adLayoutKey="-69+dp-1a-bl+i7"
+                  reservedHeight={250}
+                />
               </div>
             )}
           </section>
