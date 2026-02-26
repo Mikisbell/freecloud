@@ -1,0 +1,9 @@
+{
+    "redirects": [
+        {
+            "source": "https://www.freecloud.pe/(.*)",
+            "destination": "https://freecloud.pe/$1",
+            "permanent": true
+        }
+    ]
+}

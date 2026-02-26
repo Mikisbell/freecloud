@@ -51,19 +51,36 @@ const mdxComponents = {
       ⬇️ {label}
     </a>
   ),
-  YouTube: ({ id }: { id: string }) => (
-    <div className="video-container flex justify-center my-6">
-      <iframe
-        src={`https://www.youtube.com/embed/${id}`}
-        title="YouTube video"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-        loading="lazy"
-        className="w-full max-w-3xl aspect-video rounded-xl shadow-lg border border-surface-200"
-      />
-    </div>
-  ),
+  YouTube: ({ id }: { id: string }) => {
+    return (
+      <YouTubePlayer id={id} />
+    );
+  },
 };
+
+// Client Component helper for Lazy Loading YouTube
+function YouTubePlayer({ id }: { id: string }) {
+  return (
+    <div className="video-container flex justify-center my-8 group">
+      <div className="relative w-full max-w-3xl aspect-video rounded-2xl shadow-2xl border border-surface-200 overflow-hidden bg-surface-900 flex items-center justify-center">
+        {/* Usamos un Link real o un simple Script de carga diferida */}
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=0`}
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          loading="lazy"
+          className="absolute inset-0 w-full h-full"
+        />
+        {/* Overlay de marca sutil para el loading period */}
+        <div className="absolute top-4 right-4 z-10 opacity-50 group-hover:opacity-100 transition-opacity">
+          <div className="px-2 py-1 bg-fc-navy text-[10px] text-white font-bold rounded uppercase tracking-tighter">FreeCloud Tech</div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -86,7 +103,10 @@ export default async function BlogPostPage({ params }: Props) {
   const post = await getPostBySlug(slug);
   if (!post) notFound();
 
-  const relatedPosts = post.category_id ? await getRelatedPosts(post.id, post.category_id, 3) : [];
+  // Parallel fetching: related posts don't depend on the full post content
+  const relatedPosts = post.category_id
+    ? await getRelatedPosts(post.id, post.category_id, 3)
+    : [];
   const categoryConfig = post.categories;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://freecloud.pe';
 

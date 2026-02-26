@@ -35,7 +35,7 @@ export default function Footer() {
               <h3 className="text-xl font-display font-bold text-white mb-1">
                 Únete a +500 ingenieros
               </h3>
-              <p className="text-fc-cyan/10 text-sm">
+              <p className="text-fc-cyan/80 text-sm">
                 Recibe tutoriales BIM, plantillas gratuitas y noticias de normativa cada semana.
               </p>
             </div>

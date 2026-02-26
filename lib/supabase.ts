@@ -313,8 +313,17 @@ export async function deletePost(id: string) {
 // ==========================================
 
 export async function uploadImage(file: File) {
+  // Validate file type and size
+  if (!file.type.startsWith('image/')) {
+    throw new Error('Solo se permiten imágenes (jpg, png, gif, webp).');
+  }
+  if (file.size > 5_000_000) {
+    throw new Error('La imagen no puede pesar más de 5MB.');
+  }
+
   const fileExt = file.name.split('.').pop();
-  const fileName = `${Math.random().toString(36).substring(2, 15)} -${Date.now()}.${fileExt} `;
+  // Fix: removed accidental spaces in filename template literal
+  const fileName = `${Math.random().toString(36).substring(2, 15)}-${Date.now()}.${fileExt}`;
 
   const { data, error } = await getClient()
     .storage
