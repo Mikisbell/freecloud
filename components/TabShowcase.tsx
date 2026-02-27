@@ -119,31 +119,33 @@ export default function TabShowcase() {
               </div>
             </div>
 
-            {/* Right — Visual card with sharp edges */}
+            {/* Right — Visual card con borde sólido de color (estilo Dataiku) */}
             <div className="flex items-center justify-center">
               <div
-                className="relative w-full max-w-md aspect-[4/3] overflow-hidden shadow-dataiku-hover border border-dataiku-border bg-white"
+                className="relative w-full max-w-md aspect-[4/3] overflow-hidden shadow-lg"
+                style={{ border: `4px solid ${tab.color}`, borderRadius: '12px' }}
               >
-                {/* Colored border glow */}
+                {/* Fondo tintado con el color del tab */}
                 <div
-                  className="absolute inset-0 rounded-2xl"
-                  style={{
-                    background: `linear-gradient(135deg, ${tab.color}15, ${tab.color}05)`,
-                    border: `2px solid ${tab.color}30`,
-                  }}
-                />
-                {/* Content card */}
-                <div className="relative h-full bg-dataiku-background flex flex-col items-center justify-center p-8">
-                  {/* Top bar mimicking a rigid enterprise app UI */}
+                  className="relative h-full flex flex-col items-center justify-center p-8"
+                  style={{ backgroundColor: `${tab.color}12` }}
+                >
+                  {/* Top bar — simula UI de app */}
                   <div className="absolute top-0 left-0 right-0 h-10 bg-dataiku-navy flex items-center px-4 gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-surface-500" />
                     <span className="w-2.5 h-2.5 rounded-full bg-surface-500" />
                     <span className="w-2.5 h-2.5 rounded-full bg-surface-500" />
                     <span className="ml-3 text-[10px] text-surface-400 font-mono">freecloud.pe</span>
+                    <span
+                      className="ml-auto text-[10px] font-bold px-2 py-0.5 rounded"
+                      style={{ backgroundColor: `${tab.color}30`, color: ACCESSIBLE_TEXT[tab.color] ?? tab.color }}
+                    >
+                      {tab.label}
+                    </span>
                   </div>
                   {/* Main icon/visual */}
                   <div className="mt-4">
-                    <span className="text-7xl md:text-8xl block mb-4">{tab.emoji}</span>
+                    <span className="text-7xl md:text-8xl block mb-4 drop-shadow-sm">{tab.emoji}</span>
                     <p
                       className="text-center font-display font-bold text-lg"
                       style={{ color: ACCESSIBLE_TEXT[tab.color] ?? tab.color }}
@@ -157,7 +159,7 @@ export default function TabShowcase() {
                           className="h-1.5 rounded-full"
                           style={{
                             width: n === 1 ? '40px' : n === 2 ? '30px' : '20px',
-                            backgroundColor: `${tab.color}${n === 1 ? '60' : n === 2 ? '40' : '20'}`,
+                            backgroundColor: `${tab.color}${n === 1 ? 'CC' : n === 2 ? '88' : '44'}`,
                           }}
                         />
                       ))}
@@ -167,9 +169,7 @@ export default function TabShowcase() {
                         <div
                           key={n}
                           className="h-8 rounded-lg"
-                          style={{
-                            backgroundColor: `${tab.color}${10 + n * 5}`,
-                          }}
+                          style={{ backgroundColor: `${tab.color}${20 + n * 12}` }}
                         />
                       ))}
                     </div>
