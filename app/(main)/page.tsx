@@ -30,29 +30,29 @@ const PRODUCTS = [
   {
     tag: 'Excel',
     tagColor: 'bg-green-100 text-green-800',
+    tagBg: '#16a34a',
     title: 'Plantilla Diseño Sísmico E.030',
     price: '$7 USD',
     desc: 'Cortante basal, distribución por pisos y derivas. Fórmulas automáticas según norma vigente.',
     href: '#', // TODO: URL_HOTMART_E030
-    image: '/productos/cover-plantilla-e030.png'
   },
   {
     tag: 'Excel',
     tagColor: 'bg-green-100 text-green-800',
+    tagBg: '#16a34a',
     title: 'Plantilla Metrados de Obra',
     price: '$5 USD',
     desc: 'Concreto, acero y encofrado con fórmulas automáticas por elemento estructural.',
     href: '#', // TODO: URL_HOTMART_METRADOS
-    image: '/productos/cover-plantilla-metrados.png'
   },
   {
     tag: 'HP Prime',
     tagColor: 'bg-blue-100 text-blue-800',
+    tagBg: '#1d4ed8',
     title: 'Hardy Cross — Análisis Estructural',
     price: '$10 USD',
     desc: 'Programa completo para análisis de pórticos. Código listo para copiar a tu calculadora.',
     href: '#', // TODO: URL_HOTMART_HARDYCROSS
-    image: '/productos/cover-hardy-cross-hp-prime.png'
   }
 ];
 
@@ -152,18 +152,17 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {PRODUCTS.map((prod, i) => (
               <div key={i} className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col group">
-                {/* Fallback pattern if image is missing, utilizing the tag color logic visually */}
-                <div className="w-full h-48 bg-gray-100 relative border-b border-gray-100 overflow-hidden flex items-center justify-center">
-                  {/* Using next/image for production, fallback style strictly for visual preview if missing */}
-                  <Image
-                    src={prod.image}
-                    alt={prod.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  {/* Overlay text in case image 404s locally, invisible normally */}
-                  <span className="text-gray-300 font-bold tracking-widest uppercase opacity-20 text-3xl z-0">{prod.tag}</span>
-                  <div className="absolute inset-0 ring-1 ring-inset ring-black/10 z-10" />
+                {/* Placeholder de imagen — reemplazar con imagen real cuando exista */}
+                <div
+                  className="w-full h-48 relative border-b border-gray-100 flex items-center justify-center"
+                  style={{ background: `linear-gradient(135deg, ${prod.tagBg}18 0%, ${prod.tagBg}30 100%)` }}
+                >
+                  <div className="text-center">
+                    <span className="text-5xl font-black tracking-tighter opacity-20" style={{ color: prod.tagBg }}>
+                      {prod.tag}
+                    </span>
+                    <p className="text-xs opacity-40 mt-1 font-medium" style={{ color: prod.tagBg }}>Imagen próximamente</p>
+                  </div>
                 </div>
 
                 <div className="p-6 flex flex-col flex-1 relative z-20 bg-white">
@@ -210,7 +209,8 @@ export default async function HomePage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* min-h reserva espacio mientras el contenido dinámico carga via PPR → previene CLS del footer */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 min-h-[280px] md:min-h-[320px]">
               {recentPosts.map(post => (
                 <Link key={post.slug} href={`/blog/${post.slug}`} className="group flex flex-col">
                   <div className="relative w-full h-48 md:h-44 rounded-xl overflow-hidden mb-4 bg-gray-100">
