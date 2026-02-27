@@ -4,6 +4,15 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
+// Versiones oscurecidas de los colores para cumplir WCAG AA (ratio 4.5:1 sobre fondo claro)
+// Original → Accesible: #2ab1ac→#1a7673  #ff7a0d→#B85500  #1a6df5→#1255C0  #217346→#165C35
+const ACCESSIBLE_TEXT: Record<string, string> = {
+  '#2ab1ac': '#1a7673',
+  '#ff7a0d': '#B85500',
+  '#1a6df5': '#1255C0',
+  '#217346': '#165C35',
+};
+
 const TABS = [
   {
     id: 'bim-revit',
@@ -137,7 +146,7 @@ export default function TabShowcase() {
                     <span className="text-7xl md:text-8xl block mb-4">{tab.emoji}</span>
                     <p
                       className="text-center font-display font-bold text-lg"
-                      style={{ color: tab.color }}
+                      style={{ color: ACCESSIBLE_TEXT[tab.color] ?? tab.color }}
                     >
                       {tab.title}
                     </p>

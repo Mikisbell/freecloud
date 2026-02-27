@@ -91,7 +91,7 @@ export default function Header() {
             />
             <div className="flex flex-col">
               <span className="font-brand font-black text-lg text-fc-navy leading-tight">
-                <span style={{ color: '#D4940A' }}>FREE</span><span style={{ color: '#1565C0' }}>CLOUD</span>
+                <span style={{ color: '#9A6800' }}>FREE</span><span style={{ color: '#1565C0' }}>CLOUD</span>
               </span>
               <span className="text-[10px] text-fc-text-muted font-slogan tracking-[0.18em] uppercase leading-none">
                 BIM &amp; Ingeniería
@@ -134,7 +134,7 @@ export default function Header() {
             {/* CTA */}
             <Link
               href="/recursos"
-              className="ml-3 px-5 py-2 bg-fc-gold text-white text-sm font-semibold rounded-full hover:bg-fc-gold-dark transition-all duration-200 shadow-sm shadow-fc-gold/25"
+              className="ml-3 px-5 py-2 bg-fc-navy text-white text-sm font-semibold rounded-full hover:bg-fc-navy-deep transition-all duration-200 shadow-sm shadow-fc-navy/25"
             >
               Descargar Gratis
             </Link>
@@ -255,7 +255,7 @@ export default function Header() {
           <div className="px-3 pt-3">
             <Link
               href="/recursos"
-              className="block w-full text-center px-4 py-2.5 bg-fc-gold text-white text-sm font-semibold rounded-full hover:bg-fc-gold-dark transition-colors"
+              className="block w-full text-center px-4 py-2.5 bg-fc-navy text-white text-sm font-semibold rounded-full hover:bg-fc-navy-deep transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               Descargar Gratis
