@@ -47,6 +47,11 @@ const nextConfig = {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },
+          // COOP: resuelve diagnóstico de Lighthouse. allow-popups porque AdSense abre ventanas emergentes
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin-allow-popups',
+          },
           // Content-Security-Policy compatible con Google AdSense
           {
             key: 'Content-Security-Policy',
