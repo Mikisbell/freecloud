@@ -216,21 +216,20 @@ export default function HeroBackground() {
         };
 
         const drawMatrixRain = () => {
-            // Reducir la actualizacion para que la lluvia sea elegante y lenta
-            if (frameCount % 4 === 0) {
+            // Frecuencia de actualizacion para Lluvia Matrix
+            if (frameCount % 3 === 0) {
                 ctx.font = `${fontSize}px monospace`;
 
                 for (let i = 0; i < drops.length; i++) {
-                    // Solo dibujar en los laterales o el fondo remoto (evitar centro fuerte)
                     const char = charset[Math.floor(Math.random() * charset.length)];
                     const xPos = i * fontSize;
                     const yPos = drops[i] * fontSize;
 
-                    // Opacidad muuuuy tenue para que no estorbe (0.08 a 0.15)
+                    // Opacidad aumentada para que destaque sin molestar (0.25 a 0.45)
                     if (Math.random() > 0.98) {
-                        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)'; // Destello suave
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.45)'; // Destello blanco/brillante
                     } else {
-                        ctx.fillStyle = 'rgba(6, 182, 212, 0.08)'; // Base oscura Cyan
+                        ctx.fillStyle = 'rgba(6, 182, 212, 0.28)'; // Base Cyan
                     }
 
                     ctx.fillText(char, xPos, yPos);
