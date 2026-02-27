@@ -12,7 +12,7 @@ const fontDisplay = Space_Grotesk({
   variable: '--font-display',
   display: 'swap',
   weight: ['400', '500', '600', '700'],
-  adjustFontFallback: false,
+  adjustFontFallback: true,
 });
 
 const fontBody = DM_Sans({
@@ -20,7 +20,7 @@ const fontBody = DM_Sans({
   variable: '--font-body',
   display: 'swap',
   weight: ['400', '500', '600', '700'],
-  adjustFontFallback: false,
+  adjustFontFallback: true,
 });
 
 const fontMono = JetBrains_Mono({

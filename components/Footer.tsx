@@ -46,7 +46,7 @@ export default function Footer() {
           {/* Cols dinámicas */}
           {Object.entries(FOOTER_LINKS).map(([title, links]) => (
             <div key={title} className="col-span-1">
-              <h4 className="text-white font-semibold text-sm mb-4">{title}</h4>
+              <h3 className="text-white font-semibold text-sm mb-4">{title}</h3>
               <ul className="space-y-3">
                 {links.map(link => (
                   <li key={link.href}>
@@ -64,7 +64,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-xs text-gray-500">
+        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-xs text-gray-400">
           &copy; 2026 FreeCloud · Huancayo, Perú
         </div>
       </div>

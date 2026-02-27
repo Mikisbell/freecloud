@@ -32,9 +32,10 @@ export default function Header() {
             <Image
               src="/logo.png"
               alt="FreeCloud logo"
-              width={240}
-              height={60}
-              className="object-contain h-10 w-auto md:h-12"
+              width={192}
+              height={48}
+              sizes="(max-width: 768px) 160px, 192px"
+              className="object-contain h-10 w-auto xl:h-12"
               priority
               fetchPriority="high"
             />
@@ -46,7 +47,7 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="px-3 py-2 text-sm font-medium text-surface-600 hover:text-fc-blue rounded-lg hover:bg-fc-cyan/10 transition-all duration-200"
+                className="px-3 py-2 text-sm font-medium text-surface-700 hover:text-fc-blue rounded-lg hover:bg-fc-cyan/10 transition-all duration-200"
               >
                 {item.label}
               </Link>

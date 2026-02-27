@@ -106,7 +106,7 @@ export default async function HomePage() {
       <section className="bg-white py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="mb-12">
-            <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-3">
+            <p className="text-sm font-semibold text-blue-700 uppercase tracking-wider mb-3">
               Servicios
             </p>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -138,7 +138,7 @@ export default async function HomePage() {
       <section className="bg-gray-50 py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="mb-12">
-            <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-3">
+            <p className="text-sm font-semibold text-blue-700 uppercase tracking-wider mb-3">
               Productos
             </p>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -176,7 +176,7 @@ export default async function HomePage() {
                   <p className="text-sm text-gray-600 mb-4 flex-1">
                     {prod.desc}
                   </p>
-                  <div className="text-2xl font-bold text-blue-600 mb-4">
+                  <div className="text-2xl font-bold text-blue-700 mb-4">
                     {prod.price}
                   </div>
                   <Link
@@ -198,7 +198,7 @@ export default async function HomePage() {
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
               <div>
-                <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-2">
+                <p className="text-sm font-semibold text-blue-700 uppercase tracking-wider mb-2">
                   Blog
                 </p>
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
@@ -236,7 +236,7 @@ export default async function HomePage() {
                   <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-2">
                     {post.meta_title || post.title}
                   </h3>
-                  <p className="text-sm text-gray-500 mt-auto">
+                  <p className="text-sm text-gray-600 mt-auto">
                     {new Date(post.created_at).toLocaleDateString('es-ES', { month: 'long', day: 'numeric', year: 'numeric' })}
                     {post.reading_time && ` · ${post.reading_time} min`}
                   </p>
@@ -264,7 +264,7 @@ export default async function HomePage() {
             </div>
 
             <div className="order-1 md:order-2">
-              <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-3">
+              <p className="text-sm font-semibold text-blue-700 uppercase tracking-wider mb-3">
                 Sobre Mí
               </p>
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
