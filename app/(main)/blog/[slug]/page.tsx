@@ -18,6 +18,7 @@ import Newsletter from '@/components/Newsletter';
 import ShareButtons from '@/components/ShareButtons';
 import YouTubeFacade from '@/components/YouTubeFacade';
 import ClientGoogleAd from '@/components/ClientGoogleAd';
+import TableOfContents from '@/components/TableOfContents';
 
 export async function generateStaticParams() {
   const { posts } = await getPosts();
@@ -193,16 +194,22 @@ export default async function BlogPostPage({ params }: Props) {
               <MDXRemote
                 source={(() => {
                   let headCount = 0;
-                  // Inyectamos un componente especial de AdSense antes de cada sección H2 par
+                  // Inyectamos ToC antes del primer H2, y AdSense antes de H2 pares
                   return (post.content || '').replace(/\n## /g, (match) => {
                     headCount++;
-                    if (headCount >= 2 && headCount % 2 === 0) {
+                    if (headCount === 1) {
+                      return '\n\n<TableOfContents />\n\n## ';
+                    }
+                    if (headCount > 1 && headCount % 2 === 0) {
                       return '\n\n<InArticleAd />\n\n## ';
                     }
                     return match;
                   });
                 })()}
-                components={mdxComponents}
+                components={{
+                  ...mdxComponents,
+                  TableOfContents: () => <TableOfContents source={post.content || ''} />,
+                }}
                 options={{
                   mdxOptions: {
                     remarkPlugins: [remarkGfm, remarkMath],

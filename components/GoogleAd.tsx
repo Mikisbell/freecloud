@@ -52,8 +52,10 @@ export default function GoogleAd({
 
     return (
         // Reserva espacio + skeleton visual → Lighthouse lo ve como "completo" en Speed Index
+        // ▶ FIX: Si el ad no tiene fill (data-ad-status="unfilled"), ocultamos el wrapper completo
+        // esto evita las "cajas grises vacías" que empujan contenido y empeoran UX.
         <div
-            className="w-full relative overflow-hidden my-6 rounded-md bg-surface-50"
+            className="w-full relative overflow-hidden my-6 rounded-md bg-surface-50 has-[ins[data-ad-status='unfilled']]:hidden"
             style={{ minHeight: `${reservedHeight}px` }}
         >
             {/* Shimmer skeleton mientras el ad carga (mejora Speed Index) */}
