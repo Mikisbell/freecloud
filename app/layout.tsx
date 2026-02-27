@@ -58,7 +58,7 @@ const fontLogoFree = Barlow_Condensed({
   subsets: ['latin'],
   variable: '--font-logo-free',
   display: 'optional',
-  weight: ['300'],
+  weight: ['400', '500'],
   preload: false,
 });
 
