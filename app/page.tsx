@@ -64,13 +64,14 @@ const FAQS = [
 
 export default async function HomePage() {
   const [postsRes, dbCategories] = await Promise.all([
-    getPosts({ limit: 7 }),
+    getPosts({ limit: 9 }),
     getCategories()
   ]);
 
   const posts = postsRes.posts;
-  const featuredPost = posts.find(p => p.featured) || posts[0];
-  const recentPosts = posts.filter(p => p.slug !== featuredPost?.slug).slice(0, 6);
+  // 3 tarjetas destacadas para el banner Dataiku-style
+  const highlightPosts = posts.slice(0, 3);
+  const recentPosts = posts.slice(3, 9);
 
   const faqSchema = generateFAQSchema(
     FAQS.map(faq => ({ question: faq.q, answer: faq.a }))
@@ -143,11 +144,47 @@ export default async function HomePage() {
       {/* ── SOCIAL PROOF BAR (Elemento 5) ── */}
       <SocialProof />
 
-      {/* ── FEATURED POST ── */}
-      {featuredPost && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-16">
-          <div className="reveal">
-            <BlogCard post={featuredPost as unknown as import('@/types/supabase').Post} dbCategory={featuredPost.categories} featured />
+      {/* ── HIGHLIGHT CARDS (estilo Dataiku) ── */}
+      {highlightPosts.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-14">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-dataiku-border overflow-hidden reveal">
+            {highlightPosts.map((post, i) => {
+              const isMid = i === 1;
+              return (
+                <a
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className={`group relative flex flex-col justify-between p-6 md:p-8 min-h-[140px] transition-all duration-200 ${isMid
+                      ? 'bg-fc-cyan hover:brightness-110'
+                      : 'bg-fc-navy-deep hover:bg-fc-navy'
+                    } ${i > 0 ? 'border-l border-white/10' : ''}`}
+                >
+                  {/* Decoración geométrica esquina */}
+                  <div className={`absolute top-0 right-0 w-24 h-24 opacity-10 ${isMid ? 'opacity-20' : ''
+                    }`}>
+                    <svg viewBox="0 0 96 96" fill="none" className="w-full h-full">
+                      <polygon points="96,0 96,96 0,0" fill="white" />
+                    </svg>
+                  </div>
+                  {/* Contenido */}
+                  <p className={`text-xs font-bold uppercase tracking-widest mb-3 ${isMid ? 'text-white/70' : 'text-fc-cyan/70'
+                    }`}>
+                    {post.categories?.name ?? 'Artículo'}
+                  </p>
+                  <h3 className="font-display font-bold text-white text-base md:text-lg leading-snug mb-4 flex-1">
+                    {post.title}
+                  </h3>
+                  {/* CTA */}
+                  <div className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider group-hover:gap-3 transition-all duration-200 ${isMid ? 'text-white' : 'text-fc-cyan'
+                    }`}>
+                    <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 16 16" fill="none">
+                      <path d="M2 8h10M8 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    Leer artículo
+                  </div>
+                </a>
+              );
+            })}
           </div>
         </section>
       )}
