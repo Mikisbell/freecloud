@@ -1,5 +1,4 @@
 import { getPosts, getPostBySlug, getRelatedPosts } from '@/lib/supabase';
-import dynamic from 'next/dynamic';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -18,9 +17,7 @@ import BlogCard from '@/components/BlogCard';
 import Newsletter from '@/components/Newsletter';
 import ShareButtons from '@/components/ShareButtons';
 import YouTubeFacade from '@/components/YouTubeFacade';
-
-// GoogleAd es client-only (window.adsbygoogle) — carga deferída para no inflar el bundle SSR
-const GoogleAd = dynamic(() => import('@/components/GoogleAd'), { ssr: false });
+import ClientGoogleAd from '@/components/ClientGoogleAd';
 
 export async function generateStaticParams() {
   const { posts } = await getPosts();
@@ -62,7 +59,7 @@ const mdxComponents = {
   ),
   InArticleAd: () => (
     <div className="my-10">
-      <GoogleAd
+      <ClientGoogleAd
         adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE || ''}
         adFormat="fluid"
         adLayout="in-article"
@@ -243,7 +240,7 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* Ad in article fallback al final del articulo si el contenido fue muy corto (0-1 titulos) */}
             <div className="mt-8 mb-4">
-              <GoogleAd
+              <ClientGoogleAd
                 adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE || ''}
                 adFormat="fluid"
                 adLayout="in-article"
@@ -381,7 +378,7 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* Sidebar Ad — slot configurado en NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR */}
             <div className="sticky top-20">
-              <GoogleAd
+              <ClientGoogleAd
                 adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR || ''}
                 reservedHeight={600}
               />

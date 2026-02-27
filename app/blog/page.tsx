@@ -5,10 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Clock } from 'lucide-react';
 import Newsletter from '@/components/Newsletter';
-import dynamic from 'next/dynamic';
-
-// GoogleAd es client-only (window.adsbygoogle) — no tiene sentido en SSR
-const GoogleAd = dynamic(() => import('@/components/GoogleAd'), { ssr: false });
+import ClientGoogleAd from '@/components/ClientGoogleAd';
 
 export const metadata: Metadata = {
   title: 'Blog - Tutoriales BIM e Ingeniería Civil',
@@ -217,7 +214,7 @@ export default async function BlogPage({ searchParams }: Props) {
                           <p className="text-[10px] font-bold text-surface-400 uppercase tracking-widest text-center">Espacio Patrocinado</p>
                         </div>
                         <div className="flex-1 p-4 flex flex-col justify-center">
-                          <GoogleAd
+                          <ClientGoogleAd
                             adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_INFEED || ''}
                             adFormat="fluid"
                             adLayoutKey="-69+dp-1a-bl+i7"
