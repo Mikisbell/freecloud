@@ -1,6 +1,5 @@
 import Link from 'next/link';
-import { Code, Youtube, Mail, MapPin } from 'lucide-react';
-import Newsletter from './Newsletter';
+import Image from 'next/image';
 import { siteConfig } from '@/config/site';
 
 const FOOTER_LINKS = {
@@ -8,76 +7,52 @@ const FOOTER_LINKS = {
     { label: 'Blog', href: '/blog' },
     { label: 'Tutoriales Revit', href: '/blog?cat=revit' },
     { label: 'BIM Perú', href: '/blog?cat=bim-peru' },
-    { label: 'Python + BIM', href: '/blog?cat=python' },
-    { label: 'Análisis Estructural', href: '/blog?cat=analisis-estructural' },
-  ],
-  'Recursos': [
-    { label: 'Todos los recursos', href: '/recursos' },
-    { label: 'Web Apps', href: '/apps' },
+    { label: 'Python + BIM', href: '/blog?cat=python' }
   ],
   'Empresa': [
+    { label: 'Servicios', href: '/servicios' },
+    { label: 'Recursos', href: '/recursos' },
     { label: 'Sobre Mí', href: '/sobre-mi' },
-    { label: 'Rivamez Constructora', href: 'https://rivamez.com', external: true },
-    { label: 'Contacto', href: '/sobre-mi#contacto' },
+    { label: 'Contacto', href: '/sobre-mi#contacto' }
   ],
+  'Legal': [
+    { label: 'Política de Privacidad', href: '/politica-de-privacidad' },
+    { label: 'Términos de Uso', href: '/terminos-de-uso' }
+  ]
 };
 
 export default function Footer() {
   return (
-    <footer className="bg-surface-900 text-surface-300 mt-20">
-      {/* Newsletter band */}
-      <div className="bg-gradient-to-r from-fc-navy to-fc-navy-deep">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12">
-            <div className="flex-1 text-center md:text-left">
-              <h3 className="text-xl font-display font-bold text-white mb-1">
-                Únete a la comunidad de ingenieros BIM
-              </h3>
-              <p className="text-fc-cyan/80 text-sm">
-                Recibe tutoriales BIM, plantillas y noticias de normativa cada semana.
-              </p>
-            </div>
-            <div className="w-full md:w-auto">
-              <Newsletter variant="inline" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Links */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+    <footer className="bg-gray-900 text-gray-400 py-12 px-6">
+      <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {/* Brand */}
+
+          {/* Col 1 - Brand */}
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-fc-cyan to-fc-navy rounded-lg flex items-center justify-center">
-                <Code className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-display font-bold text-white">{siteConfig.name}</span>
+            <Link href="/" className="inline-block mb-3">
+              <Image
+                src="/logo.png"
+                alt="FreeCloud"
+                width={160}
+                height={40}
+                className="brightness-0 invert opacity-90"
+              />
             </Link>
-            <p className="text-sm text-surface-300 mb-4">
-              {siteConfig.description}
+            <p className="text-sm mt-3 leading-relaxed text-gray-400">
+              BIM, ingeniería civil y tecnología para profesionales en Perú.
             </p>
-            <div className="flex items-center gap-3">
-              <a href={siteConfig.links.youtube} aria-label="YouTube de FreeCloud" target="_blank" rel="noopener" className="w-9 h-9 bg-surface-800 hover:bg-fc-navy rounded-lg flex items-center justify-center transition-colors">
-                <Youtube className="w-4 h-4" />
-              </a>
-              <a href={`mailto:${siteConfig.contact.email}`} aria-label="Enviar correo" target="_blank" rel="noopener" className="w-9 h-9 bg-surface-800 hover:bg-fc-navy rounded-lg flex items-center justify-center transition-colors">
-                <Mail className="w-4 h-4" />
-              </a>
-            </div>
           </div>
 
+          {/* Cols dinámicas */}
           {Object.entries(FOOTER_LINKS).map(([title, links]) => (
-            <div key={title}>
-              <h4 className="font-display font-semibold text-white text-sm mb-4">{title}</h4>
-              <ul className="space-y-2.5">
+            <div key={title} className="col-span-1">
+              <h4 className="text-white font-semibold text-sm mb-4">{title}</h4>
+              <ul className="space-y-3">
                 {links.map(link => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-surface-300 hover:text-fc-cyan transition-colors"
-                      {...('external' in link && link.external ? { target: '_blank', rel: 'noopener' } : {})}
+                      className="text-sm text-gray-400 hover:text-white transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -88,15 +63,9 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Bottom */}
-        <div className="border-t border-surface-800 mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
-          <p className="text-xs text-surface-400">
-            &copy; {new Date().getFullYear()} {siteConfig.name}. Todos los derechos reservados.
-          </p>
-          <div className="flex items-center gap-1 text-xs text-surface-400">
-            <MapPin className="w-3 h-3" />
-            <span>{siteConfig.contact.location}</span>
-          </div>
+        {/* Bottom Bar */}
+        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-xs text-gray-500">
+          &copy; 2026 FreeCloud · Huancayo, Perú
         </div>
       </div>
     </footer>

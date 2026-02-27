@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  cacheComponents: true,
   compress: true,
   poweredByHeader: false,
   // Elimina console.* en producción (pueden causar forced reflow si leen DOM)
