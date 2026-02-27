@@ -13,6 +13,20 @@ export default function HeroBackground() {
         if (!ctx) return;
 
         let animationFrameId: number;
+        let frameCount = 0;
+
+        // --- BIM PROPERTIES ---
+        const ANGLE_RAD = Math.PI / 6; // 30 grados
+        const COS_A = Math.cos(ANGLE_RAD);
+        const SIN_A = Math.sin(ANGLE_RAD);
+
+        // Scanner
+        let scannerY = -50;
+        let scannerSpeed = 1.5;
+        const scannerHeightRange = 500; // max building height
+
+        // Labels floting
+        const labels: Array<{ x: number, y: number, z: number, text: string, id: number }> = [];
 
         // Resize handler
         const resize = () => {
@@ -23,245 +37,211 @@ export default function HeroBackground() {
                 canvas.width = window.innerWidth;
                 canvas.height = 620;
             }
-            initMatrix();
+            initLabels();
         };
 
-        // --- 1. CONFIGURACION DE LA LLUVIA MATRIX ---
-        const charset = '0110101BIMREVITETABSDATA101010';
-        const fontSize = 14;
-        let columns = 0;
-        const drops: number[] = [];
-
-        const initMatrix = () => {
-            columns = Math.ceil(canvas.width / fontSize);
-            while (drops.length < columns) drops.push(Math.random() * -100);
-            while (drops.length > columns) drops.pop();
-        };
-
-        window.addEventListener('resize', resize);
-        resize();
-
-        // --- 2. CONFIGURACION EDIFICIO ISOMETRICO (MEJORADO) ---
-        // \u00c1ngulo isométrico clásico
-        const ANGLEX = Math.PI / 6; // 30 grados
-        const ANGLEY = Math.PI / 6;
-        const COSX = Math.cos(ANGLEX);
-        const SINX = Math.sin(ANGLEX);
-        const COSY = Math.cos(ANGLEY);
-        const SINY = Math.sin(ANGLEY);
+        const initLabels = () => {
+            labels.length = 0;
+            // Creamos algunas etiquetas de metadatos estaticas
+            const texts = [
+                "W30x108", "C-450x450", "SLAB-200",
+                "LOAD: 45kN", "PHASE: 03", "BIM 4D",
+                "REBAR: 12Ø16", "CLASH: ZERO", "VOL: 3.2m³"
+            ];
+            // Posiciones aleatorias en la estructura
+            for (let i = 0; i < 6; i++) {
+                labels.push({
+                    x: Math.random() * 200,
+                    y: Math.random() * 300,
+                    z: Math.random() * 200,
+                    text: texts[Math.floor(Math.random() * texts.length)],
+                    id: i
+                });
+            }
+        }
 
         const project = (x: number, y: number, z: number, scale: number, offsetX: number, offsetY: number) => {
             return {
-                cx: (x - z) * COSX * scale + offsetX,
-                cy: (x + z) * SINY * scale - y * scale + offsetY
+                cx: (x - z) * COS_A * scale + offsetX,
+                cy: (x + z) * SIN_A * scale - y * scale + offsetY
             };
         };
 
-        const drawLine = (p1: any, p2: any, isGlowing: boolean = false) => {
+        const drawLine = (p1: any, p2: any, color: string, width = 1) => {
             ctx.beginPath();
             ctx.moveTo(p1.cx, p1.cy);
             ctx.lineTo(p2.cx, p2.cy);
-            if (isGlowing) {
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = 'rgba(6, 182, 212, 0.8)';
-                ctx.strokeStyle = 'rgba(6, 182, 212, 0.9)';
-                ctx.lineWidth = 1.5;
-            } else {
-                ctx.shadowBlur = 0;
-                ctx.lineWidth = 0.8;
-            }
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
             ctx.stroke();
-            ctx.shadowBlur = 0; // Reset
         };
 
-        const drawNode = (p: any, radius: number = 2, isGlowing: boolean = false) => {
-            ctx.beginPath();
-            ctx.arc(p.cx, p.cy, radius, 0, Math.PI * 2);
-            if (isGlowing) {
-                ctx.shadowBlur = 12;
-                ctx.shadowColor = 'rgba(59, 130, 246, 1)';
-                ctx.fillStyle = 'rgba(255, 255, 255, 1)';
-            } else {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+        const drawBimStructure = (scale: number, offX: number, offY: number) => {
+            // Parametros de la estructura
+            const cols = 5;
+            const rows = 4;
+            const floors = 6;
+            const spanX = 50;
+            const spanZ = 50;
+            const floorH = 60;
+
+            // 1. DIBUJAR CUADRICULA DE REPLANTEO (GRIDS) EN EL SUELO
+            ctx.setLineDash([5, 5]); // Linea punteada para ejes
+            const gridColor = 'rgba(255, 255, 255, 0.15)';
+            for (let i = 0; i <= cols; i++) {
+                let start = project(i * spanX, 0, -20, scale, offX, offY);
+                let end = project(i * spanX, 0, (rows * spanZ) + 20, scale, offX, offY);
+                drawLine(start, end, gridColor);
             }
-            ctx.fill();
-            ctx.shadowBlur = 0;
-        };
-
-        // Estructura reticular avanzada con Arriostramientos (X-Bracing)
-        const drawAdvancedStructure = (x: number, y: number, z: number, w: number, h: number, d: number, scale: number, offX: number, offY: number, frame: number) => {
-
-            const colCount = 4; // Numero de columnas por cara
-            const floorCount = 8; // Numero de pisos
-            const colW = w / colCount;
-            const colD = d / colCount;
-            const floorH = h / floorCount;
-
-            // Limite visible simple para optimizar (solo dibujar partes visibles)
-            // Redise\u00f1amos para no saturar: solo front derecha y front izquierda
-
-            // 1. DIBUJAR COLUMNAS
-            ctx.strokeStyle = `rgba(255, 255, 255, 0.2)`;
-            for (let i = 0; i <= colCount; i++) {
-                // Cara derecha
-                let pBottomR = project(x + (i * colW), y, z, scale, offX, offY);
-                let pTopR = project(x + (i * colW), y + h, z, scale, offX, offY);
-                drawLine(pBottomR, pTopR);
-                drawNode(pTopR, 1.5);
-
-                // Cara Izquierda
-                let pBottomL = project(x, y, z + (i * colD), scale, offX, offY);
-                let pTopL = project(x, y + h, z + (i * colD), scale, offX, offY);
-                drawLine(pBottomL, pTopL);
-                drawNode(pTopL, 1.5);
+            for (let i = 0; i <= rows; i++) {
+                let start = project(-20, 0, i * spanZ, scale, offX, offY);
+                let end = project((cols * spanX) + 20, 0, i * spanZ, scale, offX, offY);
+                drawLine(start, end, gridColor);
             }
+            ctx.setLineDash([]); // Reset dash
 
-            // Columna trasera central invisible pero necesaria para techo
-            let pTopBack = project(x + w, y + h, z + d, scale, offX, offY);
+            // 2. DIBUJAR P\u00d3RTICOS (Columnas y Vigas)
+            // Optimizamos dibujando elementos y comprobando c\u00f3mo reaccionan al "Scanner"
+            for (let f = 0; f <= floors; f++) {
+                let y = f * floorH;
+                // Estado del escanner respecto de este piso
+                let distToScannerY = Math.abs(scannerY - y);
+                let isScannedFloor = distToScannerY < 20;
 
-            // 2. DIBUJAR PISOS (Vigas) y CRUCES (Bracing)
-            for (let f = 0; f <= floorCount; f++) {
-                let py = y + (f * floorH);
+                for (let c = 0; c <= cols; c++) {
+                    for (let r = 0; r <= rows; r++) {
+                        let x = c * spanX;
+                        let z = r * spanZ;
 
-                // Vigas principales perimetrales frontales
-                let pFrontCenter = project(x, py, z, scale, offX, offY);
-                let pFrontRight = project(x + w, py, z, scale, offX, offY);
-                let pFrontLeft = project(x, py, z + d, scale, offX, offY);
+                        // Columna (hacia arriba)
+                        if (f < floors) {
+                            let yTop = (f + 1) * floorH;
+                            // Si el scanner pasa por la columna
+                            let isColScanned = scannerY > y && scannerY < yTop;
+                            let colColor = isColScanned ? 'rgba(6, 182, 212, 0.9)' : 'rgba(59, 130, 246, 0.15)';
+                            let colWidth = isColScanned ? 2 : 1;
 
-                ctx.strokeStyle = `rgba(255, 255, 255, 0.3)`;
-                drawLine(pFrontCenter, pFrontRight);
-                drawLine(pFrontCenter, pFrontLeft);
+                            let p1 = project(x, y, z, scale, offX, offY);
+                            let p2 = project(x, yTop, z, scale, offX, offY);
+                            drawLine(p1, p2, colColor, colWidth);
 
-                // Vigas de techo
-                if (f === floorCount) {
-                    let pBackRight = project(x + w, py, z + d, scale, offX, offY);
-                    drawLine(pFrontRight, pBackRight);
-                    drawLine(pFrontLeft, pBackRight);
-                }
+                            // Si est\u00e1 escaneada, dibujar el "Corte" láser en el n\u00facleo
+                            if (isColScanned && Math.random() > 0.95) {
+                                drawNode(project(x, scannerY, z, scale, offX, offY), 2, 'rgba(6, 182, 212, 1)');
+                            }
+                        }
 
-                // X-BRACING (Arriostramientos) en algunos pisos
-                if (f < floorCount) {
-                    // Alternar cruces para hacer mas estilo ingenieril
-                    ctx.strokeStyle = `rgba(6, 182, 212, 0.15)`;
-                    let pyNext = y + ((f + 1) * floorH);
+                        // Vigas en X
+                        if (c < cols) {
+                            let beamColor = isScannedFloor ? 'rgba(234, 179, 8, 0.8)' : 'rgba(255, 255, 255, 0.15)'; // Amarillo si est\u00e1 escaneado
+                            let beamW = isScannedFloor ? 1.5 : 0.8;
+                            let p1 = project(x, y, z, scale, offX, offY);
+                            let p2 = project((c + 1) * spanX, y, z, scale, offX, offY);
+                            drawLine(p1, p2, beamColor, beamW);
+                        }
 
-                    for (let c = 0; c < colCount; c++) {
-                        // Solo en columnas externas para no recargar
-                        if (c === 0 || c === colCount - 1 || f % 2 === 0) {
-                            // Diagonal cara derecha
-                            let br1 = project(x + (c * colW), py, z, scale, offX, offY);
-                            let br2 = project(x + ((c + 1) * colW), pyNext, z, scale, offX, offY);
-                            let br3 = project(x + ((c + 1) * colW), py, z, scale, offX, offY);
-                            let br4 = project(x + (c * colW), pyNext, z, scale, offX, offY);
-
-                            // Efecto de pulso en algunas aspas
-                            let isGlowing = (f + c + Math.floor(frame / 60)) % 7 === 0;
-                            ctx.strokeStyle = isGlowing ? `rgba(6, 182, 212, 0.6)` : `rgba(255, 255, 255, 0.1)`;
-
-                            drawLine(br1, br2, isGlowing);
-                            drawLine(br3, br4, isGlowing);
-
-                            // Diagonal cara izquierda
-                            let bl1 = project(x, py, z + (c * colD), scale, offX, offY);
-                            let bl2 = project(x, pyNext, z + ((c + 1) * colD), scale, offX, offY);
-                            let bl3 = project(x, py, z + ((c + 1) * colD), scale, offX, offY);
-                            let bl4 = project(x, pyNext, z + (c * colD), scale, offX, offY);
-
-                            drawLine(bl1, bl2, isGlowing);
-                            drawLine(bl3, bl4, isGlowing);
+                        // Vigas en Z
+                        if (r < rows) {
+                            let beamColor = isScannedFloor ? 'rgba(234, 179, 8, 0.8)' : 'rgba(255, 255, 255, 0.15)';
+                            let beamW = isScannedFloor ? 1.5 : 0.8;
+                            let p1 = project(x, y, z, scale, offX, offY);
+                            let p2 = project(x, y, (r + 1) * spanZ, scale, offX, offY);
+                            drawLine(p1, p2, beamColor, beamW);
                         }
                     }
                 }
             }
 
-            // 3. CORE CENTRAL (N\u00facleo de Ascensores - estructural)
-            ctx.strokeStyle = `rgba(59, 130, 246, 0.4)`;
-            let coreW = w * 0.3;
-            let coreD = d * 0.3;
-            let coreX = x + (w / 2) - (coreW / 2);
-            let coreZ = z + (d / 2) - (coreD / 2);
+            // 3. ETIQUETAS DE METADATOS BIM (FLOTANTES)
+            labels.forEach(lbl => {
+                // Animar un poco la posicion Y de la etiqueta
+                let lblHoverY = Math.sin((frameCount + lbl.id * 100) * 0.02) * 10;
+                let targetPoint = project(lbl.x, lbl.y, lbl.z, scale, offX, offY);
+                let uiPoint = project(lbl.x, lbl.y + 70 + lblHoverY, lbl.z, scale, offX, offY);
 
-            // N\u00facleo sube más alto que el techo
-            let coreH = h + 40;
+                // L\u00ednea guía (Lead line)
+                ctx.setLineDash([2, 4]);
+                drawLine(targetPoint, uiPoint, 'rgba(255,255,255,0.4)', 1);
+                ctx.setLineDash([]);
 
-            let c1 = project(coreX, y, coreZ, scale, offX, offY);
-            let c2 = project(coreX + coreW, y, coreZ, scale, offX, offY);
-            let c3 = project(coreX, y, coreZ + coreD, scale, offX, offY);
-            let c4 = project(coreX + coreW, y, coreZ + coreD, scale, offX, offY);
+                // Caja de la etiqueta
+                ctx.fillStyle = 'rgba(10, 22, 40, 0.85)';
+                ctx.strokeStyle = 'rgba(6, 182, 212, 0.6)';
+                ctx.lineWidth = 1;
 
-            let ct1 = project(coreX, y + coreH, coreZ, scale, offX, offY);
-            let ct2 = project(coreX + coreW, y + coreH, coreZ, scale, offX, offY);
-            let ct3 = project(coreX, y + coreH, coreZ + coreD, scale, offX, offY);
-            let ct4 = project(coreX + coreW, y + coreH, coreZ + coreD, scale, offX, offY);
+                let tw = ctx.measureText(lbl.text).width + 16;
+                let th = 22;
+                let rx = uiPoint.cx - tw / 2;
+                let ry = uiPoint.cy - th / 2;
 
-            drawLine(c1, ct1); drawLine(c2, ct2); drawLine(c3, ct3); drawLine(c4, ct4);
-            drawLine(ct1, ct2); drawLine(ct1, ct3); drawLine(ct4, ct2); drawLine(ct4, ct3);
+                // Fila de UI
+                ctx.beginPath();
+                ctx.roundRect(rx, ry, tw, th, 4);
+                ctx.fill();
+                ctx.stroke();
 
-            // Elemento brillando en la punta del n\u00facleo (Antena/Sensor)
-            drawNode(ct4, 3, true);
+                // Texto de UI
+                ctx.fillStyle = '#fff';
+                ctx.font = '10px monospace';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(lbl.text, uiPoint.cx, uiPoint.cy);
+
+                // Punto de uni\u00f3n en la estructura
+                drawNode(targetPoint, 3, 'rgba(6, 182, 212, 0.8)');
+            });
+
+            // 4. PLANO DE ESCANEO L\u00c1SER (BIM CLASH/LASER SCAN)
+            // Simularemos un plano que sube translucido
+            ctx.fillStyle = 'rgba(6, 182, 212, 0.05)';
+            ctx.beginPath();
+            let s1 = project(-20, scannerY, -20, scale, offX, offY);
+            let s2 = project((cols * spanX) + 20, scannerY, -20, scale, offX, offY);
+            let s3 = project((cols * spanX) + 20, scannerY, (rows * spanZ) + 20, scale, offX, offY);
+            let s4 = project(-20, scannerY, (rows * spanZ) + 20, scale, offX, offY);
+            ctx.moveTo(s1.cx, s1.cy); ctx.lineTo(s2.cx, s2.cy); ctx.lineTo(s3.cx, s3.cy); ctx.lineTo(s4.cx, s4.cy);
+            ctx.fill();
+
+            // Bordes del esc\u00e1ner
+            drawLine(s1, s2, 'rgba(6, 182, 212, 0.4)', 1);
+            drawLine(s2, s3, 'rgba(6, 182, 212, 0.4)', 1);
+            drawLine(s3, s4, 'rgba(6, 182, 212, 0.4)', 1);
+            drawLine(s4, s1, 'rgba(6, 182, 212, 0.4)', 1);
         };
 
-        let frameCount = 0;
+        const drawNode = (p: any, radius: number, color: string) => {
+            ctx.beginPath();
+            ctx.arc(p.cx, p.cy, radius, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+        };
+
+        window.addEventListener('resize', resize);
+        resize();
 
         const animate = () => {
-            // 1. Efecto "Estela" oscureciendo frame a frame (Trailing)
-            ctx.fillStyle = 'rgba(10, 22, 40, 0.2)'; // Un poco menos de trailing para que el código no se manche tanto
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Limpiar lienzo
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // 2. Lluvia de Codigo (Matrix Rain - MAS LENTO)
-            ctx.font = `${fontSize}px monospace`;
-
-            // Controlar la velocidad de actualizacion de la lluvia (cada 6 frames = más elegante y lento)
-            if (frameCount % 6 === 0) {
-                ctx.fillStyle = 'rgba(6, 182, 212, 0.2)'; // Cyan un poco más apagado en el fondo
-
-                for (let i = 0; i < drops.length; i++) {
-                    const char = charset[Math.floor(Math.random() * charset.length)];
-                    const xPos = i * fontSize;
-                    const yPos = drops[i] * fontSize;
-
-                    // Color aleatorio para destellos
-                    if (Math.random() > 0.99) {
-                        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)'; // Blanco brillante a veces
-                    } else {
-                        ctx.fillStyle = 'rgba(6, 182, 212, 0.2)'; // Cyan oscuro normal
-                    }
-
-                    ctx.fillText(char, xPos, yPos);
-
-                    // Reiniciar gotas al llegar abajo suavemente
-                    if (yPos > canvas.height && Math.random() > 0.985) {
-                        drops[i] = 0;
-                    }
-                    // Caída más corta
-                    drops[i] += 0.8;
-                }
-            }
-
-            // 3. Dibujar la Estructura BIM
-            const hoverOffsetY = Math.sin(frameCount * 0.015) * 10; // Flotación m\u00e1s suave y amplia
-
+            // Posicion dinamica segun tamano de pantalla
             const isMobile = canvas.width < 768;
-            const buildingScale = isMobile ? 1.0 : 1.6; // M\u00e1s majestuoso
-            const offX = isMobile ? canvas.width / 2 : canvas.width * 0.25;
-            const offY = canvas.height * 0.85 + hoverOffsetY;
+            const buildingScale = isMobile ? 0.9 : 1.3;
+            const offX = isMobile ? canvas.width / 2 : canvas.width * 0.35; // Desplazar al centro/izq
+            // Mover el offset un poco circularmente para dar efecto de "c\u00e1mara dron flotando"
+            const camHoverX = Math.cos(frameCount * 0.005) * 20;
+            const camHoverY = Math.sin(frameCount * 0.005) * 10;
+            const offY = canvas.height * 0.8 + camHoverY;
 
-            // Base rotacional simulada moviendo ligeramte el origen 
-            // Dibuja una estructura principal compleja
-            // Par\u00e1metros: x, y, z, width, height, depth
-            drawAdvancedStructure(0, 0, 0, 140, 360, 140, buildingScale, offX, offY, frameCount);
+            // Dibujar modelo BIM
+            drawBimStructure(buildingScale, offX + camHoverX, offY);
 
-            // Estructura anexa (Edificio menor)
-            drawAdvancedStructure(160, 0, -20, 80, 200, 80, buildingScale, offX, offY, frameCount);
-
-            // Plataforma Base / Terreno
-            const s1 = project(-40, 0, -40, buildingScale, offX, offY);
-            const s2 = project(300, 0, -40, buildingScale, offX, offY);
-            const s3 = project(300, 0, 200, buildingScale, offX, offY);
-            const s4 = project(-40, 0, 200, buildingScale, offX, offY);
-
-            ctx.strokeStyle = `rgba(59, 130, 246, 0.15)`;
-            drawLine(s1, s2); drawLine(s2, s3); drawLine(s3, s4); drawLine(s4, s1);
+            // Actualizar l\u00f3gica
+            scannerY += scannerSpeed;
+            if (scannerY > scannerHeightRange || scannerY < -50) {
+                scannerSpeed *= -1; // Sube y baja
+                // Aleatorizar etiquetas cuando reinicia
+                if (scannerY < 0) initLabels();
+            }
 
             frameCount++;
             animationFrameId = requestAnimationFrame(animate);
