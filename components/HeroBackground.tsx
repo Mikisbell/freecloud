@@ -257,8 +257,8 @@ export default function HeroBackground() {
 
             // 3. CAPA BIM FOREGROUND (Con posiciones flotantes variables)
             const isMobile = canvas.width < 768;
-            const buildingScale = isMobile ? 0.9 : 1.3;
-            const offX = isMobile ? canvas.width / 2 : canvas.width * 0.35;
+            const buildingScale = isMobile ? 0.9 : 1.25;
+            const offX = isMobile ? canvas.width / 2 : canvas.width * 0.20;
 
             const camHoverX = Math.cos(frameCount * 0.005) * 20;
             const camHoverY = Math.sin(frameCount * 0.005) * 10;

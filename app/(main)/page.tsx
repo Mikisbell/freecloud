@@ -113,13 +113,23 @@ export default async function HomePage() {
           <HeroBackground />
         </div>
 
+        {/* Protection Layer / Gradient Oscuro central */}
+        <div
+          className="absolute inset-0 pointer-events-none z-[5]"
+          style={{
+            background: 'radial-gradient(circle at center, rgba(10,22,40,0.85) 0%, rgba(10,22,40,0.4) 45%, transparent 75%)'
+          }}
+        />
+
         <div className="relative z-10 w-full max-w-[740px] mx-auto flex flex-col items-center">
           {/* Elemento 1 — Badge countdown */}
-          <HeroCountdown />
+          <div className="drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+            <HeroCountdown />
+          </div>
 
           {/* Elemento 2 — H1 */}
           <h1
-            className="mt-[28px] font-extrabold leading-[1.15] tracking-[-0.03em] animate-fade-in-up flex flex-col items-center"
+            className="mt-[28px] font-extrabold leading-[1.15] tracking-[-0.03em] animate-fade-in-up flex flex-col items-center drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]"
             style={{
               fontSize: 'clamp(2rem, 5vw, 3.2rem)',
               animationDelay: '0.15s',
@@ -137,9 +147,8 @@ export default async function HomePage() {
 
           {/* Elemento 3 — Subtítulo */}
           <p
-            className="mt-[16px] max-w-[540px] font-normal leading-[1.6] animate-fade-in-up"
+            className="mt-[16px] max-w-[620px] font-normal leading-[1.6] animate-fade-in-up text-slate-300 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] text-center"
             style={{
-              color: 'rgba(255,255,255,0.55)',
               fontSize: 'clamp(1rem, 2vw, 1.15rem)',
               animationDelay: '0.3s',
               animationFillMode: 'both'
@@ -185,10 +194,10 @@ export default async function HomePage() {
             <span>Huancayo, Perú</span>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* ── 2. CARRUSEL DE TECNOLOGÍAS ── */}
-      <section className="bg-white py-[28px] overflow-hidden border-t border-gray-200">
+      < section className="bg-white py-[28px] overflow-hidden border-t border-gray-200" >
         <div className="text-center mb-[20px]">
           <span
             className="font-semibold uppercase"
@@ -222,10 +231,10 @@ export default async function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section >
 
       {/* ── 2. SERVICIOS ── */}
-      <section className="bg-white py-20 px-6">
+      < section className="bg-white py-20 px-6" >
         <div className="max-w-6xl mx-auto">
           <div className="mb-12">
             <p className="text-sm font-semibold text-blue-700 uppercase tracking-wider mb-3">
@@ -254,10 +263,10 @@ export default async function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section >
 
       {/* ── 3. PRODUCTOS DIGITALES ── */}
-      <section className="bg-gray-50 py-20 px-6">
+      < section className="bg-gray-50 py-20 px-6" >
         <div className="max-w-6xl mx-auto">
           <div className="mb-12">
             <p className="text-sm font-semibold text-blue-700 uppercase tracking-wider mb-3">
@@ -311,11 +320,11 @@ export default async function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section >
 
       {/* ── 4. BLOG ── */}
-      <Suspense fallback={
-        <section className="bg-white py-20 px-6 border-y border-gray-100">
+      < Suspense fallback={
+        < section className="bg-white py-20 px-6 border-y border-gray-100" >
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
               <div className="animate-pulse">
@@ -333,13 +342,13 @@ export default async function HomePage() {
               ))}
             </div>
           </div>
-        </section>
+        </section >
       }>
         <RecentBlogPosts />
-      </Suspense>
+      </Suspense >
 
       {/* ── 5. SOBRE MÍ ── */}
-      <section className="bg-gray-50 py-20 px-6">
+      < section className="bg-gray-50 py-20 px-6" >
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
@@ -399,10 +408,10 @@ export default async function HomePage() {
 
           </div>
         </div>
-      </section>
+      </section >
 
       {/* ── 6. NEWSLETTER ── */}
-      <section className="bg-blue-900 py-20 px-6 text-center">
+      < section className="bg-blue-900 py-20 px-6 text-center" >
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
             Tutoriales y herramientas BIM cada semana
@@ -421,7 +430,7 @@ export default async function HomePage() {
             </p>
           </div>
         </div>
-      </section>
+      </section >
 
     </>
   );
