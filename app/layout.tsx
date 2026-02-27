@@ -10,7 +10,7 @@ import './globals.css';
 const fontDisplay = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-display',
-  display: 'swap',
+  display: 'optional',   // ▶ 2026: 'optional' elimina CLS por font swap definitivamente
   weight: ['400', '500', '600', '700'],
   adjustFontFallback: true,
 });
@@ -18,7 +18,7 @@ const fontDisplay = Space_Grotesk({
 const fontBody = DM_Sans({
   subsets: ['latin'],
   variable: '--font-body',
-  display: 'swap',
+  display: 'optional',   // ▶ 2026: 'optional' elimina CLS por font swap definitivamente
   weight: ['400', '500', '600', '700'],
   adjustFontFallback: true,
 });
