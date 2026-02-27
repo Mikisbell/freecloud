@@ -5,6 +5,7 @@ import { Monitor, Settings, BookOpen, ArrowRight, Github, Linkedin, Youtube, Loa
 import { getPosts } from '@/lib/supabase';
 import { generateOrganizationSchema } from '@/lib/seo';
 import HeroCountdown from '@/components/HeroCountdown';
+import HeroBackground from '@/components/HeroBackground';
 import Newsletter from '@/components/Newsletter';
 
 const SERVICES = [
@@ -107,14 +108,10 @@ export default async function HomePage() {
           }}
         />
 
-        {/* Dot Pattern */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-50"
-          style={{
-            backgroundImage: 'radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px)',
-            backgroundSize: '32px 32px'
-          }}
-        />
+        {/* Canvas Animation - Red de Nodos Estructural */}
+        <div className="absolute inset-0 pointer-events-none opacity-60 mix-blend-screen">
+          <HeroBackground />
+        </div>
 
         <div className="relative z-10 w-full max-w-[740px] mx-auto flex flex-col items-center">
           {/* Elemento 1 — Badge countdown */}
