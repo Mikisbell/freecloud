@@ -88,6 +88,7 @@ export default function Header() {
               height={56}
               className="object-contain"
               priority
+              fetchPriority="high"
             />
             <div className="flex flex-col">
               <span className="font-brand font-black text-lg text-fc-navy leading-tight">

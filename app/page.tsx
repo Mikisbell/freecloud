@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, BookOpen, Download, Calculator, Code, Cpu, FileSpreadsheet, ChevronDown } from 'lucide-react';
 import { getPosts, getCategories } from '@/lib/supabase';
 import BlogCard from '@/components/BlogCard';
@@ -269,7 +270,14 @@ export default async function HomePage() {
               style={{ transitionDelay: `${i * 80}ms` }}
             >
               <div className="w-14 h-14 bg-surface-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-fc-cyan/10 group-hover:scale-110 transition-all duration-300 overflow-hidden p-2 border border-transparent group-hover:border-fc-cyan/20">
-                <img src={tool.iconUrl} alt={tool.name} className="w-full h-full object-contain" />
+                <Image
+                  src={tool.iconUrl}
+                  alt={tool.name}
+                  width={56}
+                  height={56}
+                  className="w-full h-full object-contain"
+                  loading="lazy"
+                />
               </div>
               <h3 className="font-display font-bold text-surface-900 text-lg mb-2 group-hover:text-fc-blue transition-colors">
                 {tool.name}
