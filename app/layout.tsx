@@ -1,7 +1,7 @@
+import React from 'react';
 import type { Metadata } from 'next';
 import { DM_Sans, Space_Grotesk, JetBrains_Mono, Montserrat, Rajdhani, Barlow_Condensed, Nunito } from 'next/font/google';
 import { generateSiteMetadata, generateWebsiteSchema } from '@/lib/seo';
-import LayoutShell from '@/components/LayoutShell';
 import AdSenseLoader from '@/components/AdSenseLoader';
 import ClientAnalytics from '@/components/ClientAnalytics';
 import Script from 'next/script';
@@ -79,15 +79,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es" suppressHydrationWarning data-scroll-behavior="smooth" className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable} ${fontBrand.variable} ${fontSlogan.variable} ${fontLogoFree.variable} ${fontLogoCloud.variable}`}>
       <body suppressHydrationWarning className="font-body antialiased min-h-screen flex flex-col">
-        <LayoutShell>
-          {children}
-        </LayoutShell>
+        {children}
         {adsenseId && <AdSenseLoader clientId={adsenseId} />}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(generateWebsiteSchema()) }}
         />
-        <ClientAnalytics />
+        <React.Suspense fallback={null}>
+          <ClientAnalytics />
+        </React.Suspense>
       </body>
     </html>
   );

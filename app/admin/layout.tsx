@@ -1,4 +1,5 @@
-import AdminSidebar from '@/components/admin/Sidebar'
+import React, { Suspense } from 'react';
+import AdminSidebar from '@/components/admin/Sidebar';
 
 export const metadata = {
     title: 'FreeCloud CMS Admin',
@@ -17,7 +18,9 @@ export default function AdminLayoutWrapper({
             <div className="fixed top-0 left-64 w-96 h-96 bg-fc-blue/[0.03] rounded-full blur-[128px] pointer-events-none" />
             <div className="fixed bottom-0 right-0 w-96 h-96 bg-violet-500/[0.02] rounded-full blur-[128px] pointer-events-none" />
 
-            <AdminSidebar />
+            <Suspense fallback={<div className="lg:w-64" />}>
+                <AdminSidebar />
+            </Suspense>
             {/* Mobile: full width, no margin. Desktop (lg+): margin for fixed sidebar */}
             <main className="relative z-10 p-4 sm:p-6 lg:ml-64 lg:p-8">
                 {children}
@@ -25,3 +28,4 @@ export default function AdminLayoutWrapper({
         </div>
     )
 }
+

@@ -17,7 +17,6 @@ interface Props {
 }
 
 export default async function BlogPage({ searchParams }: Props) {
-  "use cache";
   const { cat: categorySlug } = await searchParams;
 
   // Parallel fetch — evita waterfall de 2 round-trips seguidos a Supabase
