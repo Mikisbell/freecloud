@@ -56,12 +56,8 @@ export default function GoogleAd({
             className="w-full relative overflow-hidden my-6"
             style={{ minHeight: `${reservedHeight}px` }}
         >
-            {/* Placeholder visible antes de que cargue el ad */}
-            <div className="absolute inset-0 bg-neutral-100/60 rounded-lg border border-neutral-200 flex items-center justify-center pointer-events-none">
-                <span className="text-xs text-neutral-400 uppercase tracking-wider font-mono select-none">
-                    Espacio Publicitario
-                </span>
-            </div>
+            {/* Contenedor transparente para CLS, sin texto visible que penalice AdSense */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true" />
             <ins
                 ref={adRef}
                 className="adsbygoogle relative z-10 w-full"

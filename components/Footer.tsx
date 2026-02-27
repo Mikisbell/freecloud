@@ -12,10 +12,7 @@ const FOOTER_LINKS = {
     { label: 'Análisis Estructural', href: '/blog?cat=analisis-estructural' },
   ],
   'Recursos': [
-    { label: 'Plantillas Excel', href: '/recursos?type=excel' },
-    { label: 'Scripts Python', href: '/recursos?type=python' },
-    { label: 'Programas HP Prime', href: '/recursos?type=hp-prime' },
-    { label: 'Familias Revit', href: '/recursos?type=revit' },
+    { label: 'Todos los recursos', href: '/recursos' },
     { label: 'Web Apps', href: '/apps' },
   ],
   'Empresa': [
@@ -34,10 +31,10 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12">
             <div className="flex-1 text-center md:text-left">
               <h3 className="text-xl font-display font-bold text-white mb-1">
-                Únete a +500 ingenieros
+                Únete a la comunidad de ingenieros BIM
               </h3>
               <p className="text-fc-cyan/80 text-sm">
-                Recibe tutoriales BIM, plantillas gratuitas y noticias de normativa cada semana.
+                Recibe tutoriales BIM, plantillas y noticias de normativa cada semana.
               </p>
             </div>
             <div className="w-full md:w-auto">
