@@ -2,6 +2,14 @@
 const nextConfig = {
   compress: true,
   poweredByHeader: false,
+  // Elimina console.* en producción (pueden causar forced reflow si leen DOM)
+  compiler: {
+    removeConsole: { exclude: ['error', 'warn'] },
+  },
+  // Tree-shaking de paquetes de iconos — solo importa los íconos que se usan
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**.supabase.co' },
