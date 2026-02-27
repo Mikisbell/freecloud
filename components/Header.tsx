@@ -35,6 +35,7 @@ export default function Header() {
               width={128}
               height={32}
               sizes="(max-width: 768px) 112px, 128px"
+              quality={60}
               className="object-contain h-7 w-auto md:h-8"
               priority
               fetchPriority="high"

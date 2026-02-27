@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Monitor, Settings, BookOpen, ArrowRight, Github, Linkedin, Youtube } from 'lucide-react';
+import { Suspense } from 'react';
+import { Monitor, Settings, BookOpen, ArrowRight, Github, Linkedin, Youtube, Loader2 } from 'lucide-react';
 import { getPosts } from '@/lib/supabase';
 import { generateOrganizationSchema } from '@/lib/seo';
 import Newsletter from '@/components/Newsletter';
@@ -62,8 +63,6 @@ const SKILLS = [
 ];
 
 export default async function HomePage() {
-  const postsRes = await getPosts({ limit: 3 });
-  const recentPosts = postsRes.posts;
   const orgSchema = generateOrganizationSchema();
 
   return (
@@ -192,60 +191,13 @@ export default async function HomePage() {
       </section>
 
       {/* ── 4. BLOG ── */}
-      {recentPosts.length > 0 && (
-        <section className="bg-white py-20 px-6 border-y border-gray-100">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-              <div>
-                <p className="text-sm font-semibold text-blue-700 uppercase tracking-wider mb-2">
-                  Blog
-                </p>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-                  Últimos Artículos
-                </h2>
-              </div>
-              <Link href="/blog" className="text-blue-600 font-semibold hover:underline flex items-center mb-1">
-                Ver todos los artículos <ArrowRight className="w-4 h-4 ml-1" />
-              </Link>
-            </div>
-
-            {/* min-h reserva espacio mientras el contenido dinámico carga via PPR → previene CLS del footer */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 min-h-[280px] md:min-h-[320px]">
-              {recentPosts.map(post => (
-                <Link key={post.slug} href={`/blog/${post.slug}`} className="group flex flex-col">
-                  <div className="relative w-full h-48 md:h-44 rounded-xl overflow-hidden mb-4 bg-gray-100">
-                    {post.featured_image ? (
-                      <Image
-                        src={post.featured_image}
-                        alt={post.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-blue-50 flex items-center justify-center">
-                        <BookOpen className="w-10 h-10 text-blue-200" />
-                      </div>
-                    )}
-                    {post.categories && (
-                      <span className="absolute top-3 left-3 bg-white/95 text-gray-900 text-xs font-semibold px-2 py-1 rounded shadow-sm">
-                        {post.categories.emoji && <span className="mr-1">{post.categories.emoji}</span>}
-                        {post.categories.name}
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-2">
-                    {post.meta_title || post.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 mt-auto">
-                    {new Date(post.created_at).toLocaleDateString('es-ES', { month: 'long', day: 'numeric', year: 'numeric' })}
-                    {post.reading_time && ` · ${post.reading_time} min`}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </div>
+      <Suspense fallback={
+        <section className="bg-white py-20 px-6 border-y border-gray-100 min-h-[450px] flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-fc-blue/50" />
         </section>
-      )}
+      }>
+        <RecentBlogPosts />
+      </Suspense>
 
       {/* ── 5. SOBRE MÍ ── */}
       <section className="bg-gray-50 py-20 px-6">
@@ -333,5 +285,67 @@ export default async function HomePage() {
       </section>
 
     </>
+  );
+}
+
+// Server Component for the Blog Section to isolate data fetching and enable Suspense/PPR
+async function RecentBlogPosts() {
+  const postsRes = await getPosts({ limit: 3 });
+  const recentPosts = postsRes.posts;
+
+  if (recentPosts.length === 0) return null;
+
+  return (
+    <section className="bg-white py-20 px-6 border-y border-gray-100 min-h-[450px]">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+          <div>
+            <p className="text-sm font-semibold text-blue-700 uppercase tracking-wider mb-2">
+              Blog
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+              Últimos Artículos
+            </h2>
+          </div>
+          <Link href="/blog" className="text-blue-600 font-semibold hover:underline flex items-center mb-1">
+            Ver todos los artículos <ArrowRight className="w-4 h-4 ml-1" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {recentPosts.map(post => (
+            <Link key={post.slug} href={`/blog/${post.slug}`} className="group flex flex-col">
+              <div className="relative w-full h-48 md:h-44 rounded-xl overflow-hidden mb-4 bg-gray-100">
+                {post.featured_image ? (
+                  <Image
+                    src={post.featured_image}
+                    alt={post.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-blue-50 flex items-center justify-center">
+                    <BookOpen className="w-10 h-10 text-blue-200" />
+                  </div>
+                )}
+                {post.categories && (
+                  <span className="absolute top-3 left-3 bg-white/95 text-gray-900 text-xs font-semibold px-2 py-1 rounded shadow-sm">
+                    {post.categories.emoji && <span className="mr-1">{post.categories.emoji}</span>}
+                    {post.categories.name}
+                  </span>
+                )}
+              </div>
+              <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-2">
+                {post.meta_title || post.title}
+              </h3>
+              <p className="text-sm text-gray-600 mt-auto">
+                {new Date(post.created_at).toLocaleDateString('es-ES', { month: 'long', day: 'numeric', year: 'numeric' })}
+                {post.reading_time && ` · ${post.reading_time} min`}
+              </p>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
