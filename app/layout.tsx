@@ -78,6 +78,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="es" suppressHydrationWarning data-scroll-behavior="smooth" className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable} ${fontBrand.variable} ${fontSlogan.variable} ${fontLogoFree.variable} ${fontLogoCloud.variable}`}>
+      <head>
+        {/* ▶ 2026 Best Practice: preconnect reduce la latencia de fuentes en ~100ms (LCP) */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Preconnect a AdSense para reducir tiempo de primera conexión */}
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
+      </head>
       <body suppressHydrationWarning className="font-body antialiased min-h-screen flex flex-col">
         {children}
         {adsenseId && <AdSenseLoader clientId={adsenseId} />}

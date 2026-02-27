@@ -10,6 +10,10 @@ const nextConfig = {
   // Tree-shaking de paquetes de iconos — solo importa los íconos que se usan
   experimental: {
     optimizePackageImports: ['lucide-react'],
+    // ▶ 2026 Best Practice: inline CSS elimina el request render-blocking de Tailwind
+    // Tailwind genera CSS compacto ~15KB — inlinear es net positive para FCP/LCP.
+    // Trade-off: no caching de CSS, pero con PPR el HTML ya no se cachea por usuario.
+    inlineCss: true,
   },
   images: {
     remotePatterns: [
@@ -46,7 +50,8 @@ const nextConfig = {
         headers: [
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
-          { key: 'X-XSS-Protection', value: '1; mode=block' },
+          // X-XSS-Protection eliminado — deprecated en 2025/2026, causa errores en consola (Lighthouse "Usa API obsoletas")
+          // Los CSP modernos con script-src son la solución recomendada (OWASP 2024+)
           {
             key: 'Strict-Transport-Security',
             value: 'max-age=31536000; includeSubDomains; preload',
