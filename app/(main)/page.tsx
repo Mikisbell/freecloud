@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import { Monitor, Settings, BookOpen, ArrowRight, Github, Linkedin, Youtube, Loader2 } from 'lucide-react';
 import { getPosts } from '@/lib/supabase';
 import { generateOrganizationSchema } from '@/lib/seo';
+import HeroCountdown from '@/components/HeroCountdown';
 import Newsletter from '@/components/Newsletter';
 
 const SERVICES = [
@@ -62,6 +63,21 @@ const SKILLS = [
   'Next.js', 'E.030', 'E.060', 'Civil 3D', 'ETABS', 'Supabase', 'n8n'
 ];
 
+const A_TECH = [
+  { name: 'Revit', icon: '🏗️' },
+  { name: 'Dynamo', icon: '⚡' },
+  { name: 'Python', icon: '🐍' },
+  { name: 'ETABS', icon: '🏢' },
+  { name: 'Robot Structural', icon: '🔧' },
+  { name: 'AutoCAD', icon: '📐' },
+  { name: 'Civil 3D', icon: '🛤️' },
+  { name: 'Navisworks', icon: '🔍' },
+  { name: 'Next.js', icon: '▲' },
+  { name: 'TypeScript', icon: '🔷' },
+  { name: 'Supabase', icon: '⚡' },
+  { name: 'Excel VBA', icon: '📊' }
+];
+
 export default async function HomePage() {
   const orgSchema = generateOrganizationSchema();
 
@@ -73,30 +89,140 @@ export default async function HomePage() {
       />
 
       {/* ── 1. HERO ── */}
-      <section className="bg-gradient-to-br from-slate-900 to-[#1A3C6D] flex items-center min-h-[70vh] max-h-[85vh] py-20 px-6">
-        <div className="max-w-6xl mx-auto w-full">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-              Herramientas, tutoriales y desarrollo a medida para{' '}
-              <span className="text-[#38BDF8]">Ingenieros Civiles</span>
-            </h1>
-            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mb-8 leading-relaxed">
-              Programación, automatización BIM y software a medida para ingenieros civiles en Perú.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href="/blog"
-                className="bg-white text-blue-900 font-semibold px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                Ver Recursos Gratuitos
-              </Link>
-              <Link
-                href="/sobre-mi#contacto"
-                className="border-2 border-white text-white font-semibold px-8 py-4 rounded-lg hover:bg-white/10 transition-colors"
-              >
-                Solicitar Cotización
-              </Link>
-            </div>
+      <section className="relative w-full flex flex-col items-center text-center overflow-hidden"
+        style={{
+          backgroundColor: '#0a1628',
+          padding: 'clamp(60px, 10vw, 80px) 24px clamp(40px, 8vw, 48px)',
+          minHeight: 'min(70vh, 620px)',
+        }}
+      >
+        {/* Background Gradients */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: `
+              radial-gradient(circle at 20% 30%, rgba(59,130,246,0.08) 0%, transparent 50%),
+              radial-gradient(circle at 80% 70%, rgba(6,182,212,0.06) 0%, transparent 50%)
+            `
+          }}
+        />
+
+        {/* Dot Pattern */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-50"
+          style={{
+            backgroundImage: 'radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px)',
+            backgroundSize: '32px 32px'
+          }}
+        />
+
+        <div className="relative z-10 w-full max-w-[740px] mx-auto flex flex-col items-center">
+          {/* Elemento 1 — Badge countdown */}
+          <HeroCountdown />
+
+          {/* Elemento 2 — H1 */}
+          <h1
+            className="mt-[28px] font-extrabold leading-[1.15] tracking-[-0.03em] animate-fade-in-up flex flex-col items-center"
+            style={{
+              fontSize: 'clamp(2rem, 5vw, 3.2rem)',
+              animationDelay: '0.15s',
+              animationFillMode: 'both'
+            }}
+          >
+            <span className="text-white">Tecnología para</span>
+            <span
+              className="text-transparent bg-clip-text"
+              style={{ backgroundImage: 'linear-gradient(135deg, #3b82f6, #06b6d4)' }}
+            >
+              Ingeniería Civil
+            </span>
+          </h1>
+
+          {/* Elemento 3 — Subtítulo */}
+          <p
+            className="mt-[16px] max-w-[540px] font-normal leading-[1.6] animate-fade-in-up"
+            style={{
+              color: 'rgba(255,255,255,0.55)',
+              fontSize: 'clamp(1rem, 2vw, 1.15rem)',
+              animationDelay: '0.3s',
+              animationFillMode: 'both'
+            }}
+          >
+            Desarrollo de software a medida, automatización BIM y recursos técnicos para ingenieros y empresas de construcción en Perú.
+          </p>
+
+          {/* Elemento 4 — Botones */}
+          <div
+            className="mt-[36px] flex flex-col sm:flex-row justify-center gap-[14px] w-full max-w-[320px] sm:max-w-none animate-fade-in-up"
+            style={{ animationDelay: '0.45s', animationFillMode: 'both' }}
+          >
+            <Link
+              href="/blog"
+              className="group flex justify-center items-center rounded-[10px] w-full sm:w-auto transition-all bg-white text-[#0a1628] font-bold text-[15px] px-[30px] py-[14px] hover:bg-[#f0f4ff] hover:-translate-y-[1px] hover:shadow-[0_8px_30px_rgba(255,255,255,0.15)]"
+            >
+              Explorar Tutoriales <span className="ml-1 text-[18px] transition-transform group-hover:translate-x-1">→</span>
+            </Link>
+
+            <Link
+              href="/sobre-mi#contacto"
+              className="flex justify-center items-center rounded-[10px] w-full sm:w-auto transition-all font-semibold text-[15px] px-[30px] py-[14px] bg-transparent text-white/70 border border-white/15 hover:border-white/35 hover:text-white hover:bg-white/5"
+            >
+              Solicitar Cotización
+            </Link>
+          </div>
+
+          {/* Elemento 5 — Línea de credibilidad */}
+          <div
+            className="mt-[32px] flex flex-col sm:flex-row items-center gap-1 sm:gap-[16px] animate-fade-in-up"
+            style={{
+              color: 'rgba(255,255,255,0.35)',
+              fontSize: '13px',
+              animationDelay: '0.6s',
+              animationFillMode: 'both'
+            }}
+          >
+            <span>Ing. Civil + Ing. Sistemas</span>
+            <div className="hidden sm:block w-[3px] h-[3px] rounded-full" style={{ background: 'rgba(255,255,255,0.25)' }}></div>
+            <span>10 años en software</span>
+            <div className="hidden sm:block w-[3px] h-[3px] rounded-full" style={{ background: 'rgba(255,255,255,0.25)' }}></div>
+            <span>Huancayo, Perú</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 2. CARRUSEL DE TECNOLOGÍAS ── */}
+      <section className="bg-white py-[28px] overflow-hidden border-t border-gray-200">
+        <div className="text-center mb-[20px]">
+          <span
+            className="font-semibold uppercase"
+            style={{
+              fontSize: '11px',
+              letterSpacing: '0.12em',
+              color: '#94a3b8'
+            }}
+          >
+            Tecnologías que domino
+          </span>
+        </div>
+
+        <div className="relative w-full overflow-hidden flex group">
+          {/* Fades */}
+          <div className="absolute top-0 bottom-0 left-0 w-[60px] sm:w-[120px] z-10" style={{ background: 'linear-gradient(90deg, #fff 0%, transparent 100%)' }}></div>
+          <div className="absolute top-0 bottom-0 right-0 w-[60px] sm:w-[120px] z-10" style={{ background: 'linear-gradient(270deg, #fff 0%, transparent 100%)' }}></div>
+
+          {/* Track */}
+          <div className="flex w-max animate-scroll-logos group-hover:[animation-play-state:paused] gap-[32px] sm:gap-[48px] px-[16px] sm:px-[24px]">
+            {/* Duplicated for loop */}
+            {[...A_TECH, ...A_TECH].map((tech, i) => (
+              <div key={i} className="flex items-center gap-[10px] shrink-0 opacity-45 hover:opacity-100 transition-opacity duration-300">
+                <div className="w-[32px] h-[32px] bg-[#f1f5f9] rounded-[8px] flex items-center justify-center text-lg">
+                  {tech.icon}
+                </div>
+                <span className="text-[14px] font-semibold text-[#1e293b] whitespace-nowrap">
+                  {tech.name}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </section>

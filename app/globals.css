@@ -293,10 +293,11 @@
   ins.adsbygoogle[data-ad-status="unfilled"] {
     display: none !important;
   }
-  
+
   /* Auto-ads often push footer. We restrict their sudden height shifts */
   .google-auto-placed {
-    min-height: 250px; /* Moto G Power test standard */
+    min-height: 250px;
+    /* Moto G Power test standard */
     display: flex;
     justify-content: center;
   }
@@ -336,5 +337,70 @@
 
   .no-scrollbar::-webkit-scrollbar {
     display: none;
+  }
+
+  /* === HERO & CAROUSEL NEW ANIMATIONS === */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulseYellow {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.4;
+    }
+  }
+
+  @keyframes scrollLogos {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-fade-in-down {
+    animation: fadeInDown 0.8s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-pulse-yellow {
+    animation: pulseYellow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-scroll-logos {
+    animation: scrollLogos 40s linear infinite;
   }
 }
