@@ -32,10 +32,10 @@ export default function Header() {
             <Image
               src="/logo.png"
               alt="FreeCloud logo"
-              width={192}
-              height={48}
-              sizes="(max-width: 768px) 160px, 192px"
-              className="object-contain h-10 w-auto xl:h-12"
+              width={128}
+              height={32}
+              sizes="(max-width: 768px) 112px, 128px"
+              className="object-contain h-7 w-auto md:h-8"
               priority
               fetchPriority="high"
             />
