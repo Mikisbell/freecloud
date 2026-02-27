@@ -192,8 +192,24 @@ export default async function HomePage() {
 
       {/* ── 4. BLOG ── */}
       <Suspense fallback={
-        <section className="bg-white py-20 px-6 border-y border-gray-100 min-h-[450px] flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-fc-blue/50" />
+        <section className="bg-white py-20 px-6 border-y border-gray-100">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+              <div className="animate-pulse">
+                <div className="h-4 w-16 bg-blue-100 rounded mb-4"></div>
+                <div className="h-8 w-48 bg-gray-200 rounded"></div>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="flex flex-col gap-4 animate-pulse">
+                  <div className="w-full h-48 md:h-44 rounded-xl bg-gray-200"></div>
+                  <div className="h-6 w-3/4 bg-gray-200 rounded"></div>
+                  <div className="h-4 w-1/3 bg-gray-100 rounded mt-auto"></div>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
       }>
         <RecentBlogPosts />
