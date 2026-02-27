@@ -5,7 +5,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Clock } from 'lucide-react';
 import Newsletter from '@/components/Newsletter';
-import GoogleAd from '@/components/GoogleAd';
+import dynamic from 'next/dynamic';
+
+// GoogleAd es client-only (window.adsbygoogle) — no tiene sentido en SSR
+const GoogleAd = dynamic(() => import('@/components/GoogleAd'), { ssr: false });
 
 export const metadata: Metadata = {
   title: 'Blog - Tutoriales BIM e Ingeniería Civil',
@@ -19,9 +22,11 @@ interface Props {
 export default async function BlogPage({ searchParams }: Props) {
   const { cat: categorySlug } = await searchParams;
 
-  // Fetch from Supabase
-  const dbCategories = await getCategories();
-  const { posts: allPosts } = await getPosts({ category: categorySlug });
+  // Parallel fetch — evita waterfall de 2 round-trips seguidos a Supabase
+  const [dbCategories, { posts: allPosts }] = await Promise.all([
+    getCategories(),
+    getPosts({ category: categorySlug }),
+  ]);
 
   const activeCat = categorySlug ? dbCategories.find(c => c.slug === categorySlug) : null;
 

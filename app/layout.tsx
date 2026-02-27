@@ -1,12 +1,21 @@
+import dynamic from 'next/dynamic';
 import type { Metadata } from 'next';
 import { DM_Sans, Space_Grotesk, JetBrains_Mono, Montserrat, Rajdhani } from 'next/font/google';
 import { generateSiteMetadata, generateWebsiteSchema } from '@/lib/seo';
 import LayoutShell from '@/components/LayoutShell';
 import AdSenseLoader from '@/components/AdSenseLoader';
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
 import './globals.css';
+
+// Diferir scripts de analytics — no bloquean el bundle inicial del servidor
+const Analytics = dynamic(
+  () => import('@vercel/analytics/next').then(m => m.Analytics),
+  { ssr: false }
+);
+const SpeedInsights = dynamic(
+  () => import('@vercel/speed-insights/next').then(m => m.SpeedInsights),
+  { ssr: false }
+);
 
 const fontDisplay = Space_Grotesk({
   subsets: ['latin'],

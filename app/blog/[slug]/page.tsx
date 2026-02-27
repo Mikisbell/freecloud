@@ -1,4 +1,5 @@
 import { getPosts, getPostBySlug, getRelatedPosts } from '@/lib/supabase';
+import dynamic from 'next/dynamic';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -16,8 +17,10 @@ import { generatePostMetadata, generateArticleSchema, generateBreadcrumbSchema, 
 import BlogCard from '@/components/BlogCard';
 import Newsletter from '@/components/Newsletter';
 import ShareButtons from '@/components/ShareButtons';
-import GoogleAd from '@/components/GoogleAd';
 import YouTubeFacade from '@/components/YouTubeFacade';
+
+// GoogleAd es client-only (window.adsbygoogle) — carga deferída para no inflar el bundle SSR
+const GoogleAd = dynamic(() => import('@/components/GoogleAd'), { ssr: false });
 
 export async function generateStaticParams() {
   const { posts } = await getPosts();
@@ -87,13 +90,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
+
+  // Lanzar getPostBySlug primero (necesario para todo lo demás)
   const post = await getPostBySlug(slug);
   if (!post) notFound();
 
-  // Parallel fetching: related posts don't depend on the full post content
-  const relatedPosts = post.category_id
-    ? await getRelatedPosts(post.id, post.category_id, 3)
-    : [];
+  // Ahora lanzar en paralelo los datos secundarios que no dependen entre sí
+  const [relatedPosts] = await Promise.all([
+    post.category_id
+      ? getRelatedPosts(post.id, post.category_id, 3)
+      : Promise.resolve([]),
+  ]);
+
   const categoryConfig = post.categories;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://freecloud.pe';
 
