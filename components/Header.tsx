@@ -92,7 +92,7 @@ export default function Header() {
             />
             <div className="flex flex-col">
               <span className="font-brand font-black text-lg text-fc-navy leading-tight">
-                <span style={{ color: '#D4940A' }}>FREE</span><span style={{ color: '#1565C0' }}>CLOUD</span>
+                <span style={{ color: '#2596be', fontFamily: 'var(--font-logo-free)', fontWeight: 300, letterSpacing: '0.04em' }}>FREE</span><span style={{ color: '#2596be', fontFamily: 'var(--font-logo-cloud)', fontWeight: 800 }}>CLOUD</span>
               </span>
               <span className="text-[10px] text-fc-text-muted font-slogan tracking-[0.18em] uppercase leading-none">
                 BIM &amp; Ingeniería

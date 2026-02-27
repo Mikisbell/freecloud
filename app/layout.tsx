@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { DM_Sans, Space_Grotesk, JetBrains_Mono, Montserrat, Rajdhani } from 'next/font/google';
+import { DM_Sans, Space_Grotesk, JetBrains_Mono, Montserrat, Rajdhani, Barlow_Condensed, Nunito } from 'next/font/google';
 import { generateSiteMetadata, generateWebsiteSchema } from '@/lib/seo';
 import LayoutShell from '@/components/LayoutShell';
 import AdSenseLoader from '@/components/AdSenseLoader';
@@ -53,13 +53,31 @@ const fontSlogan = Rajdhani({
   preload: false,
 });
 
+// Barlow Condensed Light — sustituto de "Organetto Light Cnd" para FREE
+const fontLogoFree = Barlow_Condensed({
+  subsets: ['latin'],
+  variable: '--font-logo-free',
+  display: 'optional',
+  weight: ['300'],
+  preload: false,
+});
+
+// Nunito ExtraBold — sustituto de "Geometric 706 Std Black" para CLOUD
+const fontLogoCloud = Nunito({
+  subsets: ['latin'],
+  variable: '--font-logo-cloud',
+  display: 'optional',
+  weight: ['800'],
+  preload: false,
+});
+
 export const metadata: Metadata = generateSiteMetadata();
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID;
 
   return (
-    <html lang="es" suppressHydrationWarning data-scroll-behavior="smooth" className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable} ${fontBrand.variable} ${fontSlogan.variable}`}>
+    <html lang="es" suppressHydrationWarning data-scroll-behavior="smooth" className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable} ${fontBrand.variable} ${fontSlogan.variable} ${fontLogoFree.variable} ${fontLogoCloud.variable}`}>
       <body suppressHydrationWarning className="font-body antialiased min-h-screen flex flex-col">
         <LayoutShell>
           {children}
