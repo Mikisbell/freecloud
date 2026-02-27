@@ -12,6 +12,26 @@ const nextConfig = {
   },
   async headers() {
     return [
+      // Cache largo para assets estáticos de Next.js — resuelve auditoría Lighthouse
+      {
+        source: '/_next/static/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Cache moderado para imágenes del sitio
+      {
+        source: '/images/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, stale-while-revalidate=604800',
+          },
+        ],
+      },
       {
         source: '/(.*)',
         headers: [

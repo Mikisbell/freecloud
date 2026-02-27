@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
 import { siteConfig } from '@/config/site';
@@ -80,10 +81,13 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <img
+            <Image
               src="/logo.png"
               alt="FreeCloud logo"
-              className="h-14 w-auto object-contain"
+              width={56}
+              height={56}
+              className="object-contain"
+              priority
             />
             <div className="flex flex-col">
               <span className="font-brand font-black text-lg text-fc-navy leading-tight">

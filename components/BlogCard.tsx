@@ -22,10 +22,10 @@ export default function BlogCard({ post, featured = false, dbCategory }: BlogCar
           <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
           <div className="relative p-8 md:p-10">
             <div className="flex items-center gap-2 mb-4">
-              <span className="px-3 py-1 bg-fc-blue/20 backdrop-blur-sm text-fc-cyan-light text-xs font-semibold rounded-full">
+              <span className="px-3 py-1 bg-white/15 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/25">
                 {categoryIcon} {categoryName}
               </span>
-              <span className="text-fc-cyan-light text-xs">
+              <span className="text-white/90 text-xs">
                 ⭐ Destacado
               </span>
             </div>
@@ -45,7 +45,7 @@ export default function BlogCard({ post, featured = false, dbCategory }: BlogCar
                   {post.readingTime}
                 </span>
               </div>
-              <span className="flex items-center gap-1 text-sm text-fc-cyan font-medium group-hover:gap-2 transition-all">
+              <span className="flex items-center gap-1 text-sm text-white font-semibold group-hover:gap-2 transition-all">
                 Leer más <ArrowRight className="w-4 h-4" />
               </span>
             </div>

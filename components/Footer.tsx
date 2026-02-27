@@ -59,10 +59,10 @@ export default function Footer() {
               {siteConfig.description}
             </p>
             <div className="flex items-center gap-3">
-              <a href={siteConfig.links.youtube} target="_blank" rel="noopener" className="w-9 h-9 bg-surface-800 hover:bg-fc-navy rounded-lg flex items-center justify-center transition-colors">
+              <a href={siteConfig.links.youtube} aria-label="YouTube de FreeCloud" target="_blank" rel="noopener" className="w-9 h-9 bg-surface-800 hover:bg-fc-navy rounded-lg flex items-center justify-center transition-colors">
                 <Youtube className="w-4 h-4" />
               </a>
-              <a href={`mailto:${siteConfig.contact.email}`} target="_blank" rel="noopener" className="w-9 h-9 bg-surface-800 hover:bg-fc-navy rounded-lg flex items-center justify-center transition-colors">
+              <a href={`mailto:${siteConfig.contact.email}`} aria-label="Enviar correo" target="_blank" rel="noopener" className="w-9 h-9 bg-surface-800 hover:bg-fc-navy rounded-lg flex items-center justify-center transition-colors">
                 <Mail className="w-4 h-4" />
               </a>
             </div>

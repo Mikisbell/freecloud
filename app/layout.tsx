@@ -70,8 +70,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(generateWebsiteSchema()) }}
         />
-        <Analytics />
-        <SpeedInsights />
+        <Analytics mode="auto" />
+        <SpeedInsights sampleRate={0.3} />
       </body>
     </html>
   );
