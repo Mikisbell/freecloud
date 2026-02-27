@@ -108,8 +108,8 @@ export default async function HomePage() {
           }}
         />
 
-        {/* Canvas Animation - Red de Nodos Estructural */}
-        <div className="absolute inset-0 pointer-events-none opacity-60 mix-blend-screen">
+        {/* Canvas Animation - Edificio Wireframe + Matrix Rain */}
+        <div className="absolute inset-0 pointer-events-none">
           <HeroBackground />
         </div>
 
