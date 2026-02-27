@@ -4,12 +4,14 @@ import ScrollRevealProvider from '@/components/ScrollRevealProvider';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
     return (
-        <ScrollRevealProvider>
+        <>
             <Header />
             <main className="flex-1">
-                {children}
+                <ScrollRevealProvider>
+                    {children}
+                </ScrollRevealProvider>
             </main>
             <Footer />
-        </ScrollRevealProvider>
+        </>
     )
 }
