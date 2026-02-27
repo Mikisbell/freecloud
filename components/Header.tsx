@@ -82,7 +82,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
             <Image
-              src="/logo-texto.png"
+              src="/logo.png"
               alt="FreeCloud logo"
               width={240}
               height={60}
