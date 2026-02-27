@@ -1,4 +1,4 @@
-import { getPosts, getPostBySlug, getRelatedPosts } from '@/lib/supabase';
+import { getPostBySlug, getPosts, getRelatedPosts, getAdjacentPosts, getPopularPosts } from '@/lib/supabase';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -11,7 +11,7 @@ import rehypeHighlight from 'rehype-highlight';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
-import { Clock, Calendar, Tag, Share2, ArrowRight } from 'lucide-react';
+import { Clock, Calendar, Tag, Share2, ArrowRight, ArrowLeft } from 'lucide-react';
 import { generatePostMetadata, generateArticleSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/seo';
 import BlogCard from '@/components/BlogCard';
 import Newsletter from '@/components/Newsletter';
@@ -94,10 +94,10 @@ export default async function BlogPostPage({ params }: Props) {
   if (!post) notFound();
 
   // Ahora lanzar en paralelo los datos secundarios que no dependen entre sí
-  const [relatedPosts] = await Promise.all([
-    post.category_id
-      ? getRelatedPosts(post.id, post.category_id, 3)
-      : Promise.resolve([]),
+  const [relatedPosts, popularPosts, adjacent] = await Promise.all([
+    post.category_id ? getRelatedPosts(post.id, post.category_id, 3) : Promise.resolve([]),
+    getPopularPosts(4),
+    getAdjacentPosts(post.published_at || post.created_at || new Date().toISOString(), post.id)
   ]);
 
   const categoryConfig = post.categories;
@@ -194,11 +194,14 @@ export default async function BlogPostPage({ params }: Props) {
               <MDXRemote
                 source={(() => {
                   let headCount = 0;
-                  // Inyectamos ToC antes del primer H2, y AdSense antes de H2 pares
+                  // Inyectamos ToC antes del primer H2, y CTA en el tercer H2
                   return (post.content || '').replace(/\n## /g, (match) => {
                     headCount++;
                     if (headCount === 1) {
                       return '\n\n<TableOfContents />\n\n## ';
+                    }
+                    if (headCount === 3 && post.cta_product_url) {
+                      return '\n\n<ProductCTA />\n\n## ';
                     }
                     if (headCount > 1 && headCount % 2 === 0) {
                       return '\n\n<InArticleAd />\n\n## ';
@@ -209,6 +212,16 @@ export default async function BlogPostPage({ params }: Props) {
                 components={{
                   ...mdxComponents,
                   TableOfContents: () => <TableOfContents source={post.content || ''} />,
+                  ProductCTA: () => post.cta_product_url ? (
+                    <div className="my-10 p-6 rounded-2xl bg-gradient-to-r from-fc-blue/5 to-transparent border-l-4 border-fc-blue shadow-sm">
+                      <p className="text-xs font-semibold text-fc-navy uppercase tracking-wider mb-2">💡 Recomendación del Autor</p>
+                      <h3 className="text-xl font-bold text-surface-900 mb-2">{post.cta_product_name || 'Herramienta Recomendada'}</h3>
+                      <p className="text-sm text-surface-600 mb-4">{post.cta_product_price ? `Disponible por ${post.cta_product_price}` : 'Accede a esta herramienta para optimizar tu trabajo.'}</p>
+                      <a href={post.cta_product_url} target="_blank" rel="noopener noreferrer" className="inline-block bg-fc-blue text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-fc-navy transition-colors shadow-sm">
+                        👉 Ver detalles
+                      </a>
+                    </div>
+                  ) : null,
                 }}
                 options={{
                   mdxOptions: {
@@ -219,29 +232,28 @@ export default async function BlogPostPage({ params }: Props) {
               />
             </div>
 
-            {/* CTA de Producto (Hotmart/Gato) — Se muestra si está configurado desde el editor */}
-            {post.cta_product_url && (
-              <div className="my-10 p-6 rounded-2xl bg-gradient-to-r from-emerald-50 to-fc-blue/5 border-2 border-emerald-200">
-                <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-1">🛠 Herramienta relacionada</p>
-                <h3 className="text-lg font-bold text-surface-900 mb-2">
-                  {post.cta_product_name || 'Descarga la herramienta'}
-                </h3>
-                <p className="text-sm text-surface-600 mb-4">
-                  Automatiza lo que aprendiste en este artículo. Descarga la plantilla/herramienta lista para usar en tu próximo proyecto.
-                </p>
-                <a
-                  href={post.cta_product_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-colors text-sm"
-                >
-                  👉 Descargar ahora
-                  {post.cta_product_price && (
-                    <span className="ml-1 px-2 py-0.5 bg-white/20 rounded-full text-xs">
-                      {post.cta_product_price}
-                    </span>
-                  )}
-                </a>
+            {/* Navegación Secuencial */}
+            {(adjacent.prev || adjacent.next) && (
+              <div className="flex flex-col sm:flex-row justify-between items-stretch py-8 border-t border-b border-surface-200 mt-14 mb-8 gap-4">
+                {adjacent.prev ? (
+                  <Link href={`/blog/${adjacent.prev.slug}`} className="flex items-center gap-4 text-left flex-1 bg-surface-50 p-4 rounded-xl hover:bg-surface-100 border border-transparent hover:border-surface-200 transition-colors group">
+                    <ArrowLeft className="w-5 h-5 flex-shrink-0 text-fc-blue group-hover:text-fc-navy transition-colors" />
+                    <div>
+                      <span className="text-xs uppercase tracking-wider text-surface-500 font-semibold mb-1 block">Post anterior</span>
+                      <span className="font-bold text-surface-900 leading-tight group-hover:text-fc-blue transition-colors line-clamp-2">{adjacent.prev.title}</span>
+                    </div>
+                  </Link>
+                ) : <div className="flex-1" />}
+
+                {adjacent.next ? (
+                  <Link href={`/blog/${adjacent.next.slug}`} className="flex items-center gap-4 text-right flex-1 bg-surface-50 p-4 rounded-xl hover:bg-surface-100 border border-transparent hover:border-surface-200 transition-colors group justify-end">
+                    <div className="text-right">
+                      <span className="text-xs uppercase tracking-wider text-surface-500 font-semibold mb-1 block">Post siguiente</span>
+                      <span className="font-bold text-surface-900 leading-tight group-hover:text-fc-blue transition-colors line-clamp-2">{adjacent.next.title}</span>
+                    </div>
+                    <ArrowRight className="w-5 h-5 flex-shrink-0 text-fc-blue group-hover:text-fc-navy transition-colors" />
+                  </Link>
+                ) : <div className="flex-1" />}
               </div>
             )}
 
@@ -382,6 +394,21 @@ export default async function BlogPostPage({ params }: Props) {
                 </a>
               </div>
             </div>
+
+            {/* Posts Populares Sidebar */}
+            {popularPosts.length > 0 && (
+              <div className="bg-surface-50 rounded-xl p-5 mb-6 border border-surface-100 shadow-sm">
+                <h3 className="font-display font-semibold text-surface-900 text-sm mb-4 uppercase tracking-wider">🔥 Posts Destacados</h3>
+                <div className="space-y-4">
+                  {popularPosts.map(pp => (
+                    <Link key={pp.slug} href={`/blog/${pp.slug}`} className="group flex flex-col gap-1">
+                      <h4 className="text-surface-800 font-medium text-sm leading-snug group-hover:text-fc-blue transition-colors line-clamp-2">{pp.title}</h4>
+                      <div className="text-xs text-surface-400">{new Date(pp.published_at || '').toLocaleDateString('es-PE', { day: 'numeric', month: 'short' })}</div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Sidebar Ad — slot configurado en NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR */}
             <div className="sticky top-20">

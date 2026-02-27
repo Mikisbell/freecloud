@@ -260,6 +260,41 @@ export async function getRelatedPosts(postId: string, categoryId: string, limit:
   return data as Post[];
 }
 
+export async function getPopularPosts(limit: number = 4) {
+  const { data, error } = await getClient()
+    .from('posts')
+    .select('id, title, slug, cover_image, published_at')
+    .eq('status', 'published')
+    .order('published_at', { ascending: false }) // En el futuro se puede ordenar por 'views'
+    .limit(limit);
+  if (error) return [];
+  return data as Partial<Post>[];
+}
+
+export async function getAdjacentPosts(publishedAt: string, currentId: string) {
+  const { data: prevPost } = await getClient()
+    .from('posts')
+    .select('title, slug')
+    .eq('status', 'published')
+    .neq('id', currentId)
+    .lt('published_at', publishedAt)
+    .order('published_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  const { data: nextPost } = await getClient()
+    .from('posts')
+    .select('title, slug')
+    .eq('status', 'published')
+    .neq('id', currentId)
+    .gt('published_at', publishedAt)
+    .order('published_at', { ascending: true })
+    .limit(1)
+    .maybeSingle();
+
+  return { prev: prevPost, next: nextPost };
+}
+
 export async function getAdminPosts(filters?: { status?: string, category_id?: string }) {
   let query = getClient()
     .from('posts')
