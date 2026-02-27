@@ -177,22 +177,7 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          {/* Elemento 5 — Línea de credibilidad */}
-          <div
-            className="mt-[32px] flex flex-col sm:flex-row items-center gap-1 sm:gap-[16px] animate-fade-in-up"
-            style={{
-              color: 'rgba(255,255,255,0.35)',
-              fontSize: '13px',
-              animationDelay: '0.6s',
-              animationFillMode: 'both'
-            }}
-          >
-            <span>Ing. Civil + Ing. Sistemas</span>
-            <div className="hidden sm:block w-[3px] h-[3px] rounded-full" style={{ background: 'rgba(255,255,255,0.25)' }}></div>
-            <span>10 años en software</span>
-            <div className="hidden sm:block w-[3px] h-[3px] rounded-full" style={{ background: 'rgba(255,255,255,0.25)' }}></div>
-            <span>Huancayo, Perú</span>
-          </div>
+
         </div>
       </section >
 
