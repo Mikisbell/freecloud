@@ -55,7 +55,7 @@ export default function Footer() {
               </div>
               <span className="font-display font-bold text-white">{siteConfig.name}</span>
             </Link>
-            <p className="text-sm text-surface-400 mb-4">
+            <p className="text-sm text-surface-300 mb-4">
               {siteConfig.description}
             </p>
             <div className="flex items-center gap-3">
@@ -76,7 +76,7 @@ export default function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-surface-400 hover:text-fc-cyan transition-colors"
+                      className="text-sm text-surface-300 hover:text-fc-cyan transition-colors"
                       {...('external' in link && link.external ? { target: '_blank', rel: 'noopener' } : {})}
                     >
                       {link.label}
@@ -90,10 +90,10 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="border-t border-surface-800 mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
-          <p className="text-xs text-surface-500">
+          <p className="text-xs text-surface-400">
             &copy; {new Date().getFullYear()} {siteConfig.name}. Todos los derechos reservados.
           </p>
-          <div className="flex items-center gap-1 text-xs text-surface-500">
+          <div className="flex items-center gap-1 text-xs text-surface-400">
             <MapPin className="w-3 h-3" />
             <span>{siteConfig.contact.location}</span>
           </div>

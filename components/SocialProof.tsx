@@ -27,7 +27,7 @@ export default function SocialProof() {
                                 <span className="text-lg">{stat.suffix}</span>
                                 {stat.flag && <span className="ml-1 text-lg">{stat.flag}</span>}
                             </div>
-                            <p className="text-xs text-surface-400 mt-0.5 font-medium uppercase tracking-wide">
+                            <p className="text-xs text-surface-600 mt-0.5 font-medium uppercase tracking-wide">
                                 {stat.label}
                             </p>
                         </div>

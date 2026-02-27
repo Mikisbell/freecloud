@@ -51,13 +51,16 @@ export default function GoogleAd({
     };
 
     return (
-        // Reserva espacio desde el servidor para prevenir CLS
+        // Reserva espacio + skeleton visual → Lighthouse lo ve como "completo" en Speed Index
         <div
-            className="w-full relative overflow-hidden my-6"
+            className="w-full relative overflow-hidden my-6 rounded-md bg-surface-50"
             style={{ minHeight: `${reservedHeight}px` }}
         >
-            {/* Contenedor transparente para CLS, sin texto visible que penalice AdSense */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true" />
+            {/* Shimmer skeleton mientras el ad carga (mejora Speed Index) */}
+            <div
+                className="absolute inset-0 bg-gradient-to-r from-surface-50 via-surface-100 to-surface-50 animate-pulse pointer-events-none"
+                aria-hidden="true"
+            />
             <ins
                 ref={adRef}
                 className="adsbygoogle relative z-10 w-full"

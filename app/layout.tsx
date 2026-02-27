@@ -39,18 +39,18 @@ const fontMono = JetBrains_Mono({
 const fontBrand = Montserrat({
   subsets: ['latin'],
   variable: '--font-brand',
-  display: 'swap',
-  weight: ['700', '800', '900'], // Solo pesos realmente usados (Black/Bold)
-  preload: false, // Brand font — defer para no bloquear FCP
+  display: 'optional',    // FIX C: 'optional' elimina render blocking — si no carga en ~100ms usa fallback
+  weight: ['700', '800', '900'],
+  preload: false,
 });
 
 // Rajdhani SemiBold — coincide con "NUNCA PARES DE CONSTRUIR." del logo
 const fontSlogan = Rajdhani({
   subsets: ['latin'],
   variable: '--font-slogan',
-  display: 'swap',
-  weight: ['600', '700'], // Solo SemiBold y Bold
-  preload: false, // Solo en hero badge — defer para no bloquear FCP
+  display: 'optional',    // FIX C: 'optional' elimina render blocking — solo visible en hero badge
+  weight: ['600', '700'],
+  preload: false,
 });
 
 export const metadata: Metadata = generateSiteMetadata();
