@@ -147,40 +147,38 @@ export default async function HomePage() {
       {/* ── HIGHLIGHT CARDS (estilo Dataiku) ── */}
       {highlightPosts.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-14">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-dataiku-border overflow-hidden reveal">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 reveal">
             {highlightPosts.map((post, i) => {
               const isMid = i === 1;
               return (
                 <a
                   key={post.slug}
                   href={`/blog/${post.slug}`}
-                  className={`group relative flex flex-col justify-between p-6 md:p-8 min-h-[140px] transition-all duration-200 ${isMid
-                      ? 'bg-fc-cyan hover:brightness-110'
-                      : 'bg-fc-navy-deep hover:bg-fc-navy'
-                    } ${i > 0 ? 'border-l border-white/10' : ''}`}
+                  className={`group relative flex flex-col justify-end p-5 min-h-[160px] overflow-hidden transition-all duration-300 ${isMid ? 'bg-[#3fb8d1] hover:brightness-105' : 'bg-[#292c3a] hover:brightness-110'
+                    }`}
                 >
-                  {/* Decoración geométrica esquina */}
-                  <div className={`absolute top-0 right-0 w-24 h-24 opacity-10 ${isMid ? 'opacity-20' : ''
-                    }`}>
-                    <svg viewBox="0 0 96 96" fill="none" className="w-full h-full">
-                      <polygon points="96,0 96,96 0,0" fill="white" />
-                    </svg>
+                  {/* Decoración geométrica muy sutil en fondo */}
+                  <div className={`absolute top-0 right-0 w-32 h-32 opacity-5 pointer-events-none transform translate-x-1/3 -translate-y-1/3 rotate-12 ${isMid ? 'opacity-10' : ''}`}>
+                    <svg viewBox="0 0 100 100" fill="currentColor" className="w-full h-full text-white"><polygon points="50,0 100,100 0,100" /></svg>
                   </div>
-                  {/* Contenido */}
-                  <p className={`text-xs font-bold uppercase tracking-widest mb-3 ${isMid ? 'text-white/70' : 'text-fc-cyan/70'
-                    }`}>
-                    {post.categories?.name ?? 'Artículo'}
-                  </p>
-                  <h3 className="font-display font-bold text-white text-base md:text-lg leading-snug mb-4 flex-1">
-                    {post.title}
-                  </h3>
-                  {/* CTA */}
-                  <div className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider group-hover:gap-3 transition-all duration-200 ${isMid ? 'text-white' : 'text-fc-cyan'
-                    }`}>
-                    <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 16 16" fill="none">
-                      <path d="M2 8h10M8 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    Leer artículo
+
+                  {/* Contenido principal (alineado abajo como en Dataiku) */}
+                  <div className="relative z-10 w-full">
+                    {/* Título - Regular font, no bold */}
+                    <h3 className={`font-brand text-white text-base leading-[1.3] mb-4 font-normal ${isMid ? 'text-[#0a1e35]' : ''}`}>
+                      {post.title}
+                    </h3>
+
+                    {/* CTA con flecha Dataiku-style (arrow hook + text) */}
+                    <div className={`flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-colors duration-200 mt-auto ${isMid ? 'text-[#0a1e35]' : 'text-white'
+                      }`}>
+                      {/* Icono flecha "L" girada */}
+                      <svg className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                      {isMid ? 'LEER ARTÍCULO' : 'LEER ARTÍCULO'}
+                    </div>
                   </div>
                 </a>
               );
