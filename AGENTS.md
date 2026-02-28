@@ -24,6 +24,7 @@ app/
 components/           → Componentes reutilizables
 lib/                  → Utilities (supabase.ts, seo.ts)
 public/images/        → Assets estáticos
+docs/arquitectura.md  → Documento vital de Core Technical Spec
 .agents/skills/       → Skills de agentes IA
 ```
 
