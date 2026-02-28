@@ -35,24 +35,19 @@ docs/arquitectura.md  → Documento vital de Core Technical Spec
 - **Commits:** `feat(scope):`, `fix(scope):`, `style(scope):`, `refactor(scope):`
 - **No romper el build:** siempre correr `npm run build` antes de `git push`
 
-## Sistema de Skills — Lazy Loading de Contexto
+## Sistema de Skills — Lazy Loading (Scope Root)
 
-Cargar SOLO la skill que aplica al contexto actual. No cargar varias a la vez.
+⚠️ **ESTÁS EN EL ROOT DEL REPOSITORIO.** Cargas SOLO la skill crítica general. 
 
-| Contexto de trabajo | Skill a cargar |
-|---|---|
-| Componentes React, páginas, layouts Next.js | `.agents/skills/nextjs-shadcn-builder/SKILL.md` |
-| Revisión de código, PRs, calidad | `.agents/skills/code-review-excellence/SKILL.md` |
-| Estilos, Tailwind, responsive/mobile | `.agents/skills/tailwindcss-mobile-first/SKILL.md` |
-| Performance, LCP, CLS, bundle optimization | `.agents/skills/vercel-react-best-practices/SKILL.md` |
-| Landing page, hero, conversión | `.agents/skills/landing-page-guide-v2/SKILL.md` |
-| Feature nueva o cambio arquitectónico complejo | `.agents/skills/sdd-orchestrator/SKILL.md` |
-| Explorar codebase antes de implementar | `.agents/skills/sdd-explore/SKILL.md` |
-| Escribir especificaciones y tests | `.agents/skills/sdd-spec/SKILL.md` |
-| Diseño técnico y decisiones de arquitectura | `.agents/skills/sdd-design/SKILL.md` |
-| Planificar tareas de implementación | `.agents/skills/sdd-tasks/SKILL.md` |
-| Implementar código siguiendo un plan | `.agents/skills/sdd-apply/SKILL.md` |
-| Verificar que lo implementado cumple el spec | `.agents/skills/sdd-verify/SKILL.md` |
+| Acción Solicitada | Skill a Cargar (USA ESTA RUTA) |
+| :--- | :--- |
+| **Arquitectura SDD:** Desarrollar nueva feature backend o bug | `.agents/workflows/sdd-new.md` |
+| **Ingeniería:** "Crea una skill para esto", automatizar proceso | `.agents/skills/skill-creator/SKILL.md` |
+| **DevOps / QA:** Revisión profunda de PRs, Code Review Estricto | `.agents/skills/code-review-excellence/SKILL.md` |
+
+**🛑 ENRUTAMIENTO POR SCOPE (CRÍTICO - V3):**
+- Si el usuario te pide tocar **UI, Formularios, Landing, Layouts de Next.js, Tailwnid o el Blog**: **ABORTA** la lectura de este archivo y ve OBLIGATORIAMENTE a leer el archivo de contexto `app/(main)/agents.md`. No programes sin él.
+- Si el usuario te pide tocar **Base de Datos, Endpoints API puras, o Supabase Sever**: **ABORTA** la lectura y ve OBLIGATORIAMENTE a leer `app/api/agents.md`.
 
 ## Memoria Persistente (Engram)
 Si Engram MCP está disponible:
