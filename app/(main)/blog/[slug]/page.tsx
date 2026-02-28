@@ -258,14 +258,16 @@ export default async function BlogPostPage({ params }: Props) {
             )}
 
             {/* Ad in article fallback al final del articulo si el contenido fue muy corto (0-1 titulos) */}
-            <div className="mt-8 mb-4">
-              <ClientGoogleAd
-                adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE || ''}
-                adFormat="fluid"
-                adLayout="in-article"
-                reservedHeight={200}
-              />
-            </div>
+            {process.env.NEXT_PUBLIC_ADSENSE_APPROVED === 'true' && (
+              <div className="mt-8 mb-4">
+                <ClientGoogleAd
+                  adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE || ''}
+                  adFormat="fluid"
+                  adLayout="in-article"
+                  reservedHeight={200}
+                />
+              </div>
+            )}
 
             {/* Tags, Share & Author Bio */}
             <div className="mt-12 pt-8 border-t border-surface-100">

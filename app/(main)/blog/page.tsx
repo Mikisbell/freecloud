@@ -207,8 +207,12 @@ export default async function BlogPage({ searchParams }: Props) {
                       </article>
                     </Link>
 
-                    {/* Inyectamos In-Feed Ad en la grilla después de cada 4 posts (o cada 5ta posición) */}
-                    {(index + 1) % 4 === 0 && (
+                    {/* 
+                      [BIM/IMPACT] Inyectamos In-Feed Ad cada 4 posts.
+                      Se desactiva la inyección de UI (divs grises) si la cuenta de AdSense no está lista 
+                      para evitar retrasar la aprobación de Google.
+                    */}
+                    {(index + 1) % 4 === 0 && process.env.NEXT_PUBLIC_ADSENSE_APPROVED === 'true' && (
                       <div className="h-full min-h-[350px] bg-gradient-to-b from-surface-50 to-white rounded-xl border border-surface-100 overflow-hidden flex flex-col">
                         <div className="bg-surface-100 px-3 py-1.5 border-b border-surface-200">
                           <p className="text-[10px] font-bold text-surface-400 uppercase tracking-widest text-center">Espacio Patrocinado</p>
