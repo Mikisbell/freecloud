@@ -137,7 +137,7 @@ export default async function BlogPostPage({ params }: Props) {
 
       <article className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {/* Breadcrumbs */}
-        <nav className="flex items-center gap-2 text-sm text-surface-400 mb-6">
+        <nav className="flex flex-wrap items-center gap-2 text-sm text-surface-400 mb-6">
           <Link href="/" className="hover:text-fc-navy transition-colors">Inicio</Link>
           <span>/</span>
           <Link href="/blog" className="hover:text-fc-navy transition-colors">Blog</Link>
@@ -190,7 +190,7 @@ export default async function BlogPostPage({ params }: Props) {
             </header>
 
             {/* Post content */}
-            <div className="prose-blog relative">
+            <div className="prose-blog relative break-words max-w-full">
               <MDXRemote
                 source={(() => {
                   let headCount = 0;
@@ -234,7 +234,7 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* Navegación Secuencial */}
             {(adjacent.prev || adjacent.next) && (
-              <div className="flex flex-col sm:flex-row justify-between items-stretch py-8 border-t border-b border-surface-200 mt-14 mb-8 gap-4">
+              <div className="flex flex-col sm:flex-row justify-between items-stretch py-8 border-t border-b border-surface-200 mt-14 mb-8 gap-4 overflow-hidden">
                 {adjacent.prev ? (
                   <Link href={`/blog/${adjacent.prev.slug}`} className="flex items-center gap-4 text-left flex-1 bg-surface-50 p-4 rounded-xl hover:bg-surface-100 border border-transparent hover:border-surface-200 transition-colors group">
                     <ArrowLeft className="w-5 h-5 flex-shrink-0 text-fc-blue group-hover:text-fc-navy transition-colors" />

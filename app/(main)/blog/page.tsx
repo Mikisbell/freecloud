@@ -55,8 +55,8 @@ export default async function BlogPage({ searchParams }: Props) {
 
       {/* Category filters */}
       <div className="sticky top-16 z-30 bg-white/80 backdrop-blur-xl border-b border-surface-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex items-center gap-2 py-3 overflow-x-auto no-scrollbar">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center gap-2 py-3 overflow-x-auto no-scrollbar px-4 sm:px-6">
             <Link
               href="/blog"
               className={`px-4 py-1.5 text-sm font-medium rounded-full transition-all whitespace-nowrap ${!categorySlug
@@ -112,8 +112,8 @@ export default async function BlogPage({ searchParams }: Props) {
                   </div>
                 </div>
 
-                <div className="p-8 md:p-10 lg:p-12 flex flex-col justify-center">
-                  <div className="flex items-center gap-2 mb-4">
+                <div className="p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-center">
+                  <div className="flex flex-wrap items-center gap-2 mb-4">
                     <span
                       className="px-2.5 py-0.5 text-xs font-semibold rounded-full"
                       style={{
@@ -161,7 +161,7 @@ export default async function BlogPage({ searchParams }: Props) {
                 </span>
               </div>
             )}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {posts.map((post, index) => {
                 const catConfig = post.categories;
                 return (
