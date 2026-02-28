@@ -15,6 +15,7 @@ export default function ContactForm() {
   const [email, setEmail] = useState('');
   const [service, setService] = useState('');
   const [message, setMessage] = useState('');
+  const [honey, setHoney] = useState(''); // honeypot loop
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   async function handleSubmit(e: React.FormEvent) {
@@ -25,7 +26,7 @@ export default function ContactForm() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, service, message }),
+        body: JSON.stringify({ name, email, service, message, _bot_honey: honey }),
       });
 
       if (!res.ok) throw new Error('Error');
@@ -119,6 +120,18 @@ export default function ContactForm() {
           <span>Ocurrió un error. Intenta de nuevo o escribe a admin@freecloud.pe</span>
         </div>
       )}
+
+      {/* Honeypot field invisible to humans */}
+      <input
+        type="text"
+        name="_bot_honey"
+        tabIndex={-1}
+        autoComplete="off"
+        value={honey}
+        onChange={(e) => setHoney(e.target.value)}
+        className="hidden"
+        aria-hidden="true"
+      />
 
       <button
         type="submit"

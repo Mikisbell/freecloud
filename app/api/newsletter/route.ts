@@ -9,6 +9,14 @@ const newsletterSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+
+    // Honeypot trap: Si el campo oculto está lleno, es un bot 100% seguro.
+    // Retornamos 200 OK (silent success) para que el bot no sepa que falló, y ahorramos costo en DB.
+    if (body._bot_honey) {
+      console.log('🤖 Bot de Newsletter atrapado y anulado silenciosamente.');
+      return NextResponse.json({ success: true, message: 'Suscrito exitosamente' });
+    }
+
     const result = newsletterSchema.safeParse(body);
 
     if (!result.success) {

@@ -4,12 +4,13 @@ import { createBrowserClient } from '@supabase/ssr';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
+// Solo mantenemos la instancia cacheada en el navegador (Client Component)
 let browserClient: SupabaseClient | null = null;
-let serverClient: SupabaseClient | null = null;
 
-// Export base client only for server environments
-export const supabase = typeof window === 'undefined' && supabaseUrl && supabaseAnonKey
-  ? (serverClient = serverClient || createClient(supabaseUrl, supabaseAnonKey))
+// Exportamos supabase (alias para compatibilidad, aunque se prefiere getClient)
+// Genera siempre un cliente nuevo si se llama en el servidor, o el singleton en navegador
+export const supabase = typeof window === 'undefined'
+  ? createClient(supabaseUrl, supabaseAnonKey)
   : null;
 
 export function getClient() {
@@ -20,8 +21,10 @@ export function getClient() {
     return browserClient;
   }
 
-  if (!supabase) throw new Error('Supabase not configured');
-  return supabase;
+  // EN SERVIDOR: Siempre creamos una instancia nueva y limpia aislada por request
+  // Esto previene que peticiones concurrentes de SSR mezclen cookies de usuarios admin/anon.
+  if (!supabaseUrl || !supabaseAnonKey) throw new Error('Supabase no está configurado (falta URL o Key)');
+  return createClient(supabaseUrl, supabaseAnonKey);
 }
 
 // ==========================================

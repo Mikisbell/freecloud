@@ -20,6 +20,10 @@ import YouTubeFacade from '@/components/YouTubeFacade';
 import ClientGoogleAd from '@/components/ClientGoogleAd';
 import TableOfContents from '@/components/TableOfContents';
 
+// 🚀 ISR: Regenerar la página 1 vez por hora máximo (3600 segundos)
+// Esto protege a Supabase de consumir cuotas gigantes en caso de viralización.
+export const revalidate = 3600;
+
 export async function generateStaticParams() {
   const { posts } = await getPosts();
   return posts.map(post => ({ slug: post.slug }));

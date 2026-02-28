@@ -12,6 +12,13 @@ const contactSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+
+    // Honeypot Trap
+    if (body._bot_honey) {
+      console.log('🤖 Bot de Contacto atrapado y anulado silenciosamente.');
+      return NextResponse.json({ success: true, message: 'Mensaje enviado exitosamente' });
+    }
+
     const result = contactSchema.safeParse(body);
 
     if (!result.success) {

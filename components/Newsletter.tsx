@@ -9,6 +9,7 @@ interface NewsletterProps {
 
 export default function Newsletter({ variant = 'card' }: NewsletterProps) {
   const [email, setEmail] = useState('');
+  const [honey, setHoney] = useState(''); // honeypot
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
@@ -21,7 +22,7 @@ export default function Newsletter({ variant = 'card' }: NewsletterProps) {
       const res = await fetch('/api/newsletter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, _bot_honey: honey }),
       });
 
       if (res.ok) {
@@ -57,6 +58,17 @@ export default function Newsletter({ variant = 'card' }: NewsletterProps) {
           className="px-4 py-2.5 bg-white/10 border border-white/20 rounded-full text-white placeholder-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-white/30 w-64"
           required
         />
+        {/* Honeypot field invisible to humans */}
+        <input
+          type="text"
+          name="_bot_honey"
+          tabIndex={-1}
+          autoComplete="off"
+          value={honey}
+          onChange={(e) => setHoney(e.target.value)}
+          className="hidden"
+          aria-hidden="true"
+        />
         <button
           type="submit"
           disabled={status === 'loading'}
@@ -91,6 +103,17 @@ export default function Newsletter({ variant = 'card' }: NewsletterProps) {
           placeholder="tu@email.com"
           className="flex-1 px-4 py-2.5 border border-surface-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-fc-blue focus:border-fc-blue"
           required
+        />
+        {/* Honeypot field invisible to humans */}
+        <input
+          type="text"
+          name="_bot_honey"
+          tabIndex={-1}
+          autoComplete="off"
+          value={honey}
+          onChange={(e) => setHoney(e.target.value)}
+          className="hidden"
+          aria-hidden="true"
         />
         <button
           type="submit"
