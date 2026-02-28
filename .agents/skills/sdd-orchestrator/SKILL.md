@@ -28,43 +28,33 @@ Eres el **coordinador liviano**. Tu única responsabilidad es:
 
 **NO escribas código directamente.** Delega siempre.
 
-## Flujo DAG — Orden de Sub-Agentes
+## Flujo DAG Paginado (.sdd/)
+
+Para evitar la "amnesia" del LLM y pérdida de contexto, el Orquestador **siempre requiere** que cada agente lea y escriba archivos físicos en una carpeta `.sdd/` (State Driven Development). No dependemos de la memoria efímera del chat.
 
 ```
-Entrada: Descripción de la feature / issue / spec de Notion
+1. [EXPLORE]  → Lee Engram + Codebase. Guarda: `.sdd/1-explore.md`
     ↓
-1. [EXPLORE]  → Lee el codebase relevante. Output: contexto JSON
+2. [PROPOSE]  → Lee 1-explore.md. Guarda: `.sdd/2-propose.md`
     ↓
-2. [PROPOSE]  → Define qué cambiar y por qué. Output: propuesta técnica
+3. [SPEC]     → Lee 2-propose.md. Guarda: `.sdd/3-spec.md`
     ↓
-3. [SPEC]     → Escribe requisitos y escenarios de prueba. Output: spec.md
+4. [DESIGN]   → Lee 3-spec.md + 2-propose.md. Guarda: `.sdd/4-design.md`
     ↓
-4. [DESIGN]   → Arquitectura: archivos, interfaces, schema DB. Output: design.md
+5. [TASKS]    → Divide en tareas. Guarda: `.sdd/tasks.md` (formato [ ])
     ↓
-5. [TASKS]    → Divide en tareas atómicas. Output: tasks.md (checklist)
+6. [APPLY]    → Implementa tareas [ ]. Corre tsc puro (auto-heal) y marca [x].
     ↓
-6. [APPLY]    → Implementa cada tarea. Output: código + diff
+7. [VERIFY]   → Valida contra 3-spec.md, ejecuta build. Reporta ✅/❌ en `.sdd/7-verify.md`
     ↓
-7. [VERIFY]   → Valida contra el spec, ejecuta build. Output: ✅/❌
-    ↓
-8. [ARCHIVE]  → Guarda decisiones en Engram. Output: memoria persistida
+8. [ARCHIVE]  → Lee `.sdd/*` y sube lecciones a Engram. Borra la carpeta.
 ```
 
 ## Cómo lanzar un Sub-Agente
 
-Para cada fase, crear un sub-agente (contexto limpio) con este prompt base:
+Para cada fase, debes lanzar un sub-agente limpio copiando siempre la orden exacta descrita en `.agents/workflows/sdd-new.md`.
 
-```
-Eres el agente [NOMBRE]. Tu tarea es [DESCRIPCIÓN ESPECÍFICA].
-
-Contexto del proyecto FreeCloud (stack: Next.js 16 + Supabase + TypeScript):
-[PEGAR EL OUTPUT DEL SUB-AGENTE ANTERIOR]
-
-Instrucciones detalladas: leer `.agents/skills/sdd-[nombre]/SKILL.md`
-
-Cuando termines, devuelve SOLO el resultado en formato estructurado.
-No hagas más de lo que te pido.
-```
+Regla Sagrada: **NO pases el contexto completo pegado en el prompt**. En su lugar, dale al agente las rutas absolutas o relativas de los archivos `.sdd/...` para que use sus propias tools (`view_file`) de recolección de contexto. Así prevenimos desbordamientos de Token Context y alucinaciones.
 
 ## Reglas del Orquestador
 

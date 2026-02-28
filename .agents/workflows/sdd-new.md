@@ -19,95 +19,90 @@ Escribe: `/sdd-new` seguido de la descripción de la feature.
 ## Paso 1 — EXPLORE (Subagente: Detective)
 // turbo
 
-Lee el skill del explorador y analiza el codebase relevante:
+Prepara el entorno creando la carpeta de trabajo y empieza la exploración:
 
 ```
-Eres el agente EXPLORE del flujo SDD de FreeCloud.
-Lee las instrucciones en: .agents/skills/sdd-explore/SKILL.md
+> Crea el directorio `.sdd/` si no existe.
+Eres el agente EXPLORE del flujo SDD.
 Feature a analizar: {{FEATURE_DESCRIPTION}}
-Produce el reporte de contexto estructurado completo.
+1. Usa `mem_search` para buscar en Engram contexto histórico.
+2. Lee `.agents/skills/sdd-explore/SKILL.md`
+3. Explora el codebase real.
+4. Escribe tu reporte completo en un archivo nuevo `>.sdd/1-explore.md`
 ```
 
 ---
 
 ## Paso 2 — PROPOSE (Subagente: Arquitecto)
 
-Con el reporte del explorador, define la dirección técnica:
-
 ```
-Eres el agente PROPOSE del flujo SDD de FreeCloud.
-Lee las instrucciones en: .agents/skills/sdd-propose/SKILL.md
-Feature: {{FEATURE_DESCRIPTION}}
-Contexto del Explore: {{OUTPUT_EXPLORE}}
-Evalúa alternativas y elige la mejor solución técnica.
+Eres el agente PROPOSE del flujo SDD.
+1. Lee tu skill en `.agents/skills/sdd-propose/SKILL.md`
+2. Lee el contexto en `<.sdd/1-explore.md`
+3. Feature original: {{FEATURE_DESCRIPTION}}
+4. Evalúa y elige la mejor solución.
+5. Escribe la propuesta técnica en `>.sdd/2-propose.md`
 ```
 
 ---
 
-## Paso 3 — SPEC (Subagente: Notario)
-
-Convierte la propuesta en escenarios Given/When/Then:
+## Paso 3 — SPEC (Subagente: Notario y Test-Writer)
 
 ```
-Eres el agente SPEC del flujo SDD de FreeCloud.
-Lee las instrucciones en: .agents/skills/sdd-spec/SKILL.md
-Propuesta técnica: {{OUTPUT_PROPOSE}}
-Escribe los requisitos formales y escenarios de prueba TDD.
+Eres el agente SPEC del flujo SDD.
+1. Lee tu skill en `.agents/skills/sdd-spec/SKILL.md`
+2. Lee la propuesta técnica en `<.sdd/2-propose.md`
+3. Escribe los escenarios Given/When/Then.
+4. Escribe el spec completo en `>.sdd/3-spec.md`
+Opcional Avanzado: Crea archivos vacíos `.test.ts` que fallen por ahora si el framework está seteado.
 ```
 
 ---
 
 ## Paso 4 — DESIGN (Subagente: Plano)
 
-Define la arquitectura técnica completa:
-
 ```
-Eres el agente DESIGN del flujo SDD de FreeCloud.
-Lee las instrucciones en: .agents/skills/sdd-design/SKILL.md
-Propuesta: {{OUTPUT_PROPOSE}}
-Spec: {{OUTPUT_SPEC}}
-Define: archivos a crear/modificar, interfaces TypeScript, contratos de función.
+Eres el agente DESIGN.
+1. Lee el spec en `<.sdd/3-spec.md` y la propuesta en `<.sdd/2-propose.md`
+2. Define arquitectura, contratos y schemas (Type/Supabase).
+3. Escribe el diseño formal en `>.sdd/4-design.md`
 ```
 
 ---
 
 ## Paso 5 — TASKS (Subagente: Jefe de Obra)
 
-Divide el diseño en tareas atómicas:
-
 ```
-Eres el agente TASKS del flujo SDD de FreeCloud.
-Lee las instrucciones en: .agents/skills/sdd-tasks/SKILL.md
-Diseño técnico: {{OUTPUT_DESIGN}}
-Crea el checklist priorizado de tareas implementables.
-```
-
----
-
-## Paso 6 — APPLY (Subagente: Implementador)
-*Repetir por cada tarea del checklist*
-
-```
-Eres el agente APPLY del flujo SDD de FreeCloud.
-Lee las instrucciones en: .agents/skills/sdd-apply/SKILL.md
-Tarea a implementar: {{TAREA_ACTUAL}}
-Diseño técnico: {{OUTPUT_DESIGN}}
-Contexto del codebase: {{OUTPUT_EXPLORE}}
-Implementa SOLO esta tarea. No más.
+Eres el agente TASKS.
+1. Lee el diseño en `<.sdd/4-design.md`
+2. Desglosa en tareas atómicas y dependientes.
+3. Escribe un CHECKLIST con [ ] en el archivo `>.sdd/tasks.md`
+IMPORTANTE: A partir de ahora, el agente APPLY mutará este mismo archivo.
 ```
 
 ---
 
-## Paso 7 — VERIFY (Subagente: Inspector)
-
-Valida todo lo implementado:
+## Paso 6 — APPLY (Subagente: Implementador con Auto-Sanación)
+*Repetir ordenadamente por cada tarea no-marcada en .sdd/tasks.md*
 
 ```
-Eres el agente VERIFY del flujo SDD de FreeCloud.
-Lee las instrucciones en: .agents/skills/sdd-verify/SKILL.md
-Spec de referencia: {{OUTPUT_SPEC}}
-Ejecuta: npm run build | npx tsc --noEmit
-Verifica cada escenario del spec. Reporta ✅/❌.
+Eres el agente APPLY del flujo SDD.
+1. Lee `<.sdd/tasks.md`, `<.sdd/4-design.md` y escanea el código referenciado.
+2. Implementa SOLO la primera tarea marcada como [ ].
+3. Corre `npx tsc --noEmit` despues de tu cambio. Si falla, arréglalo tú mismo (máx 3 intentos de fix_loop).
+4. Cuando el build pase, marca la tarea con una [x] en `>.sdd/tasks.md`.
+```
+
+---
+
+## Paso 7 — VERIFY (Subagente: Inspector de Specs)
+
+```
+Eres el agente VERIFY.
+1. Lee el spec original en `<.sdd/3-spec.md`
+2. Ejecuta `npm run build` o pruebas pertinentes.
+3. Repasa que todos los requisitos y flujos esten programados.
+4. Genera tu reporte final en `>.sdd/7-verify.md` marcando ✅ APROBADO o ❌ REACHAZADO.
 ```
 
 ---

@@ -17,8 +17,8 @@ version: "1.0.0"
 Eres el **historiador del proyecto**. Una vez que la feature pasó verificación, cerrás el ciclo: guardás la memoria institucional en Engram, hacés el commit final y dejás el proyecto limpio para la próxima iteración.
 
 ## Input que necesitás
-- Reporte de verificación ✅ APROBADO del agente Verify
-- Todo el flujo de la feature (explore, propose, spec, design, tasks, apply)
+- Toda la historia de la ejecución guardada físicamente en la carpeta temporal `.sdd/` (`1-explore.md`, `2-propose.md`, `3-spec.md`, `4-design.md`, `tasks.md` y `7-verify.md`). Usa `view_file` para leerlos si no los tienes en contexto directo.
+- El estado de Verificación final debe ser ✅ APROBADO.
 
 ## Proceso
 
@@ -62,10 +62,10 @@ git push
 
 ### 3. Limpiar archivos temporales SDD
 
-Si se crearon archivos de trabajo temporales en `.sdd/`:
+Si se crearon archivos de trabajo temporales, es **tu responsabilidad** dejar el espacio limpio:
 ```bash
-# Los archivos .sdd/ son temporales, no se commitean
-# Solo si el proyecto los tiene
+# Eliminar la carpeta temporal de SDD
+rm -rf .sdd/
 ```
 
 ## Output Format

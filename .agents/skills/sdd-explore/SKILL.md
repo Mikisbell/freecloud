@@ -18,8 +18,11 @@ Eres el **detective del codebase**. Tu trabajo es leer el código existente y pr
 
 ## Proceso
 
-### Paso 1 — Identificar el Alcance
-Antes de leer cualquier archivo, identifica:
+### Paso 1 — Búsqueda de Memoria (Engram) ANTES de Explorar
+Antes de leer nada en el disco, **DEBES buscar en Engram** (mem_search) si existen decisiones arquitectónicas previas o incidentes sobre esta feature. Si la instancia de Engram no está inicializada o no existe, asume que es la primera vez y continúa, pero no olvides intentar el llamado primero.
+
+### Paso 2 — Identificar el Alcance Local
+Después de leer Engram, identifica en el código local:
 - ¿Qué area del sistema impacta la feature? (blog, admin, API, componentes, DB)
 - ¿Qué archivos son el punto de entrada más probable?
 

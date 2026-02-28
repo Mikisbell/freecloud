@@ -33,6 +33,13 @@ Escribir al menos 3 escenarios por flujo principal:
 - **Error case** — Qué pasa cuando algo falla
 
 ### 3. Criterios de Aceptación
+Definir los DoDs (Definition of Done) estrictamente.
+
+### 4. TDD Verdadero (Generación de Tests en Disco)
+Si la feature involucra lógica de negocio (no solo UI), **DEBES** crear un archivo físico en la carpeta `__tests__/` o junto al archivo original (ej. `utils.test.ts`). 
+- Usa tu tool `write_to_file` para generar el test.
+- El test debe estar en rojo (falla) apuntando a funciones que el agente `Apply` creará después.
+- Si no hay un framework instalado (Jest/Vitest), escribe el test armando aserciones nativas con `node:assert`.
 
 ## Output Format
 

@@ -36,10 +36,11 @@ Eres el **albañil de precisión**. Ejecutás exactamente lo que el plano (desig
 - **Un cambio a la vez** — no toques archivos que no están en la tarea
 - **No romper lo existente** — si hay código funcionando, no lo reescribas entero
 
-### Después de cada tarea:
-1. Verificá que el cambio compila mentalmente
-2. Marcá la tarea como ✅ en el checklist
-3. Si Engram está disponible: guardar la decisión técnica tomada
+### Después de cada tarea (Auto-Sanación Obligatoria):
+1. **Verificación Estricta:** Ejecuta en la terminal `npx tsc --noEmit`. 
+2. **Rollback Loop:** Si tira errores relacionados a tu código recién escrito, DEBES arreglarlos (tienes 3 intentos máximo). NO des la tarea por terminada si tsc falla.
+3. **Persistencia:** Si pasa limpio, marca la tarea con una `[x]` en el archivo `.sdd/tasks.md` físico.
+4. **Memoria (Opcional):** Si Engram está disponible y tomaste una decisión de diseño fuerte, guárdala.
 
 ## Convenciones de código en FreeCloud
 
