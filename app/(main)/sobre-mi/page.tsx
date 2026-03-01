@@ -75,49 +75,55 @@ export default function SobreMiPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 overflow-hidden">
+      {/* ── HERO DE CONVERSIÓN OSCURO ── */}
+      <section className="bg-dataiku-navy border-b-4 border-fc-gold relative overflow-hidden pt-20 pb-20">
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.1]" />
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-fc-cyan/15 rounded-full blur-[100px] pointer-events-none translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-fc-blue/15 rounded-full blur-[100px] pointer-events-none -translate-x-1/2 translate-y-1/2" />
 
-        {/* Header - Animate in */}
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-16 animate-in fade-in slide-in-from-bottom-8 duration-700">
-          <div className="w-40 h-40 md:w-48 md:h-48 rounded-3xl overflow-hidden shadow-2xl shadow-fc-blue/20 flex-shrink-0 border-4 border-white dark:border-surface-800 relative z-10 group">
-            <div className="absolute inset-0 bg-gradient-to-tr from-fc-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <img src="/me.png" alt="Miguel Angel Rivera Ospina" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 flex flex-col md:flex-row items-center md:items-start gap-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
+          <div className="w-40 h-40 md:w-48 md:h-48 rounded-3xl overflow-hidden shadow-2xl shadow-fc-cyan/20 flex-shrink-0 border-4 border-white/10 relative z-10 group bg-surface-900">
+            <div className="absolute inset-0 bg-gradient-to-tr from-fc-blue/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20" />
+            <img src="/me.png" alt="Miguel Angel Rivera Ospina" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 relative z-10" />
           </div>
 
           <div className="flex-1 text-center md:text-left">
-            <h1 className="text-3xl md:text-5xl font-display font-bold text-surface-900 mb-3 tracking-tight">
+            <h1 className="text-3xl md:text-5xl font-display font-bold text-white mb-3 tracking-tight">
               Miguel Angel Rivera Ospina
             </h1>
-            <p className="text-xl text-surface-600 mb-6 font-medium">
+            <p className="text-xl text-fc-cyan mb-6 font-medium">
               Ingeniero Civil &amp; Ingeniero de Sistemas
             </p>
 
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-sm text-surface-500 mb-8">
-              <span className="flex items-center gap-1.5 bg-surface-100 px-3 py-1 rounded-full"><MapPin className="w-4 h-4 text-fc-blue" /> Huancayo, Perú</span>
-              <span className="flex items-center gap-1.5 bg-surface-100 px-3 py-1 rounded-full"><Building2 className="w-4 h-4 text-fc-gold" /> FreeCloud &amp; Rivamez</span>
-              <span className="flex items-center gap-1.5 bg-surface-100 px-3 py-1 rounded-full"><GraduationCap className="w-4 h-4 text-fc-blue" /> Doble Ingeniería</span>
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-sm text-surface-300 mb-8">
+              <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1 rounded-full"><MapPin className="w-4 h-4 text-fc-cyan" /> Huancayo, Perú</span>
+              <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1 rounded-full"><Building2 className="w-4 h-4 text-fc-gold" /> FreeCloud &amp; Rivamez</span>
+              <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1 rounded-full"><GraduationCap className="w-4 h-4 text-fc-blue" /> Doble Ingeniería</span>
             </div>
 
             {/* Redes y CTA */}
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
-              <Link href="#" className="flex items-center gap-2 bg-fc-blue hover:bg-fc-navy text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-fc-blue/30">
+              <Link href="#" className="flex items-center gap-2 bg-fc-blue hover:bg-fc-navy text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-fc-blue/30 border border-fc-blue/50">
                 <Download className="w-4 h-4" />
                 Descargar CV
               </Link>
               <div className="flex items-center gap-3 ml-2">
-                <a href="#" className="p-2.5 text-surface-400 hover:text-[#0A66C2] hover:bg-surface-100 rounded-lg transition-colors" aria-label="LinkedIn">
+                <a href="#" className="p-2.5 text-surface-400 hover:text-[#0A66C2] hover:bg-white/10 rounded-lg transition-colors border border-transparent hover:border-white/10" aria-label="LinkedIn">
                   <Linkedin className="w-5 h-5" />
                 </a>
-                <a href="#" className="p-2.5 text-surface-400 hover:text-[#FF0000] hover:bg-surface-100 rounded-lg transition-colors" aria-label="YouTube">
+                <a href="#" className="p-2.5 text-surface-400 hover:text-[#FF0000] hover:bg-white/10 rounded-lg transition-colors border border-transparent hover:border-white/10" aria-label="YouTube">
                   <Youtube className="w-5 h-5" />
                 </a>
-                <a href="#" className="p-2.5 text-surface-400 hover:text-surface-900 hover:bg-surface-100 rounded-lg transition-colors" aria-label="GitHub">
+                <a href="#" className="p-2.5 text-surface-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors border border-transparent hover:border-white/10" aria-label="GitHub">
                   <Github className="w-5 h-5" />
                 </a>
               </div>
             </div>
           </div>
         </div>
+      </section>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-12 overflow-hidden">
 
         {/* Stats - Staggered fade in */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20 animate-in fade-in slide-in-from-bottom-12 duration-700 delay-200">

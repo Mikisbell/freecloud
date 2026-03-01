@@ -32,19 +32,22 @@ export default async function BlogPage({ searchParams }: Props) {
 
   return (
     <>
-      {/* Hero header */}
-      <section className="bg-gradient-to-b from-surface-50 to-white border-b border-surface-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-20 text-center">
-          <p className="label-uppercase mb-4">
-            {activeCat ? activeCat.emoji : '📖'} {activeCat ? activeCat.name : 'Blog'}
+      {/* ── HERO DE CONVERSIÓN OSCURO ── */}
+      <section className="bg-dataiku-navy text-white relative overflow-hidden pb-16 pt-20 border-b-4 border-fc-gold">
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.1]" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-fc-cyan/15 rounded-full blur-[120px] pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 text-center animate-in fade-in slide-in-from-bottom-8 duration-700">
+          <p className="text-fc-cyan font-bold tracking-wider text-sm mb-4 uppercase">
+            {activeCat ? activeCat.emoji + ' ' + activeCat.name : '📖 BLOG B2B'}
           </p>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-surface-900 mb-4 text-balance max-w-3xl mx-auto">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-black mb-6 leading-tight max-w-4xl mx-auto">
             {activeCat
               ? activeCat.name
-              : <>De BIM a <span className="gradient-text">Impacto</span></>
+              : <>De BIM a <span className="text-transparent bg-clip-text bg-gradient-to-r from-fc-cyan to-fc-cyan-light">Impacto</span></>
             }
           </h1>
-          <p className="text-lg text-surface-500 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-surface-300 max-w-2xl mx-auto mb-6 leading-relaxed">
             {activeCat
               ? activeCat.description || `Todos los artículos sobre ${activeCat.name.toLowerCase()}`
               : 'Tutoriales, guías y recursos sobre BIM, ingeniería civil y tecnología para ingenieros en Perú y Latinoamérica.'
