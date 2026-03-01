@@ -22,7 +22,7 @@ import TableOfContents from '@/components/TableOfContents';
 
 // 🚀 ISR: Regenerar la página 1 vez por hora máximo (3600 segundos)
 // Esto protege a Supabase de consumir cuotas gigantes en caso de viralización.
-export const revalidate = 3600;
+// export const revalidate = 3600; // Deshabilitado porque riñe con el experimento cacheComponents de Next.js 16
 
 export async function generateStaticParams() {
   const { posts } = await getPosts();
@@ -193,17 +193,19 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
             </header>
 
+            {/* Mobile/Tablet Table of Contents (hidden on lg+) */}
+            <div className="lg:hidden">
+              <TableOfContents />
+            </div>
+
             {/* Post content */}
             <div className="prose-blog relative break-words max-w-full">
               <MDXRemote
                 source={(() => {
                   let headCount = 0;
-                  // Inyectamos ToC antes del primer H2, y CTA en el tercer H2
+                  // Inyectamos CTA en el tercer H2
                   return (post.content || '').replace(/\n## /g, (match) => {
                     headCount++;
-                    if (headCount === 1) {
-                      return '\n\n<TableOfContents />\n\n## ';
-                    }
                     if (headCount === 3 && post.cta_product_url) {
                       return '\n\n<ProductCTA />\n\n## ';
                     }
@@ -215,7 +217,6 @@ export default async function BlogPostPage({ params }: Props) {
                 })()}
                 components={{
                   ...mdxComponents,
-                  TableOfContents: () => <TableOfContents source={post.content || ''} />,
                   ProductCTA: () => post.cta_product_url ? (
                     <div className="my-10 p-6 rounded-2xl bg-gradient-to-r from-fc-blue/5 to-transparent border-l-4 border-fc-blue shadow-sm">
                       <p className="text-xs font-semibold text-fc-navy uppercase tracking-wider mb-2">💡 Recomendación del Autor</p>
@@ -355,73 +356,81 @@ export default async function BlogPostPage({ params }: Props) {
 
           {/* Sidebar */}
           <aside className="hidden lg:block space-y-6">
-            {/* Author */}
-            <div className="bg-surface-50 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 border-2 border-surface-200">
-                  <Image src="/me.png" alt={post.author || 'Autor'} width={48} height={48} className="w-full h-full object-cover" />
-                </div>
-                <div>
-                  <p className="font-display font-semibold text-surface-900 text-sm">{post.author}</p>
-                  <p className="text-xs text-surface-500">Autor</p>
-                </div>
+            {/* Sticky Sidebar Container for larger screens */}
+            <div className="sticky top-20 flex flex-col gap-6">
+              {/* Desktop Table of Contents */}
+              <div className="hidden lg:block w-full">
+                <TableOfContents />
               </div>
-            </div>
 
-            {/* Share */}
-            <div className="bg-surface-50 rounded-xl p-5">
-              <h3 className="font-display font-semibold text-surface-900 text-sm mb-3 flex items-center gap-2">
-                <Share2 className="w-4 h-4" /> Compartir
-              </h3>
-              <div className="flex gap-2">
-                <a
-                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${siteUrl}/blog/${post.slug}`}
-                  target="_blank"
-                  rel="noopener"
-                  className="flex-1 py-2 bg-[#0077b5] text-white text-xs font-medium rounded-lg text-center hover:opacity-90 transition-opacity"
-                >
-                  LinkedIn
-                </a>
-                <a
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${siteUrl}/blog/${post.slug}`}
-                  target="_blank"
-                  rel="noopener"
-                  className="flex-1 py-2 bg-[#1877f2] text-white text-xs font-medium rounded-lg text-center hover:opacity-90 transition-opacity"
-                >
-                  Facebook
-                </a>
-                <a
-                  href={`https://wa.me/?text=${encodeURIComponent(post.title + ' ' + siteUrl + '/blog/' + post.slug)}`}
-                  target="_blank"
-                  rel="noopener"
-                  className="flex-1 py-2 bg-[#25d366] text-white text-xs font-medium rounded-lg text-center hover:opacity-90 transition-opacity"
-                >
-                  WhatsApp
-                </a>
-              </div>
-            </div>
-
-            {/* Posts Populares Sidebar */}
-            {popularPosts.length > 0 && (
-              <div className="bg-surface-50 rounded-xl p-5 mb-6 border border-surface-100 shadow-sm">
-                <h3 className="font-display font-semibold text-surface-900 text-sm mb-4 uppercase tracking-wider">🔥 Posts Destacados</h3>
-                <div className="space-y-4">
-                  {popularPosts.map(pp => (
-                    <Link key={pp.slug} href={`/blog/${pp.slug}`} className="group flex flex-col gap-1">
-                      <h4 className="text-surface-800 font-medium text-sm leading-snug group-hover:text-fc-blue transition-colors line-clamp-2">{pp.title}</h4>
-                      <div className="text-xs text-surface-400">{new Date(pp.published_at || '').toLocaleDateString('es-PE', { day: 'numeric', month: 'short' })}</div>
-                    </Link>
-                  ))}
+              {/* Author */}
+              <div className="bg-surface-50 rounded-xl p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 border-2 border-surface-200">
+                    <Image src="/me.png" alt={post.author || 'Autor'} width={48} height={48} className="w-full h-full object-cover" />
+                  </div>
+                  <div>
+                    <p className="font-display font-semibold text-surface-900 text-sm">{post.author}</p>
+                    <p className="text-xs text-surface-500">Autor</p>
+                  </div>
                 </div>
               </div>
-            )}
 
-            {/* Sidebar Ad — slot configurado en NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR */}
-            <div className="sticky top-20">
-              <ClientGoogleAd
-                adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR || ''}
-                reservedHeight={600}
-              />
+              {/* Share */}
+              <div className="bg-surface-50 rounded-xl p-5">
+                <h3 className="font-display font-semibold text-surface-900 text-sm mb-3 flex items-center gap-2">
+                  <Share2 className="w-4 h-4" /> Compartir
+                </h3>
+                <div className="flex gap-2">
+                  <a
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${siteUrl}/blog/${post.slug}`}
+                    target="_blank"
+                    rel="noopener"
+                    className="flex-1 py-2 bg-[#0077b5] text-white text-xs font-medium rounded-lg text-center hover:opacity-90 transition-opacity"
+                  >
+                    LinkedIn
+                  </a>
+                  <a
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${siteUrl}/blog/${post.slug}`}
+                    target="_blank"
+                    rel="noopener"
+                    className="flex-1 py-2 bg-[#1877f2] text-white text-xs font-medium rounded-lg text-center hover:opacity-90 transition-opacity"
+                  >
+                    Facebook
+                  </a>
+                  <a
+                    href={`https://wa.me/?text=${encodeURIComponent(post.title + ' ' + siteUrl + '/blog/' + post.slug)}`}
+                    target="_blank"
+                    rel="noopener"
+                    className="flex-1 py-2 bg-[#25d366] text-white text-xs font-medium rounded-lg text-center hover:opacity-90 transition-opacity"
+                  >
+                    WhatsApp
+                  </a>
+                </div>
+              </div>
+
+              {/* Posts Populares Sidebar */}
+              {popularPosts.length > 0 && (
+                <div className="bg-surface-50 rounded-xl p-5 mb-6 border border-surface-100 shadow-sm">
+                  <h3 className="font-display font-semibold text-surface-900 text-sm mb-4 uppercase tracking-wider">🔥 Posts Destacados</h3>
+                  <div className="space-y-4">
+                    {popularPosts.map(pp => (
+                      <Link key={pp.slug} href={`/blog/${pp.slug}`} className="group flex flex-col gap-1">
+                        <h4 className="text-surface-800 font-medium text-sm leading-snug group-hover:text-fc-blue transition-colors line-clamp-2">{pp.title}</h4>
+                        <div className="text-xs text-surface-400">{new Date(pp.published_at || '').toLocaleDateString('es-PE', { day: 'numeric', month: 'short' })}</div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Sidebar Ad — slot configurado en NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR */}
+              <div className="sticky top-20">
+                <ClientGoogleAd
+                  adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR || ''}
+                  reservedHeight={600}
+                />
+              </div>
             </div>
           </aside>
         </div>

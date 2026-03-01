@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { cn } from '@/lib/utils'; // Assuming cn exists, else fallback to simple template literals, but checking first. Let's use standard template literals to be safe.
 
 interface ToCItem {
     id: string;
@@ -8,30 +9,47 @@ interface ToCItem {
     level: number;
 }
 
-export default function TableOfContents({ source }: { source: string }) {
+export default function TableOfContents() {
     const [headings, setHeadings] = useState<ToCItem[]>([]);
+    const [activeId, setActiveId] = useState<string>('');
 
     useEffect(() => {
-        // Extract H2 headings from markdown source
-        const regex = /^\s*##\s+(.+)$/gm;
-        const items: ToCItem[] = [];
-        let match;
+        // Encontrar todos los headings dentro del articulo usando la clase prose-blog de Tailwind Typography
+        const elements = Array.from(document.querySelectorAll('.prose-blog h2, .prose-blog h3'));
 
-        while ((match = regex.exec(source)) !== null) {
-            if (match[1]) {
-                const text = match[1].trim();
-                // Generar el mismo ID que usa rehype-slug (github-slugger)
-                const id = text
-                    .toLowerCase()
-                    .replace(/[^\w\s-]/g, '')
-                    .replace(/\s+/g, '-');
-
-                items.push({ id, text, level: 2 });
-            }
-        }
+        const items: ToCItem[] = elements.map(elem => ({
+            id: elem.id,
+            text: elem.textContent || '',
+            level: elem.tagName === 'H2' ? 2 : 3
+        })).filter(item => item.id); // Solo los que tienen ID (generado por rehype-slug)
 
         setHeadings(items);
-    }, [source]);
+
+        // Configurar Intersection Observer para el Scroll-Spy
+        const callback: IntersectionObserverCallback = (entries) => {
+            // Buscamos las entradas que estén intersectando la pantalla
+            const visibleEntries = entries.filter(entry => entry.isIntersecting);
+
+            if (visibleEntries.length > 0) {
+                // Si hay varios visibles, tomamos el que está más cerca del borde superior (posición Y)
+                // O mas simple, tomamos el primero de la lista de visibles que suele ser el de arriba
+                setActiveId(visibleEntries[0].target.id);
+            }
+        };
+
+        const observer = new IntersectionObserver(callback, {
+            rootMargin: '0px 0px -80% 0px', // Activa el highlight cuando el titulo pasa el 20% superior de la pantalla
+            threshold: 1.0 // Debe ser visible
+        });
+
+        // Solo observamos H2 para no volver loca a la barra lateral si el post es abrumadoramente denso,
+        // o podemos observar ambos. Observaremos todos los extraidos
+        elements.forEach(elem => {
+            if (elem.id) observer.observe(elem);
+        });
+
+        return () => observer.disconnect();
+    }, []);
 
     if (headings.length < 2) return null;
 
@@ -54,24 +72,26 @@ export default function TableOfContents({ source }: { source: string }) {
     };
 
     return (
-        <div className="my-8 p-6 bg-surface-50 border border-surface-200 rounded-xl shadow-sm max-w-2xl">
-            <h3 className="text-lg font-bold text-surface-900 mb-4 flex items-center gap-2">
-                <span className="text-xl">📋</span> En este artículo:
+        <nav className="my-8 p-6 bg-surface-50 border border-surface-200 rounded-xl shadow-sm max-w-2xl text-sm">
+            <h3 className="text-sm font-bold text-surface-900 mb-4 uppercase tracking-wider flex items-center gap-2">
+                📋 Tabla de Contenidos
             </h3>
-            <ul className="space-y-3">
-                {headings.map((heading, idx) => (
-                    <li key={idx} className="flex">
-                        <span className="text-fc-blue font-bold mr-3">{idx + 1}.</span>
+            <ul className="space-y-2.5">
+                {headings.map((heading) => (
+                    <li key={heading.id} className={heading.level === 3 ? 'ml-4' : ''}>
                         <a
                             href={`#${heading.id}`}
                             onClick={(e) => scrollToHeading(e, heading.id)}
-                            className="text-surface-700 hover:text-fc-blue hover:underline transition-colors leading-snug"
+                            className={`block leading-snug transition-colors border-l-2 pl-3 py-1 ${activeId === heading.id
+                                    ? 'border-fc-blue text-fc-blue font-semibold'
+                                    : 'border-transparent text-surface-600 hover:text-surface-900 hover:border-surface-300'
+                                }`}
                         >
                             {heading.text}
                         </a>
                     </li>
                 ))}
             </ul>
-        </div>
+        </nav>
     );
 }
