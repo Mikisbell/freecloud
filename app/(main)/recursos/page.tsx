@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Download, CheckCircle2, ArrowRight } from 'lucide-react';
+
 
 export const metadata: Metadata = {
   title: 'Recursos - Plantillas, Scripts y Herramientas para Ingenieros',
@@ -81,8 +83,36 @@ const TRUST_SIGNALS = [
 ];
 
 export default function RecursosPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    'itemListElement': PRODUCTS.map((p, i) => ({
+      '@type': 'ListItem',
+      'position': i + 1,
+      'item': {
+        '@type': 'Product',
+        'name': p.title,
+        'description': p.description,
+        'image': `https://freecloud.pe${p.iconUrl}`,
+        'offers': {
+          '@type': 'Offer',
+          'price': p.price.replace('S/ ', ''),
+          'priceCurrency': 'PEN',
+          'url': p.href.startsWith('mailto:') ? 'https://freecloud.pe/recursos' : p.href,
+          'availability': 'https://schema.org/InStock'
+        }
+      }
+    }))
+  };
+
   return (
     <div className="bg-surface-50 min-h-screen pb-24">
+      {/* ── JSON-LD SCHEMA PARA SEO DE PRODUCTOS ── */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* ── HERO DE CONVERSIÓN ── */}
       <section className="bg-dataiku-navy text-white relative overflow-hidden pb-16 pt-20 border-b-4 border-fc-gold">
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.1]" />
@@ -143,8 +173,8 @@ export default function RecursosPage() {
             >
               <div className="p-6 md:p-8 flex-1 flex flex-col">
                 <div className="flex items-start justify-between mb-6">
-                  <div className="w-14 h-14 bg-surface-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-fc-cyan/10 group-hover:scale-110 transition-all duration-300 overflow-hidden p-2 border border-transparent group-hover:border-fc-cyan/20">
-                    <img src={product.iconUrl} alt={product.category} className="w-full h-full object-contain" />
+                  <div className="w-14 h-14 bg-surface-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-fc-cyan/10 group-hover:scale-110 transition-all duration-300 overflow-hidden p-2 border border-transparent group-hover:border-fc-cyan/20 relative">
+                    <Image src={product.iconUrl} alt={product.category} width={50} height={50} className="w-full h-full object-contain" />
                   </div>
                   {product.badge && (
                     <span className="px-3 py-1 bg-gradient-to-r from-fc-gold to-fc-gold-light text-white text-xs font-bold rounded-full shadow-sm">

@@ -19,6 +19,7 @@ import ShareButtons from '@/components/ShareButtons';
 import YouTubeFacade from '@/components/YouTubeFacade';
 import ClientGoogleAd from '@/components/ClientGoogleAd';
 import TableOfContents from '@/components/TableOfContents';
+import { extractHeadings } from '@/lib/blog';
 
 // 🚀 ISR: Regenerar la página 1 vez por hora máximo (3600 segundos)
 // Esto protege a Supabase de consumir cuotas gigantes en caso de viralización.
@@ -113,6 +114,9 @@ export default async function BlogPostPage({ params }: Props) {
     { name: post.title, url: `${siteUrl}/blog/${post.slug}` },
   ];
 
+  // Extraer los titulos para el Table of Contents en el servidor
+  const tocItems = extractHeadings(post.content || '');
+
   return (
     <>
       {/* Article Schema - passes full post for correct @id */}
@@ -195,7 +199,7 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* Mobile/Tablet Table of Contents (hidden on lg+) */}
             <div className="lg:hidden">
-              <TableOfContents />
+              <TableOfContents items={tocItems} />
             </div>
 
             {/* Post content */}
@@ -360,7 +364,7 @@ export default async function BlogPostPage({ params }: Props) {
             <div className="sticky top-20 flex flex-col gap-6">
               {/* Desktop Table of Contents */}
               <div className="hidden lg:block w-full">
-                <TableOfContents />
+                <TableOfContents items={tocItems} />
               </div>
 
               {/* Author */}

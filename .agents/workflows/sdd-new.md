@@ -2,12 +2,14 @@
 description: Iniciar una nueva feature con el flujo SDD completo (Explorar → Proponer → Spec → Diseño → Tareas → Implementar → Verificar → Archivar)
 ---
 
-# /sdd-new — Nueva Feature SDD
+# /sdd-new — Nueva Feature SDD (V3 — Pipeline Físico .sdd/)
 
 Usa este workflow cuando quieras implementar una feature nueva de forma estructurada.
 
 ## Cómo activarlo
-Escribe: `/sdd-new` seguido de la descripción de la feature.
+```
+/sdd-new <descripción de la feature>
+```
 
 **Ejemplo:**
 ```
@@ -16,19 +18,35 @@ Escribe: `/sdd-new` seguido de la descripción de la feature.
 
 ---
 
-## Paso 1 — EXPLORE (Subagente: Detective)
+## Paso 0 — VERIFICAR SISTEMA + CREAR ENTORNO
 // turbo
 
-Prepara el entorno creando la carpeta de trabajo y empieza la exploración:
+```bash
+# Crear la carpeta temporal de trabajo (ignorada en git)
+mkdir -p .sdd
+```
+
+Luego verificar Engram en el chat:
+```
+Llama mem_stats para verificar que Engram está activo.
+Si responde: ✅ continuar. Si falla: ⚠️ notificar y continuar sin memoria.
+```
+
+---
+
+## Paso 1 — EXPLORE (Subagente: Detective)
 
 ```
-> Crea el directorio `.sdd/` si no existe.
-Eres el agente EXPLORE del flujo SDD.
-Feature a analizar: {{FEATURE_DESCRIPTION}}
-1. Usa `mem_search` para buscar en Engram contexto histórico.
-2. Lee `.agents/skills/sdd-explore/SKILL.md`
-3. Explora el codebase real.
-4. Escribe tu reporte completo en un archivo nuevo `>.sdd/1-explore.md`
+Eres el agente EXPLORE del flujo SDD para FreeCloud.
+Lee tu skill en: .agents/skills/sdd-explore/SKILL.md
+
+Feature a analizar: <FEATURE_DESCRIPTION>
+
+Sigue las instrucciones del SKILL.md:
+  - mem_session_start
+  - mem_search (búsqueda en 3 capas si hay resultados)
+  - Explorar el codebase
+  - Escribir reporte en: .sdd/1-explore.md
 ```
 
 ---
@@ -36,25 +54,32 @@ Feature a analizar: {{FEATURE_DESCRIPTION}}
 ## Paso 2 — PROPOSE (Subagente: Arquitecto)
 
 ```
-Eres el agente PROPOSE del flujo SDD.
-1. Lee tu skill en `.agents/skills/sdd-propose/SKILL.md`
-2. Lee el contexto en `<.sdd/1-explore.md`
-3. Feature original: {{FEATURE_DESCRIPTION}}
-4. Evalúa y elige la mejor solución.
-5. Escribe la propuesta técnica en `>.sdd/2-propose.md`
+Eres el agente PROPOSE del flujo SDD para FreeCloud.
+Lee tu skill en: .agents/skills/sdd-propose/SKILL.md
+Lee el contexto en: .sdd/1-explore.md
+
+Feature: <FEATURE_DESCRIPTION>
+
+Sigue las instrucciones del SKILL.md:
+  - Abrir <reflexion> ANTES de proponer
+  - Evaluar mínimo 2 alternativas
+  - Elegir la mejor opción justificada
+  - Escribir propuesta en: .sdd/2-propose.md
 ```
 
 ---
 
-## Paso 3 — SPEC (Subagente: Notario y Test-Writer)
+## Paso 3 — SPEC (Subagente: Notario)
 
 ```
-Eres el agente SPEC del flujo SDD.
-1. Lee tu skill en `.agents/skills/sdd-spec/SKILL.md`
-2. Lee la propuesta técnica en `<.sdd/2-propose.md`
-3. Escribe los escenarios Given/When/Then.
-4. Escribe el spec completo en `>.sdd/3-spec.md`
-Opcional Avanzado: Crea archivos vacíos `.test.ts` que fallen por ahora si el framework está seteado.
+Eres el agente SPEC del flujo SDD para FreeCloud.
+Lee tu skill en: .agents/skills/sdd-spec/SKILL.md
+Lee la propuesta en: .sdd/2-propose.md
+
+Sigue las instrucciones del SKILL.md:
+  - Escribir escenarios Given/When/Then
+  - Escribir el spec completo en: .sdd/3-spec.md
+  Opcional: crear archivos .test.ts vacíos (stubs en rojo)
 ```
 
 ---
@@ -62,10 +87,16 @@ Opcional Avanzado: Crea archivos vacíos `.test.ts` que fallen por ahora si el f
 ## Paso 4 — DESIGN (Subagente: Plano)
 
 ```
-Eres el agente DESIGN.
-1. Lee el spec en `<.sdd/3-spec.md` y la propuesta en `<.sdd/2-propose.md`
-2. Define arquitectura, contratos y schemas (Type/Supabase).
-3. Escribe el diseño formal en `>.sdd/4-design.md`
+Eres el agente DESIGN para FreeCloud.
+Lee tu skill en: .agents/skills/sdd-design/SKILL.md
+Lee el spec en: .sdd/3-spec.md
+Lee la propuesta en: .sdd/2-propose.md
+
+Sigue las instrucciones del SKILL.md:
+  - Definir interfaces TypeScript
+  - Definir queries Supabase
+  - Definir schema de DB si aplica
+  - Escribir diseño técnico en: .sdd/4-design.md
 ```
 
 ---
@@ -73,47 +104,62 @@ Eres el agente DESIGN.
 ## Paso 5 — TASKS (Subagente: Jefe de Obra)
 
 ```
-Eres el agente TASKS.
-1. Lee el diseño en `<.sdd/4-design.md`
-2. Desglosa en tareas atómicas y dependientes.
-3. Escribe un CHECKLIST con [ ] en el archivo `>.sdd/tasks.md`
-IMPORTANTE: A partir de ahora, el agente APPLY mutará este mismo archivo.
+Eres el agente TASKS para FreeCloud.
+Lee tu skill en: .agents/skills/sdd-tasks/SKILL.md
+Lee el diseño en: .sdd/4-design.md
+
+Sigue las instrucciones del SKILL.md:
+  - Desglosar en tareas atómicas ordenadas por dependencia
+  - Escribir CHECKLIST con [ ] en: .sdd/tasks.md
+  IMPORTANTE: El agente APPLY mutará este archivo marcando [x].
 ```
 
 ---
 
-## Paso 6 — APPLY (Subagente: Implementador con Auto-Sanación)
-*Repetir ordenadamente por cada tarea no-marcada en .sdd/tasks.md*
+## Paso 6 — APPLY (Subagente: Implementador)
+*Repetir por cada tarea [ ] en .sdd/tasks.md*
 
 ```
-Eres el agente APPLY del flujo SDD.
-1. Lee `<.sdd/tasks.md`, `<.sdd/4-design.md` y escanea el código referenciado.
-2. Implementa SOLO la primera tarea marcada como [ ].
-3. Corre `npx tsc --noEmit` despues de tu cambio. Si falla, arréglalo tú mismo (máx 3 intentos de fix_loop).
-4. Cuando el build pase, marca la tarea con una [x] en `>.sdd/tasks.md`.
+Eres el agente APPLY del flujo SDD para FreeCloud.
+Lee tu skill en: .agents/skills/sdd-apply/SKILL.md
+Lee las tareas en: .sdd/tasks.md
+Lee el diseño en: .sdd/4-design.md
+
+Implementa SOLO la primera tarea marcada como [ ].
+Sigue el ciclo de Auto-Heal: corre npx tsc --noEmit (máx 3 intentos).
+Cuando pase limpio, marca la tarea [x] en .sdd/tasks.md.
+Si tomaste una decisión de diseño importante: usa mem_save con topic_key.
 ```
 
 ---
 
-## Paso 7 — VERIFY (Subagente: Inspector de Specs)
+## Paso 7 — VERIFY (Subagente: Inspector)
 
 ```
-Eres el agente VERIFY.
-1. Lee el spec original en `<.sdd/3-spec.md`
-2. Ejecuta `npm run build` o pruebas pertinentes.
-3. Repasa que todos los requisitos y flujos esten programados.
-4. Genera tu reporte final en `>.sdd/7-verify.md` marcando ✅ APROBADO o ❌ REACHAZADO.
+Eres el agente VERIFY del flujo SDD para FreeCloud.
+Lee tu skill en: .agents/skills/sdd-verify/SKILL.md
+Lee el spec en: .sdd/3-spec.md
+
+Ejecuta npm run build.
+Valida cada escenario Given/When/Then del spec.
+Escribe el reporte en: .sdd/7-verify.md con ✅ APROBADO o ❌ RECHAZADO.
 ```
 
 ---
 
 ## Paso 8 — ARCHIVE (Subagente: Historiador)
-*Solo si VERIFY reporta ✅ APROBADO*
+*Solo si .sdd/7-verify.md dice ✅ APROBADO*
 
 ```
-Eres el agente ARCHIVE del flujo SDD de FreeCloud.
-Lee las instrucciones en: .agents/skills/sdd-archive/SKILL.md
-Feature completada: {{FEATURE_DESCRIPTION}}
-Resumen de decisiones: {{RESUMEN_DE_TODO_EL_FLUJO}}
-Guarda en Engram (si disponible) y crea el commit convencional final.
+Eres el agente ARCHIVE del flujo SDD para FreeCloud.
+Lee tu skill en: .agents/skills/sdd-archive/SKILL.md
+Lee todos los archivos en .sdd/ (1-explore, 2-propose, 3-spec, 4-design, tasks, 7-verify).
+
+Feature completada: <FEATURE_DESCRIPTION>
+
+Sigue las instrucciones del SKILL.md:
+  - Guardar en Engram con mem_save + topic_key (mem_suggest_topic_key primero)
+  - mem_session_summary + mem_session_end
+  - Crear commit convencional
+  - Eliminar la carpeta .sdd/ (Remove-Item -Recurse -Force .sdd/)
 ```

@@ -114,3 +114,28 @@ Si vas a agregar código a FreeCloud, debes seguir estas 3 reglas de hierro:
 1. `'use client'` se usa **exclusivamente** en los nudos del árbol más distantes posibles (hojas del React Tree) donde ocurren eventos DOM concretos (`onClick`, form states). Nunca en layouts de contenedores o layouts que obtienen datos de la DB.
 2. Todas las llamadas a bases de datos (`GET`/`POST`/`DELETE`) nuevas **deben vivir centralizadas** en `lib/supabase.ts` implementando una función tipada asíncrona dedicada.
 3. Para nuevos tipos de entidades se debe forzar una **extensión SEO del esquema estructurado en `lib/seo.ts`** para no perder jerarquía frente a motores de búsqueda (ej. nuevo post tipo Video → Schema `VideoObject`).
+
+---
+
+## 8. Sistema Cognitivo SDD (2026)
+
+Este proyecto usa **Spec-Driven Development** con **Engram** como memoria persistente entre sesiones.
+
+### Stack SDD
+```
+Memoria:      Engram (Go + SQLite + FTS5, vía MCP)
+Workflow:     .agents/workflows/ (sdd-new, sdd-apply, sdd-verify)
+Sub-agentes:  .agents/skills/ (explore, propose, spec, design, tasks, apply, verify, archive)
+Estado:       .sdd/ (carpeta temporal, ignorada en git)
+```
+
+### Los 3 Mandamientos SDD
+1. **Todo agente lee y escribe archivos físicos en `.sdd/`** — nunca variables en memoria efímera
+2. **`mem_search` antes de cualquier exploración** — Amnesia Cero
+3. **`npx tsc --noEmit` antes de marcar `[x]`** — Auto-Heal obligatorio
+
+### Inicializar el Sistema (Primera sesión)
+Ver: `docs/sparking-prompt.md`
+
+### Instalar Engram
+Ver: `docs/engram-setup.md`

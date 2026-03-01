@@ -9,21 +9,15 @@ interface ToCItem {
     level: number;
 }
 
-export default function TableOfContents() {
-    const [headings, setHeadings] = useState<ToCItem[]>([]);
+interface TableOfContentsProps {
+    items: ToCItem[];
+}
+
+export default function TableOfContents({ items }: TableOfContentsProps) {
     const [activeId, setActiveId] = useState<string>('');
 
     useEffect(() => {
-        // Encontrar todos los headings dentro del articulo usando la clase prose-blog de Tailwind Typography
-        const elements = Array.from(document.querySelectorAll('.prose-blog h2, .prose-blog h3'));
-
-        const items: ToCItem[] = elements.map(elem => ({
-            id: elem.id,
-            text: elem.textContent || '',
-            level: elem.tagName === 'H2' ? 2 : 3
-        })).filter(item => item.id); // Solo los que tienen ID (generado por rehype-slug)
-
-        setHeadings(items);
+        if (!items || items.length === 0) return;
 
         // Configurar Intersection Observer para el Scroll-Spy
         const callback: IntersectionObserverCallback = (entries) => {
@@ -42,16 +36,18 @@ export default function TableOfContents() {
             threshold: 1.0 // Debe ser visible
         });
 
-        // Solo observamos H2 para no volver loca a la barra lateral si el post es abrumadoramente denso,
-        // o podemos observar ambos. Observaremos todos los extraidos
-        elements.forEach(elem => {
-            if (elem.id) observer.observe(elem);
+        // Observamos los elementos del DOM correspondientes a los IDs que nos pasaron
+        items.forEach(item => {
+            const element = document.getElementById(item.id);
+            if (element) {
+                observer.observe(element);
+            }
         });
 
         return () => observer.disconnect();
-    }, []);
+    }, [items]);
 
-    if (headings.length < 2) return null;
+    if (!items || items.length < 2) return null;
 
     const scrollToHeading = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
         e.preventDefault();
@@ -77,14 +73,14 @@ export default function TableOfContents() {
                 📋 Tabla de Contenidos
             </h3>
             <ul className="space-y-2.5">
-                {headings.map((heading) => (
+                {items.map((heading) => (
                     <li key={heading.id} className={heading.level === 3 ? 'ml-4' : ''}>
                         <a
                             href={`#${heading.id}`}
                             onClick={(e) => scrollToHeading(e, heading.id)}
                             className={`block leading-snug transition-colors border-l-2 pl-3 py-1 ${activeId === heading.id
-                                    ? 'border-fc-blue text-fc-blue font-semibold'
-                                    : 'border-transparent text-surface-600 hover:text-surface-900 hover:border-surface-300'
+                                ? 'border-fc-blue text-fc-blue font-semibold'
+                                : 'border-transparent text-surface-600 hover:text-surface-900 hover:border-surface-300'
                                 }`}
                         >
                             {heading.text}
