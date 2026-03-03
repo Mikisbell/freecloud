@@ -27,18 +27,35 @@ export default function GoogleAd({
     const adRef = useRef<HTMLModElement>(null);
 
     useEffect(() => {
+        // En desarrollo evitamos llamar a AdSense (Google bloquea con 403 localhost)
+        if (process.env.NODE_ENV === 'development') return;
+
         if (!adClient || !adSlot || adSlot === 'XXXXXXXXXX') return;
         try {
             if (typeof window !== 'undefined') {
-                ((window as unknown as { adsbygoogle: unknown[] }).adsbygoogle =
-                    (window as unknown as { adsbygoogle: unknown[] }).adsbygoogle || []).push({});
+                const adsbygoogle = (window as any).adsbygoogle || [];
+                // Only push if this ad slot hasn't been initialized yet
+                if (adRef.current && !adRef.current.hasAttribute('data-adsbygoogle-status')) {
+                    adsbygoogle.push({});
+                }
             }
         } catch (e) {
-            console.error('AdSense initialization error:', e);
+            // Silently handle AdSense errors (like double push warning from adblockers/etc)
+            console.warn('AdSense initialization warning:', e);
         }
     }, [adClient, adSlot]);
 
-    // No renderizar si faltan datos críticos
+    // No renderizar en desarrollo para evitar errores 403 de Google AdSense
+    if (process.env.NODE_ENV === 'development') return (
+        <div
+            className="w-full relative overflow-hidden my-6 rounded-md bg-surface-100/50 border border-surface-200 border-dashed flex items-center justify-center text-surface-400 text-xs font-mono"
+            style={{ minHeight: `${reservedHeight}px` }}
+        >
+            [AdSense Mock: Blocked in Localhost]
+        </div>
+    );
+
+    // No renderizar si faltan datos críticos en producción
     if (!adClient || !adSlot || adSlot === 'XXXXXXXXXX') return null;
 
     const computedStyle: React.CSSProperties = {

@@ -16,6 +16,7 @@ const nextConfig = {
     inlineCss: true,
   },
   images: {
+    qualities: [60, 75],
     remotePatterns: [
       { protocol: 'https', hostname: '**.supabase.co' },
       { protocol: 'https', hostname: '**.googleusercontent.com' },
@@ -72,7 +73,7 @@ const nextConfig = {
             value: [
               "default-src 'self'",
               // Scripts: self + Google AdSense / Analytics / Fonts + Vercel
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn.vercel-insights.com https://vitals.vercel-insights.com https://*.adtrafficquality.google",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn.vercel-insights.com https://vitals.vercel-insights.com https://va.vercel-scripts.com https://*.adtrafficquality.google",
               // Estilos: self + inline (necesario para MDX/Tailwind) + Google Fonts + KaTeX
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               // Fuentes
@@ -82,7 +83,7 @@ const nextConfig = {
               // Frames: solo YouTube y Google AdSense
               "frame-src https://www.youtube-nocookie.com https://www.youtube.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://*.adtrafficquality.google",
               // Conexiones: self + supabase + google + vercel analytics
-              "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://vitals.vercel-insights.com https://pagead2.googlesyndication.com https://adservice.google.com https://ep1.adtrafficquality.google",
+              "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://csi.gstatic.com https://vitals.vercel-insights.com https://pagead2.googlesyndication.com https://adservice.google.com https://ep1.adtrafficquality.google",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
