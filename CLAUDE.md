@@ -94,3 +94,27 @@ Tablas: `subscribers` (newsletter), `downloads` (tracking), `page_views` (analyt
 
 ## Productos digitales (Gumroad)
 Pack HP Prime (S/35), Excel E.030 (S/25), Excel Metrados (S/20), Plantilla PEB (S/60), Scripts Python Revit (S/50), Familias Revit (S/40).
+
+## Stack Cognitivo (Sistema de IA)
+
+```
+TÚ (usuario)
+ │
+ ▼
+CLAUDE.md / AGENTS.md ── Router principal
+ │
+ ├─► Engram ────── Memoria persistente (cross-session) — mem_context al inicio
+ │
+ ├─► Skills ────── Lazy-loaded desde .agents/skills/
+ │
+ ├─► Hooks ─────── Guardrails Capa 1 (.agents/hooks/pre-edit.md + post-edit.md)
+ │
+ ├─► SDD ──────── Cambios grandes → /sdd-new (.agents/workflows/)
+ │
+ ├─► GGA ──────── Guardrail Capa 2 — scripts/gga-review.ps1 antes de git push
+ │
+ └─► MEMORY.md ── Safety net (fallback si todo lo anterior falla)
+```
+
+**Capa 1 (mientras escribo código):** Claude + Hooks + Engram + Skills → previene errores ANTES de que existan
+**Capa 2 (al hacer commit):** GGA + Claude Haiku + AGENTS.md → atrapa lo que se escapó en Capa 1

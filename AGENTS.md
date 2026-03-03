@@ -49,11 +49,26 @@ docs/arquitectura.md  → Documento vital de Core Technical Spec
 - Si el usuario te pide tocar **UI, Formularios, Landing, Layouts de Next.js, Tailwnid o el Blog**: **ABORTA** la lectura de este archivo y ve OBLIGATORIAMENTE a leer el archivo de contexto `app/(main)/agents.md`. No programes sin él.
 - Si el usuario te pide tocar **Base de Datos, Endpoints API puras, o Supabase Sever**: **ABORTA** la lectura y ve OBLIGATORIAMENTE a leer `app/api/agents.md`.
 
+## Guardrails (Hooks — Capa 1 de protección)
+Antes y después de cada edición de código:
+- **Pre-edit:** leer `.agents/hooks/pre-edit.md` — checklist de 5 preguntas antes de tocar código
+- **Post-edit:** leer `.agents/hooks/post-edit.md` — verificación de calidad + persistencia en Engram
+
+## GGA — Guardian Angel (Capa 2 de protección)
+Antes de `git push`, correr el review independiente:
+```powershell
+npm run build  # primero
+.\scripts\gga-review.ps1  # luego
+```
+Ver workflow completo en `.agents/workflows/gga-commit.md`.
+Requiere `ANTHROPIC_API_KEY` en `.env.local`.
+
 ## Memoria Persistente (Engram)
 Si Engram MCP está disponible:
-- Al iniciar una sesión: `engram_search` para recuperar contexto anterior del proyecto
-- Al tomar una decisión técnica importante: `engram_save` con formato: `qué, por qué, dónde, qué se aprendió`
-- Antes de que el contexto se llene: `engram_summary` para no perder info crítica
+- Al iniciar una sesión: `mem_context` para recuperar contexto anterior del proyecto
+- Al tomar una decisión técnica importante: `mem_save` con formato: `qué, por qué, dónde, qué se aprendió`
+- Antes de que el contexto se llene: `mem_session_summary` para no perder info crítica
+- Si Engram no responde → usar `MEMORY.md` como fallback
 
 ## Variables de entorno relevantes
 - `NEXT_PUBLIC_SUPABASE_URL` — Supabase endpoint
