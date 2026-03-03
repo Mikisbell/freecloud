@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import Script from 'next/script';
 import { Download, CheckCircle2, ArrowRight } from 'lucide-react';
-
 
 export const metadata: Metadata = {
   title: 'Recursos - Plantillas, Scripts y Herramientas para Ingenieros',
@@ -18,6 +18,7 @@ const PRODUCTS = [
     iconUrl: '/excel.svg',
     category: 'Ing. Sísmica',
     href: 'https://pay.hotmart.com/E98246344E?checkoutMode=10', // link update from previous instruction
+    isGumroad: false,
     tags: ['E.030', 'Sísmica', 'Excel'],
     badge: '🔥 Más Vendido',
   },
@@ -28,7 +29,8 @@ const PRODUCTS = [
     priceUsd: '$5',
     iconUrl: '/excel.svg',
     category: 'Metrados',
-    href: 'mailto:admin@freecloud.pe?subject=Consulta%20sobre%20Plantilla%20Excel%20Metrados',
+    href: 'https://freecloud.gumroad.com/l/plantilla-metrados',
+    isGumroad: true,
     tags: ['Metrados', 'Excel', 'Presupuesto'],
     badge: '⭐ Nuevo',
   },
@@ -39,7 +41,8 @@ const PRODUCTS = [
     priceUsd: '$10',
     iconUrl: '/hp.svg',
     category: 'HP Prime',
-    href: 'mailto:admin@freecloud.pe?subject=Consulta%20sobre%20Pack%20HP%20Prime',
+    href: 'https://freecloud.gumroad.com/l/hp-prime-hardy-cross',
+    isGumroad: true,
     tags: ['HP Prime', 'Hardy Cross', 'Hidráulica'],
   },
   {
@@ -49,7 +52,8 @@ const PRODUCTS = [
     priceUsd: '$15',
     iconUrl: '/python.svg',
     category: 'Python',
-    href: 'mailto:admin@freecloud.pe?subject=Consulta%20sobre%20Scripts%20Python',
+    href: 'https://freecloud.gumroad.com/l/revit-scripts-python',
+    isGumroad: true,
     tags: ['Python', 'Revit API', 'Automatización'],
   },
   {
@@ -59,7 +63,8 @@ const PRODUCTS = [
     priceUsd: '$12',
     iconUrl: '/revit.png',
     category: 'Revit',
-    href: 'mailto:admin@freecloud.pe?subject=Consulta%20sobre%20Familias%20Revit',
+    href: 'https://freecloud.gumroad.com/l/familias-revit-estructural',
+    isGumroad: true,
     tags: ['Revit', 'Familias', 'Estructuras'],
   },
   {
@@ -69,7 +74,8 @@ const PRODUCTS = [
     priceUsd: '$18',
     iconUrl: '/BIM 360.png',
     category: 'BIM',
-    href: 'mailto:admin@freecloud.pe?subject=Consulta%20sobre%20Plantilla%20PEB',
+    href: 'https://freecloud.gumroad.com/l/plantilla-peb-bim',
+    isGumroad: true,
     tags: ['BIM', 'PEB', 'Gestión'],
     badge: '💼 Para Empresas',
   },
@@ -107,6 +113,9 @@ export default function RecursosPage() {
 
   return (
     <div className="bg-surface-50 min-h-screen pb-24">
+      {/* ── SCRIPT DE GUMROAD OVERLAY ── */}
+      <Script src="https://gumroad.com/js/gumroad.js" strategy="lazyOnload" />
+
       {/* ── JSON-LD SCHEMA PARA SEO DE PRODUCTOS ── */}
       <script
         type="application/ld+json"
@@ -217,7 +226,8 @@ export default function RecursosPage() {
                     href={product.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3.5 bg-dataiku-navy text-white font-bold rounded-full hover:bg-fc-blue hover:shadow-lg hover:shadow-fc-blue/30 transition-all duration-300 group-hover:scale-105 btn-pill"
+                    className={`inline-flex items-center gap-2 px-6 py-3.5 bg-dataiku-navy text-white font-bold rounded-full hover:bg-fc-blue hover:shadow-lg hover:shadow-fc-blue/30 transition-all duration-300 group-hover:scale-105 btn-pill ${product.isGumroad ? 'gumroad-button' : ''}`}
+                    data-gumroad-overlay-checkout={product.isGumroad ? "true" : undefined}
                   >
                     <Download className="w-5 h-5" />
                     Obtener
