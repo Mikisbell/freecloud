@@ -204,3 +204,35 @@ export function generateFAQSchema(faqs: { question: string; answer: string }[]) 
     })),
   };
 }
+
+export interface SoftwareSchemaParams {
+  name: string;
+  description: string;
+  applicationCategory: 'EngineeringApplication' | 'EducationalApplication' | 'WebApplication';
+  url: string;
+  image?: string;
+  price?: string;
+  currency?: string;
+}
+
+export function generateSoftwareApplicationSchema(params: SoftwareSchemaParams) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    'name': params.name,
+    'description': params.description,
+    'applicationCategory': params.applicationCategory,
+    'operatingSystem': 'Any',
+    'url': params.url,
+    'image': params.image || `${SITE_URL}/og-default.png`,
+    'offers': {
+      '@type': 'Offer',
+      'price': params.price || '0',
+      'priceCurrency': params.currency || 'USD'
+    },
+    'creator': {
+      '@type': 'Organization',
+      'name': SITE_NAME
+    }
+  };
+}
