@@ -15,7 +15,7 @@ const PRODUCTS = [
     description: 'Hoja de cálculo completa para análisis sísmico estático y dinámico según norma peruana E.030. Incluye espectro, fuerzas por piso y derivas.',
     price: 'S/ 25',
     priceUsd: '$7',
-    iconUrl: '/excel.svg',
+    iconUrl: '/recursos/sismica_cover.png',
     category: 'Ing. Sísmica',
     href: 'https://pay.hotmart.com/E98246344E?checkoutMode=10', // link update from previous instruction
     isGumroad: false,
@@ -27,7 +27,7 @@ const PRODUCTS = [
     description: 'Plantilla profesional de metrados con formatos de partidas según normativa peruana. Incluye macros para resumen automático de acero.',
     price: 'S/ 20',
     priceUsd: '$5',
-    iconUrl: '/excel.svg',
+    iconUrl: '/recursos/metrados_cover.png',
     category: 'Metrados',
     href: 'https://freecloud.gumroad.com/l/plantilla-metrados',
     isGumroad: true,
@@ -39,7 +39,7 @@ const PRODUCTS = [
     description: 'Programa completo para el método de Hardy Cross. Incluye cálculo automático de caudales corregidos y presiones en nodos.',
     price: 'S/ 35',
     priceUsd: '$10',
-    iconUrl: '/hp.svg',
+    iconUrl: '/recursos/hp_prime_cover.png',
     category: 'HP Prime',
     href: 'https://freecloud.gumroad.com/l/hp-prime-hardy-cross',
     isGumroad: true,
@@ -50,7 +50,7 @@ const PRODUCTS = [
     description: 'Ahorra horas en Revit: crear hojas automáticamente, renombrar vistas masivamente y numerar parqueos. Código fuente comentado.',
     price: 'S/ 50',
     priceUsd: '$15',
-    iconUrl: '/python.svg',
+    iconUrl: '/recursos/python_revit_cover.png',
     category: 'Python',
     href: 'https://freecloud.gumroad.com/l/revit-scripts-python',
     isGumroad: true,
@@ -61,7 +61,7 @@ const PRODUCTS = [
     description: 'Pack de familias Revit paramétricas adaptadas a la construcción peruana. Zapatas conectadas, vigas peraltadas y viguetas.',
     price: 'S/ 40',
     priceUsd: '$12',
-    iconUrl: '/revit.png',
+    iconUrl: '/recursos/familias_revit_cover.png',
     category: 'Revit',
     href: 'https://freecloud.gumroad.com/l/familias-revit-estructural',
     isGumroad: true,
@@ -72,7 +72,7 @@ const PRODUCTS = [
     description: 'Documento Word y PDF editable con la estructura del PEB según la Guía Nacional BIM Perú. Rápido de adaptar a tu proyecto.',
     price: 'S/ 60',
     priceUsd: '$18',
-    iconUrl: '/BIM 360.png',
+    iconUrl: '/recursos/peb_bim_cover.png',
     category: 'BIM',
     href: 'https://freecloud.gumroad.com/l/plantilla-peb-bim',
     isGumroad: true,
@@ -177,22 +177,28 @@ export default function RecursosPage() {
           {PRODUCTS.map((product, i) => (
             <div
               key={product.title}
-              className="group dataiku-card flex flex-col overflow-hidden animate-slide-up"
+              className="group dataiku-card flex flex-col overflow-hidden animate-slide-up bg-white"
               style={{ animationDelay: `${i * 100}ms` }}
             >
-              <div className="p-6 md:p-8 flex-1 flex flex-col">
-                <div className="flex items-start justify-between mb-6">
-                  <div className="w-14 h-14 bg-surface-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-fc-cyan/10 group-hover:scale-110 transition-all duration-300 overflow-hidden p-2 border border-transparent group-hover:border-fc-cyan/20 relative">
-                    <Image src={product.iconUrl} alt={product.category} width={50} height={50} className="w-full h-full object-contain" />
-                  </div>
-                  {product.badge && (
-                    <span className="px-3 py-1 bg-gradient-to-r from-fc-gold to-fc-gold-light text-white text-xs font-bold rounded-full shadow-sm">
+              <div className="relative w-full aspect-[4/3] bg-surface-100 overflow-hidden border-b border-surface-100">
+                <Image
+                  src={product.iconUrl}
+                  alt={product.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                {product.badge && (
+                  <div className="absolute top-4 right-4 z-10">
+                    <span className="px-3 py-1.5 bg-gradient-to-r from-fc-gold to-yellow-400 text-fc-navy text-xs font-black tracking-wide rounded-full shadow-lg border border-white/20">
                       {product.badge}
                     </span>
-                  )}
-                </div>
-
-                <div className="mb-2">
+                  </div>
+                )}
+              </div>
+              <div className="p-6 md:p-8 flex-1 flex flex-col">
+                <div className="mb-2.5">
                   <span className="text-xs font-bold tracking-wider text-fc-blue uppercase">{product.category}</span>
                 </div>
 
