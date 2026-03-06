@@ -7,12 +7,6 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 // Solo mantenemos la instancia cacheada en el navegador (Client Component)
 let browserClient: SupabaseClient | null = null;
 
-// Exportamos supabase (alias para compatibilidad, aunque se prefiere getClient)
-// Genera siempre un cliente nuevo si se llama en el servidor, o el singleton en navegador
-export const supabase = typeof window === 'undefined'
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null;
-
 export function getClient() {
   if (typeof window !== 'undefined') {
     if (!browserClient) {
@@ -327,10 +321,10 @@ export async function createPost(postData: Partial<Post>) {
 }
 
 export async function updatePost(id: string, postData: Partial<Post>) {
-  postData.updated_at = new Date().toISOString();
+  const updateData = { ...postData, updated_at: new Date().toISOString() };
   const { data, error } = await getClient()
     .from('posts')
-    .update(postData)
+    .update(updateData)
     .eq('id', id)
     .select()
     .single();

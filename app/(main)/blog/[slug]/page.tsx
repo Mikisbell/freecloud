@@ -80,13 +80,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getPostBySlug(slug);
   if (!post) return {};
 
-  // Here we map Supabase post format to legacy for SEO generation
   return generatePostMetadata({
-    title: post.meta_title || post.title,
-    description: post.meta_description || post.excerpt || '',
+    title: post.title,
+    meta_title: post.meta_title,
+    meta_description: post.meta_description,
+    excerpt: post.excerpt,
     slug: post.slug,
-    image: post.featured_image,
-    date: post.published_at || post.created_at,
+    featured_image: post.featured_image,
+    published_at: post.published_at || post.created_at,
     author: post.author,
   });
 }

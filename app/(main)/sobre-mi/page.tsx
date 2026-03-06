@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { Building2, Code, GraduationCap, MapPin, Briefcase, Linkedin, Github, Youtube, Download, ExternalLink } from 'lucide-react';
 import ContactForm from '@/components/ContactForm';
 import Link from 'next/link';
+import { siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
   title: 'Sobre Mí - Miguel Angel Rivera Ospina',
@@ -52,8 +53,9 @@ export default function SobreMiPage() {
     url: 'https://freecloud.pe/sobre-mi',
     image: 'https://freecloud.pe/me.png',
     sameAs: [
-      'https://www.linkedin.com/in/miguel-angel-rivera-ospina',
-      'https://youtube.com/@FreeCloud'
+      'https://www.linkedin.com/in/mikisbell/',
+      'https://www.youtube.com/@mikisbell',
+      'https://github.com/mikisbell'
     ],
     worksFor: [
       {
@@ -103,18 +105,17 @@ export default function SobreMiPage() {
 
             {/* Redes y CTA */}
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
-              <Link href="#" className="flex items-center gap-2 bg-fc-blue hover:bg-fc-navy text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-fc-blue/30 border border-fc-blue/50">
-                <Download className="w-4 h-4" />
-                Descargar CV
+              <Link href="/sobre-mi#contacto" className="flex items-center gap-2 bg-fc-blue hover:bg-fc-navy text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-fc-blue/30 border border-fc-blue/50">
+                Contactar
               </Link>
               <div className="flex items-center gap-3 ml-2">
-                <a href="#" className="p-2.5 text-surface-400 hover:text-[#0A66C2] hover:bg-white/10 rounded-lg transition-colors border border-transparent hover:border-white/10" aria-label="LinkedIn">
+                <a href={siteConfig.links.linkedin} target="_blank" rel="noopener noreferrer" className="p-2.5 text-surface-400 hover:text-[#0A66C2] hover:bg-white/10 rounded-lg transition-colors border border-transparent hover:border-white/10" aria-label="LinkedIn">
                   <Linkedin className="w-5 h-5" />
                 </a>
-                <a href="#" className="p-2.5 text-surface-400 hover:text-[#FF0000] hover:bg-white/10 rounded-lg transition-colors border border-transparent hover:border-white/10" aria-label="YouTube">
+                <a href={siteConfig.links.youtube} target="_blank" rel="noopener noreferrer" className="p-2.5 text-surface-400 hover:text-[#FF0000] hover:bg-white/10 rounded-lg transition-colors border border-transparent hover:border-white/10" aria-label="YouTube">
                   <Youtube className="w-5 h-5" />
                 </a>
-                <a href="#" className="p-2.5 text-surface-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors border border-transparent hover:border-white/10" aria-label="GitHub">
+                <a href={siteConfig.links.github} target="_blank" rel="noopener noreferrer" className="p-2.5 text-surface-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors border border-transparent hover:border-white/10" aria-label="GitHub">
                   <Github className="w-5 h-5" />
                 </a>
               </div>

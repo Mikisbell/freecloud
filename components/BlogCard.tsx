@@ -62,7 +62,7 @@ export default function BlogCard({ post, featured = false, dbCategory }: BlogCar
           <div className="aspect-video bg-surface-100 overflow-hidden relative">
             <Image
               src={post.image}
-              alt={post.image_alt || post.imageAlt || post.title || 'Imagen del artículo'}
+              alt={post.image_alt || post.title || 'Imagen del artículo'}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover group-hover:scale-105 transition-transform duration-500"

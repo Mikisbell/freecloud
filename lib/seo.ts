@@ -15,7 +15,7 @@ export function generateSiteMetadata(overrides?: Partial<Metadata>): Metadata {
     },
     description: DEFAULT_DESCRIPTION,
     keywords: ['BIM', 'Revit', 'ingeniería civil', 'Perú', 'análisis estructural', 'Dynamo', 'Python', 'tutorial'],
-    authors: [{ name: 'Miguel Angel Rivera', url: SITE_URL }],
+    authors: [{ name: siteConfig.author, url: SITE_URL }],
     creator: 'FreeCloud',
     openGraph: {
       type: 'website',
@@ -52,11 +52,11 @@ export function generateSiteMetadata(overrides?: Partial<Metadata>): Metadata {
 import { Post } from '@/types/supabase';
 
 export function generatePostMetadata(post: Partial<Post>): Metadata {
-  const title = post.meta_title || post.metaTitle || post.title;
-  const description = post.meta_description || post.metaDescription || post.description || post.excerpt || undefined;
+  const title = post.meta_title || post.title;
+  const description = post.meta_description || post.excerpt || undefined;
   const url = `${SITE_URL}/blog/${post.slug}`;
-  const image = post.featured_image || post.image || `${SITE_URL}/og-default.png`;
-  const date = post.published_at || post.created_at || post.date;
+  const image = post.featured_image || `${SITE_URL}/og-default.png`;
+  const date = post.published_at || post.created_at;
   const tags = post.tags || [];
 
   return {
@@ -71,10 +71,10 @@ export function generatePostMetadata(post: Partial<Post>): Metadata {
       description,
       siteName: SITE_NAME,
       publishedTime: (date || undefined) as string | undefined,
-      modifiedTime: ((post.updated_at || post.updated || date) || undefined) as string | undefined,
-      authors: [post.author || 'Miguel Angel Rivera'],
+      modifiedTime: ((post.updated_at || date) || undefined) as string | undefined,
+      authors: [post.author || siteConfig.author],
       tags: tags,
-      images: [{ url: image || `${SITE_URL}/og-default.png`, width: 1200, height: 630, alt: post.image_alt || post.imageAlt || title }],
+      images: [{ url: image || `${SITE_URL}/og-default.png`, width: 1200, height: 630, alt: post.image_alt || title }],
     },
     twitter: {
       card: 'summary_large_image',
@@ -87,10 +87,10 @@ export function generatePostMetadata(post: Partial<Post>): Metadata {
 }
 
 export function generateArticleSchema(post: Partial<Post>) {
-  const title = post.meta_title || post.metaTitle || post.title;
-  const description = post.meta_description || post.metaDescription || post.description || post.excerpt || undefined;
-  const image = post.featured_image || post.image || `${SITE_URL}/og-default.png`;
-  const date = post.published_at || post.created_at || post.date;
+  const title = post.meta_title || post.title;
+  const description = post.meta_description || post.excerpt || undefined;
+  const image = post.featured_image || `${SITE_URL}/og-default.png`;
+  const date = post.published_at || post.created_at;
   const tags = post.tags || [];
 
   return {
@@ -100,12 +100,12 @@ export function generateArticleSchema(post: Partial<Post>) {
     description: description,
     image: image,
     datePublished: date,
-    dateModified: post.updated_at || post.updated || date,
+    dateModified: post.updated_at || date,
     author: {
       '@type': 'Person',
-      name: post.author || 'Miguel Angel Rivera',
+      name: post.author || siteConfig.author,
       url: SITE_URL,
-      jobTitle: 'Ingeniero Civil y de Sistemas',
+      jobTitle: siteConfig.authorTitle,
     },
     publisher: {
       '@type': 'Organization',

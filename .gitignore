@@ -35,3 +35,9 @@ next-env.d.ts
 
 .vercel
 .sdd/
+
+# Build logs & temp files
+build.log
+build_error.log
+build_output.log
+temp.html

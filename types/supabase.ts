@@ -34,24 +34,20 @@ export interface Post {
     cta_product_price?: string | null;
     cta_product_url?: string | null;
 
-    // SEO & Meta (Optional extensions used by meta generators)
+    // SEO & Meta
     meta_title?: string;
-    metaTitle?: string;
     meta_description?: string;
-    metaDescription?: string;
     featured_image?: string;
-    image?: string;
     published_at?: string;
-    date?: string;
     tags?: string[];
     updated_at?: string;
-    updated?: string;
     author?: string;
     image_alt?: string;
-    imageAlt?: string;
     canonicalUrl?: string;
 
-    // UI Virtual fields
+    // UI view model fields (populated by callers for BlogCard etc.)
     description?: string;
+    image?: string;
+    date?: string;
     readingTime?: string;
 }

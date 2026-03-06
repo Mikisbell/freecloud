@@ -3,89 +3,24 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Script from 'next/script';
 import { Download, CheckCircle2, ArrowRight } from 'lucide-react';
+import { PRODUCTS } from '@/config/products';
 
 export const metadata: Metadata = {
   title: 'Recursos - Plantillas, Scripts y Herramientas para Ingenieros',
   description: 'Descarga plantillas Excel, scripts Python, programas HP Prime y familias Revit para ingeniería civil y BIM en Perú.',
 };
 
-const PRODUCTS = [
-  {
-    title: 'Plantilla Excel - Diseño Sísmico E.030',
-    description: 'Hoja de cálculo completa para análisis sísmico estático y dinámico según norma peruana E.030. Incluye espectro, fuerzas por piso y derivas.',
-    price: 'S/ 25',
-    priceUsd: '$7',
-    iconUrl: '/recursos/sismica_cover.png',
-    category: 'Ing. Sísmica',
-    href: 'https://pay.hotmart.com/E98246344E?checkoutMode=10', // link update from previous instruction
-    isGumroad: false,
-    tags: ['E.030', 'Sísmica', 'Excel'],
-    badge: '🔥 Más Vendido',
-  },
-  {
-    title: 'Plantilla Excel - Metrados de Obra',
-    description: 'Plantilla profesional de metrados con formatos de partidas según normativa peruana. Incluye macros para resumen automático de acero.',
-    price: 'S/ 20',
-    priceUsd: '$5',
-    iconUrl: '/recursos/metrados_cover.png',
-    category: 'Metrados',
-    href: 'https://freecloud.gumroad.com/l/plantilla-metrados',
-    isGumroad: true,
-    tags: ['Metrados', 'Excel', 'Presupuesto'],
-    badge: '⭐ Nuevo',
-  },
-  {
-    title: 'Pack Programas HP Prime - Hardy Cross',
-    description: 'Programa completo para el método de Hardy Cross. Incluye cálculo automático de caudales corregidos y presiones en nodos.',
-    price: 'S/ 35',
-    priceUsd: '$10',
-    iconUrl: '/recursos/hp_prime_cover.png',
-    category: 'HP Prime',
-    href: 'https://freecloud.gumroad.com/l/hp-prime-hardy-cross',
-    isGumroad: true,
-    tags: ['HP Prime', 'Hardy Cross', 'Hidráulica'],
-  },
-  {
-    title: 'Pack Scripts Python para Revit API',
-    description: 'Ahorra horas en Revit: crear hojas automáticamente, renombrar vistas masivamente y numerar parqueos. Código fuente comentado.',
-    price: 'S/ 50',
-    priceUsd: '$15',
-    iconUrl: '/recursos/python_revit_cover.png',
-    category: 'Python',
-    href: 'https://freecloud.gumroad.com/l/revit-scripts-python',
-    isGumroad: true,
-    tags: ['Python', 'Revit API', 'Automatización'],
-  },
-  {
-    title: 'Familias Revit - Estructural Perú',
-    description: 'Pack de familias Revit paramétricas adaptadas a la construcción peruana. Zapatas conectadas, vigas peraltadas y viguetas.',
-    price: 'S/ 40',
-    priceUsd: '$12',
-    iconUrl: '/recursos/familias_revit_cover.png',
-    category: 'Revit',
-    href: 'https://freecloud.gumroad.com/l/familias-revit-estructural',
-    isGumroad: true,
-    tags: ['Revit', 'Familias', 'Estructuras'],
-  },
-  {
-    title: 'Plantilla Plan de Ejecución BIM (PEB)',
-    description: 'Documento Word y PDF editable con la estructura del PEB según la Guía Nacional BIM Perú. Rápido de adaptar a tu proyecto.',
-    price: 'S/ 60',
-    priceUsd: '$18',
-    iconUrl: '/recursos/peb_bim_cover.png',
-    category: 'BIM',
-    href: 'https://freecloud.gumroad.com/l/plantilla-peb-bim',
-    isGumroad: true,
-    tags: ['BIM', 'PEB', 'Gestión'],
-    badge: '💼 Para Empresas',
-  },
-];
+const BADGES: Record<string, string> = {
+  'excel-e030': '🔥 Más Vendido',
+  'excel-metrados': '⭐ Nuevo',
+  'plantilla-peb': '💼 Para Empresas',
+};
 
 const TRUST_SIGNALS = [
   '✓ Descarga inmediata',
   '✓ Soporte personalizado por email',
   '✓ 7 días de garantía de reembolso',
-  '✓ Pagos seguros a través de Hotmart',
+  '✓ Pagos seguros a través de Gumroad',
 ];
 
 export default function RecursosPage() {
@@ -98,13 +33,13 @@ export default function RecursosPage() {
       'item': {
         '@type': 'Product',
         'name': p.title,
-        'description': p.description,
-        'image': `https://freecloud.pe${p.iconUrl}`,
+        'description': p.desc,
+        'image': `https://freecloud.pe${p.cover}`,
         'offers': {
           '@type': 'Offer',
-          'price': p.price.replace('S/ ', ''),
+          'price': p.price.replace('S/', ''),
           'priceCurrency': 'PEN',
-          'url': p.href.startsWith('mailto:') ? 'https://freecloud.pe/recursos' : p.href,
+          'url': p.href,
           'availability': 'https://schema.org/InStock'
         }
       }
@@ -174,74 +109,68 @@ export default function RecursosPage() {
       {/* ── PRODUCTS GRID ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {PRODUCTS.map((product, i) => (
-            <div
-              key={product.title}
-              className="group dataiku-card flex flex-col overflow-hidden animate-slide-up bg-white"
-              style={{ animationDelay: `${i * 100}ms` }}
-            >
-              <div className="relative w-full aspect-[4/3] bg-surface-100 overflow-hidden border-b border-surface-100">
-                <Image
-                  src={product.iconUrl}
-                  alt={product.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                {product.badge && (
-                  <div className="absolute top-4 right-4 z-10">
-                    <span className="px-3 py-1.5 bg-gradient-to-r from-fc-gold to-yellow-400 text-fc-navy text-xs font-black tracking-wide rounded-full shadow-lg border border-white/20">
-                      {product.badge}
-                    </span>
-                  </div>
-                )}
-              </div>
-              <div className="p-6 md:p-8 flex-1 flex flex-col">
-                <div className="mb-2.5">
-                  <span className="text-xs font-bold tracking-wider text-fc-blue uppercase">{product.category}</span>
+          {PRODUCTS.map((product, i) => {
+            const badge = BADGES[product.slug];
+            return (
+              <div
+                key={product.slug}
+                className="group dataiku-card flex flex-col overflow-hidden animate-slide-up bg-white"
+                style={{ animationDelay: `${i * 100}ms` }}
+              >
+                <div className="relative w-full aspect-[4/3] bg-surface-100 overflow-hidden border-b border-surface-100">
+                  {product.cover && (
+                    <Image
+                      src={product.cover}
+                      alt={product.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                  {badge && (
+                    <div className="absolute top-4 right-4 z-10">
+                      <span className="px-3 py-1.5 bg-gradient-to-r from-fc-gold to-yellow-400 text-fc-navy text-xs font-black tracking-wide rounded-full shadow-lg border border-white/20">
+                        {badge}
+                      </span>
+                    </div>
+                  )}
                 </div>
-
-                <h3 className="font-display font-bold text-xl text-surface-900 mb-3 group-hover:text-fc-blue transition-colors">
-                  {product.title}
-                </h3>
-
-                <p className="text-surface-600 mb-6 flex-1 leading-relaxed">
-                  {product.description}
-                </p>
-
-                <div className="flex flex-wrap gap-1.5 mb-8">
-                  {product.tags.map(tag => (
-                    <span key={tag} className="px-2.5 py-1 bg-surface-50 border border-surface-100 text-surface-500 font-medium text-xs rounded-md">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Pricing & CTA Section */}
-                <div className="pt-6 border-t border-surface-100 flex items-center justify-between mt-auto">
-                  <div className="flex flex-col">
-                    <span className="text-3xl font-display font-black text-surface-900 leading-none">
-                      {product.price}
-                    </span>
-                    <span className="text-sm font-medium text-surface-400 mt-1">
-                      (aprox. {product.priceUsd})
-                    </span>
+                <div className="p-6 md:p-8 flex-1 flex flex-col">
+                  <div className="mb-2.5">
+                    <span className="text-xs font-bold tracking-wider text-fc-blue uppercase">{product.tag}</span>
                   </div>
-                  <a
-                    href={product.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`inline-flex items-center gap-2 px-6 py-3.5 bg-dataiku-navy text-white font-bold rounded-full hover:bg-fc-blue hover:shadow-lg hover:shadow-fc-blue/30 transition-all duration-300 group-hover:scale-105 btn-pill ${product.isGumroad ? 'gumroad-button' : ''}`}
-                    data-gumroad-overlay-checkout={product.isGumroad ? "true" : undefined}
-                  >
-                    <Download className="w-5 h-5" />
-                    Obtener
-                  </a>
+
+                  <h3 className="font-display font-bold text-xl text-surface-900 mb-3 group-hover:text-fc-blue transition-colors">
+                    {product.title}
+                  </h3>
+
+                  <p className="text-surface-600 mb-6 flex-1 leading-relaxed">
+                    {product.desc}
+                  </p>
+
+                  {/* Pricing & CTA Section */}
+                  <div className="pt-6 border-t border-surface-100 flex items-center justify-between mt-auto">
+                    <div className="flex flex-col">
+                      <span className="text-3xl font-display font-black text-surface-900 leading-none">
+                        {product.priceDisplay}
+                      </span>
+                    </div>
+                    <a
+                      href={product.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="gumroad-button inline-flex items-center gap-2 px-6 py-3.5 bg-dataiku-navy text-white font-bold rounded-full hover:bg-fc-blue hover:shadow-lg hover:shadow-fc-blue/30 transition-all duration-300 group-hover:scale-105 btn-pill"
+                      data-gumroad-overlay-checkout="true"
+                    >
+                      <Download className="w-5 h-5" />
+                      Obtener
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* ── SERVICIOS PERSONALIZADOS ── */}

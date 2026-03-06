@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Suspense } from 'react';
@@ -7,57 +8,39 @@ import { generateOrganizationSchema } from '@/lib/seo';
 import HeroCountdown from '@/components/HeroCountdown';
 import HeroBackground from '@/components/HeroBackground';
 import Newsletter from '@/components/Newsletter';
+import { getHomepageProducts } from '@/config/products';
+
+export const metadata: Metadata = {
+  title: 'FreeCloud - BIM, Ingenieria Civil y Tecnologia | Peru',
+  description: 'Tutoriales, herramientas y recursos BIM para ingenieros civiles en Peru. Revit, Python, Dynamo, normativa E.030 y preparacion para la Ley 32069 (BIM obligatorio 2026).',
+  openGraph: {
+    title: 'FreeCloud - BIM, Ingenieria Civil y Tecnologia',
+    description: 'Desarrollo de software, automatizacion BIM y recursos tecnicos para ingenieros y empresas de construccion en Peru.',
+  },
+};
 
 const SERVICES = [
   {
     title: 'Desarrollo Web a Medida',
-    desc: 'Aplicaciones web, dashboards y sistemas de gestión para constructoras y consultoras. Next.js, React, bases de datos, APIs.',
+    desc: 'Aplicaciones web, dashboards y sistemas de gestion para constructoras y consultoras. Next.js, React, bases de datos, APIs.',
     icon: Monitor,
     href: '/sobre-mi#contacto',
   },
   {
-    title: 'Automatización BIM',
-    desc: 'Scripts para Revit API, flujos Dynamo y programas Python que eliminan trabajo repetitivo en modelado, metrados y documentación.',
+    title: 'Automatizacion BIM',
+    desc: 'Scripts para Revit API, flujos Dynamo y programas Python que eliminan trabajo repetitivo en modelado, metrados y documentacion.',
     icon: Settings,
     href: '/sobre-mi#contacto',
   },
   {
-    title: 'Consultoría y Capacitación BIM',
-    desc: 'Plan de Ejecución BIM (PEB), capacitación de equipos técnicos y preparación para licitaciones públicas bajo Ley 32069.',
+    title: 'Consultoria y Capacitacion BIM',
+    desc: 'Plan de Ejecucion BIM (PEB), capacitacion de equipos tecnicos y preparacion para licitaciones publicas bajo Ley 32069.',
     icon: BookOpen,
     href: '/sobre-mi#contacto',
   }
 ];
 
-const PRODUCTS = [
-  {
-    tag: 'Excel',
-    tagColor: 'bg-green-100 text-green-800',
-    tagBg: '#16a34a',
-    title: 'Plantilla Diseño Sísmico E.030',
-    price: '$7 USD',
-    desc: 'Cortante basal, distribución por pisos y derivas. Fórmulas automáticas según norma vigente.',
-    href: '#', // TODO: URL_HOTMART_E030
-  },
-  {
-    tag: 'Excel',
-    tagColor: 'bg-green-100 text-green-800',
-    tagBg: '#16a34a',
-    title: 'Plantilla Metrados de Obra',
-    price: '$5 USD',
-    desc: 'Concreto, acero y encofrado con fórmulas automáticas por elemento estructural.',
-    href: '#', // TODO: URL_HOTMART_METRADOS
-  },
-  {
-    tag: 'HP Prime',
-    tagColor: 'bg-blue-100 text-blue-800',
-    tagBg: '#1d4ed8',
-    title: 'Hardy Cross — Análisis Estructural',
-    price: '$10 USD',
-    desc: 'Programa completo para análisis de pórticos. Código listo para copiar a tu calculadora.',
-    href: '#', // TODO: URL_HOTMART_HARDYCROSS
-  }
-];
+const PRODUCTS = getHomepageProducts(3);
 
 const SKILLS = [
   'Revit', 'Python', 'Robot Structural', 'Dynamo', 'TypeScript',
@@ -292,14 +275,17 @@ export default async function HomePage() {
                     {prod.desc}
                   </p>
                   <div className="text-2xl font-bold text-blue-700 mb-4">
-                    {prod.price}
+                    {prod.priceDisplay}
                   </div>
-                  <Link
+                  <a
                     href={prod.href}
-                    className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center block mt-auto"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center block mt-auto ${prod.isGumroad ? 'gumroad-button' : ''}`}
+                    {...(prod.isGumroad ? { 'data-gumroad-overlay-checkout': 'true' } : {})}
                   >
-                    Próximamente
-                  </Link>
+                    Comprar
+                  </a>
                 </div>
               </div>
             ))}

@@ -9,7 +9,7 @@ Miguel Angel Rivera Ospina. Ingeniero civil + ingeniero de sistemas. Huancayo, P
 ## Stack
 - **Framework:** Next.js 16 (App Router, TypeScript)
 - **Styling:** Tailwind CSS
-- **Content:** MDX con next-mdx-remote (carpeta `content/blog/`)
+- **Content:** MDX con next-mdx-remote, posts almacenados en Supabase CMS (tabla `posts`)
 - **Database:** Supabase (PostgreSQL + RLS)
 - **Hosting:** Vercel
 - **Fonts:** Space Grotesk (display), DM Sans (body), JetBrains Mono (code)
@@ -25,28 +25,44 @@ Miguel Angel Rivera Ospina. Ingeniero civil + ingeniero de sistemas. Huancayo, P
 app/                    # Páginas (App Router)
   page.tsx              # Homepage
   blog/page.tsx         # Listado de posts
-  blog/[slug]/page.tsx  # Post individual (renderiza MDX)
+  blog/[slug]/page.tsx  # Post individual (renderiza MDX desde Supabase)
   recursos/page.tsx     # Tienda de productos digitales
   apps/page.tsx         # Web apps
   apps/calculadora-sismica/  # Calculadora E.030
   sobre-mi/page.tsx     # About con E-E-A-T
+  admin/                # CMS admin panel
   api/newsletter/       # Endpoint newsletter
   sitemap.ts            # Sitemap dinámico
   robots.ts             # robots.txt
+middleware.ts           # Auth guard para /admin (Supabase)
+config/
+  site.ts               # Configuración del sitio
+  products.ts           # Catálogo unificado de productos
 components/             # Componentes React
-  Header.tsx, Footer.tsx, BlogCard.tsx, Newsletter.tsx, AdSense.tsx
+  Header.tsx, Footer.tsx, BlogCard.tsx, Newsletter.tsx, AdSense.tsx,
+  ContactForm.tsx, HeroBackground.tsx, HeroCountdown.tsx,
+  TableOfContents.tsx, ShareButtons.tsx, ScrollRevealProvider.tsx,
+  Callout.tsx, DownloadButton.tsx, YouTubeFacade.tsx
+  admin/                # Componentes del CMS
+    Sidebar.tsx, PostEditor.tsx
 lib/                    # Utilidades
-  blog.ts               # Lectura MDX, categorías, posts relacionados
+  blog.ts               # Lectura MDX desde Supabase, categorías, posts relacionados
   seo.ts                # Meta tags, JSON-LD schemas
   supabase.ts           # Cliente Supabase, newsletter, analytics
-content/blog/           # Posts en MDX (aquí van los artículos)
+types/
+  supabase.ts           # Tipos de la base de datos
+content/blog/           # Vacío (posts migrados a Supabase)
 public/                 # Assets estáticos
 ```
 
+## Admin CMS
+- **Rutas:** `/admin` (dashboard), `/admin/login`, `/admin/posts`, `/admin/posts/new`, `/admin/posts/[id]/edit`, `/admin/categories`, `/admin/contacts`
+- **Auth:** Middleware de Supabase (`middleware.ts` en la raíz del proyecto)
+- **Componentes:** `admin/Sidebar.tsx`, `admin/PostEditor.tsx`
+
 ## Posts del blog (MDX)
-Cada post va en `content/blog/nombre-del-post.mdx` con este frontmatter obligatorio:
+Los posts se crean y editan desde el CMS admin (`/admin/posts`). Se almacenan en la tabla `posts` de Supabase y se renderizan con next-mdx-remote. Campos principales:
 ```yaml
----
 title: "Título del post"
 description: "Descripción para SEO (150-160 caracteres)"
 date: "YYYY-MM-DD"
@@ -56,7 +72,6 @@ tags: ["tag1", "tag2"]
 featured: false
 image: "/images/blog/nombre-imagen.jpg"
 imageAlt: "Descripción de la imagen"
----
 ```
 
 ## Categorías válidas
@@ -65,7 +80,7 @@ imageAlt: "Descripción de la imagen"
 ## Componentes disponibles en MDX
 - `<Callout type="tip|info|warning">texto</Callout>` — cajas de aviso
 - `<DownloadButton url="/archivo" text="Descargar" />` — botón de descarga
-- `<YouTube id="videoId" />` — embed de YouTube
+- `<YouTubeFacade id="videoId" />` — embed de YouTube (lazy-loaded)
 
 ## 5 Pilares de contenido (en orden de prioridad)
 1. **BIM Perú** — Normativa, Ley 32069, plazos, roles, PEB. URGENTE.
@@ -77,7 +92,7 @@ imageAlt: "Descripción de la imagen"
 ## Reglas IMPORTANTES
 - Todo contenido en **ESPAÑOL** contextualizado a **PERÚ** (normas E.030, E.020, Ley 32069).
 - SEO siempre: meta descriptions, keywords, estructura H2/H3, internal links.
-- Posts deben ser usables inmediatamente — archivo .mdx listo para copiar a `content/blog/`.
+- Posts deben ser usables inmediatamente — creados desde el CMS admin.
 - **NUNCA perfeccionar código cuando hay contenido por publicar. Publicar > perfeccionar.**
 - La voz es técnica pero accesible. No académica ni influencer. Ingeniero que explica directo.
 - Incluir links internos entre posts y hacia /recursos y /apps cuando sea relevante.
@@ -90,10 +105,10 @@ imageAlt: "Descripción de la imagen"
 - **Guía Nacional BIM** — Estándares y niveles de desarrollo (LOD).
 
 ## Supabase
-Tablas: `subscribers` (newsletter), `downloads` (tracking), `page_views` (analytics). Todas con RLS. Cliente en `lib/supabase.ts`.
+Tablas: `posts` (blog CMS), `categories` (categorías), `contacts` (formulario de contacto), `leads` (captación), `subscribers` (newsletter), `downloads` (tracking), `page_views` (analytics). Todas con RLS. Cliente en `lib/supabase.ts`.
 
 ## Productos digitales (Gumroad)
-Pack HP Prime (S/35), Excel E.030 (S/25), Excel Metrados (S/20), Plantilla PEB (S/60), Scripts Python Revit (S/50), Familias Revit (S/40).
+Pack HP Prime (S/35), Excel E.030 (S/25), Excel Metrados (S/20), Plantilla PEB (S/60), Scripts Python Revit (S/50), Familias Revit (S/40). Catálogo centralizado en `config/products.ts`.
 
 ## Stack Cognitivo (Sistema de IA)
 

@@ -189,6 +189,38 @@ export default function ServiciosPage() {
                     </div>
                 </div>
             </section>
+
+            {/* JSON-LD Service Schema */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'ProfessionalService',
+                        name: 'FreeCloud - Servicios de Ingenieria y BIM',
+                        url: 'https://freecloud.pe/servicios',
+                        description: 'Soluciones B2B de consultoria BIM, desarrollo de software a medida e ingenieria estructural para empresas de construccion en Peru.',
+                        areaServed: { '@type': 'Country', name: 'Peru' },
+                        provider: {
+                            '@type': 'Organization',
+                            name: 'FreeCloud',
+                            url: 'https://freecloud.pe',
+                        },
+                        hasOfferCatalog: {
+                            '@type': 'OfferCatalog',
+                            name: 'Servicios B2B',
+                            itemListElement: SERVICES.map((srv, i) => ({
+                                '@type': 'Offer',
+                                itemOffered: {
+                                    '@type': 'Service',
+                                    name: srv.title,
+                                    description: srv.description,
+                                },
+                            })),
+                        },
+                    })
+                }}
+            />
         </div>
     );
 }

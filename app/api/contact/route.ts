@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { submitContact } from '@/lib/supabase';
+import { rateLimit } from '@/lib/rate-limit';
 import { z } from 'zod';
 
 const contactSchema = z.object({
@@ -11,6 +12,10 @@ const contactSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = request.headers.get('x-forwarded-for') || 'unknown';
+    if (!rateLimit(ip, 3, 60_000)) {
+      return NextResponse.json({ error: 'Demasiadas solicitudes. Intenta en un minuto.' }, { status: 429 });
+    }
     const body = await request.json();
 
     // Honeypot Trap
