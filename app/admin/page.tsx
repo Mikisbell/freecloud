@@ -1,19 +1,42 @@
+import { connection } from 'next/server'
 import Link from 'next/link'
-import { FileText, CheckCircle, Edit3, FolderTree, MessageSquare, Clock, ArrowRight } from 'lucide-react'
-import { getAdminPosts, getCategories, getContacts } from '@/lib/supabase'
+import { FileText, Eye, Users, MessageSquare, Edit3, Clock, ArrowRight, TrendingUp } from 'lucide-react'
+import { getAdminPosts, getCategories, getContacts, getSubscribers, getPageViewStats, getDownloads } from '@/lib/supabase'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
 export default async function AdminDashboard() {
-    const posts = await getAdminPosts()
-    const categories = await getCategories()
-    const contacts = await getContacts()
+    await connection()
 
-    const publishedCount = posts.filter(p => p.status === 'published').length
+    const [posts, categories, contacts, subscribers, pageViews, downloads] = await Promise.all([
+        getAdminPosts(),
+        getCategories(),
+        getContacts(),
+        getSubscribers(),
+        getPageViewStats(30),
+        getDownloads(),
+    ])
 
+    const totalViews = pageViews.length
     const recentPosts = posts.slice(0, 5)
     const recentContacts = contacts.slice(0, 3)
+
+    // 14-day sparkline data
+    const sparklineDays = 14
+    const dailyCounts: Record<string, number> = {}
+    const now = new Date()
+    for (let i = sparklineDays - 1; i >= 0; i--) {
+        const d = new Date(now)
+        d.setDate(d.getDate() - i)
+        dailyCounts[d.toISOString().split('T')[0]] = 0
+    }
+    for (const v of pageViews) {
+        const day = v.created_at.split('T')[0]
+        if (dailyCounts[day] !== undefined) dailyCounts[day]++
+    }
+    const sparkline = Object.entries(dailyCounts).map(([date, count]) => ({ date, count }))
+    const sparklineMax = Math.max(...sparkline.map(d => d.count), 1)
 
     const stats = [
         {
@@ -21,36 +44,36 @@ export default async function AdminDashboard() {
             value: posts.length,
             icon: FileText,
             gradient: 'from-blue-500/10 to-blue-600/5',
-            iconBg: 'bg-blue-500/10',
             iconColor: 'text-blue-400',
             borderColor: 'border-blue-500/10',
+            href: '/admin/posts',
         },
         {
-            label: 'Publicados',
-            value: publishedCount,
-            icon: CheckCircle,
-            gradient: 'from-emerald-500/10 to-emerald-600/5',
-            iconBg: 'bg-emerald-500/10',
-            iconColor: 'text-emerald-400',
-            borderColor: 'border-emerald-500/10',
-        },
-        {
-            label: 'Categorías',
-            value: categories.length,
-            icon: FolderTree,
+            label: 'Visitas (30d)',
+            value: totalViews.toLocaleString(),
+            icon: Eye,
             gradient: 'from-violet-500/10 to-violet-600/5',
-            iconBg: 'bg-violet-500/10',
             iconColor: 'text-violet-400',
             borderColor: 'border-violet-500/10',
+            href: '/admin/stats',
+        },
+        {
+            label: 'Suscriptores',
+            value: subscribers.length,
+            icon: Users,
+            gradient: 'from-emerald-500/10 to-emerald-600/5',
+            iconColor: 'text-emerald-400',
+            borderColor: 'border-emerald-500/10',
+            href: '/admin/subscribers',
         },
         {
             label: 'Mensajes',
             value: contacts.length,
             icon: MessageSquare,
             gradient: 'from-amber-500/10 to-amber-600/5',
-            iconBg: 'bg-amber-500/10',
             iconColor: 'text-amber-400',
             borderColor: 'border-amber-500/10',
+            href: '/admin/contacts',
         },
     ]
 
@@ -60,7 +83,7 @@ export default async function AdminDashboard() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-xl sm:text-2xl font-bold font-grotesk text-white tracking-tight">Dashboard</h1>
-                    <p className="text-xs sm:text-sm text-white/40 mt-0.5">Visión general de tu contenido en FreeCloud</p>
+                    <p className="text-xs sm:text-sm text-white/40 mt-0.5">Vision general de FreeCloud</p>
                 </div>
                 <Button asChild className="bg-gradient-to-r from-fc-blue to-fc-navy hover:from-fc-cyan hover:to-fc-blue text-white shadow-lg shadow-fc-blue/20 hover:shadow-fc-blue/30 border-0 min-h-11 w-full sm:w-auto">
                     <Link href="/admin/posts/new">
@@ -70,27 +93,60 @@ export default async function AdminDashboard() {
                 </Button>
             </div>
 
-            {/* Stats Grid — 2 cols mobile, 4 cols desktop */}
+            {/* Stats Grid */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                 {stats.map((stat) => (
-                    <Card
-                        key={stat.label}
-                        className={`bg-gradient-to-br ${stat.gradient} border ${stat.borderColor} backdrop-blur-sm transition-all duration-200 hover:scale-[1.02]`}
-                    >
-                        <CardContent className="p-4 sm:p-5">
-                            <div className="flex items-center justify-between mb-3 sm:mb-4">
-                                <h3 className="text-[11px] sm:text-[13px] text-white/50 font-medium">{stat.label}</h3>
-                                <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${stat.iconBg} flex items-center justify-center`}>
+                    <Link key={stat.label} href={stat.href}>
+                        <Card className={`bg-gradient-to-br ${stat.gradient} border ${stat.borderColor} backdrop-blur-sm transition-all duration-200 hover:scale-[1.02] cursor-pointer`}>
+                            <CardContent className="p-4 sm:p-5">
+                                <div className="flex items-center justify-between mb-3">
+                                    <h3 className="text-[11px] sm:text-[13px] text-white/50 font-medium">{stat.label}</h3>
                                     <stat.icon className={`w-4 h-4 sm:w-[18px] sm:h-[18px] ${stat.iconColor}`} />
                                 </div>
-                            </div>
-                            <p className="text-2xl sm:text-3xl font-bold text-white font-grotesk">{stat.value}</p>
-                        </CardContent>
-                    </Card>
+                                <p className="text-2xl sm:text-3xl font-bold text-white font-grotesk">{stat.value}</p>
+                            </CardContent>
+                        </Card>
+                    </Link>
                 ))}
             </div>
 
-            {/* Content Grid — stacked mobile, 2 cols desktop */}
+            {/* Traffic Sparkline */}
+            <Card className="bg-white/[0.02] border-white/[0.06]">
+                <CardHeader className="px-4 sm:px-5 py-3 border-b border-white/[0.06]">
+                    <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2.5">
+                            <div className="w-7 h-7 rounded-lg bg-violet-500/10 flex items-center justify-center">
+                                <TrendingUp className="w-3.5 h-3.5 text-violet-400" />
+                            </div>
+                            <CardTitle className="text-sm font-semibold text-white">Trafico (14 dias)</CardTitle>
+                        </div>
+                        <Link href="/admin/stats" className="text-xs text-fc-cyan hover:text-fc-cyan-light transition-colors flex items-center gap-1">
+                            Ver mas <ArrowRight className="w-3 h-3" />
+                        </Link>
+                    </div>
+                </CardHeader>
+                <CardContent className="p-4 sm:p-5">
+                    <div className="flex items-end gap-[3px] h-16 w-full">
+                        {sparkline.map((d, i) => (
+                            <div key={i} className="flex-1 flex flex-col items-center justify-end group relative">
+                                <div
+                                    className="w-full bg-violet-400 rounded-t-sm opacity-60 group-hover:opacity-100 transition-opacity min-h-[2px]"
+                                    style={{ height: `${Math.max((d.count / sparklineMax) * 100, 3)}%` }}
+                                />
+                                <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-md text-white text-[10px] px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
+                                    {d.date.slice(5)}: {d.count}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="flex justify-between mt-2 text-[10px] text-white/20">
+                        <span>{sparkline[0]?.date.slice(5)}</span>
+                        <span>Hoy</span>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Content Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
                 {/* Recent Posts */}
                 <Card className="bg-white/[0.02] border-white/[0.06] backdrop-blur-sm">
@@ -100,7 +156,7 @@ export default async function AdminDashboard() {
                                 <div className="w-7 h-7 rounded-lg bg-blue-500/10 flex items-center justify-center">
                                     <Clock className="w-3.5 h-3.5 text-blue-400" />
                                 </div>
-                                <CardTitle className="text-sm font-semibold text-white">Últimos Posts</CardTitle>
+                                <CardTitle className="text-sm font-semibold text-white">Ultimos Posts</CardTitle>
                             </div>
                             <Link href="/admin/posts" className="text-xs text-fc-cyan hover:text-fc-cyan-light transition-colors flex items-center gap-1">
                                 Ver todos <ArrowRight className="w-3 h-3" />
@@ -114,9 +170,9 @@ export default async function AdminDashboard() {
                                     <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/[0.03] flex items-center justify-center mx-auto mb-3">
                                         <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-white/20" />
                                     </div>
-                                    <p className="text-sm text-white/30">No hay posts todavía</p>
+                                    <p className="text-sm text-white/30">No hay posts todavia</p>
                                     <Link href="/admin/posts/new" className="text-xs text-fc-cyan mt-2 inline-block hover:underline">
-                                        ¡Empieza a escribir! →
+                                        Empieza a escribir
                                     </Link>
                                 </div>
                             ) : (
@@ -127,8 +183,8 @@ export default async function AdminDashboard() {
                                                 {post.title}
                                             </h3>
                                             <div className="flex items-center gap-2 text-xs text-white/30 mt-1">
-                                                <span className="truncate">{post.categories?.emoji} {post.categories?.name || 'Sin categoría'}</span>
-                                                <span className="hidden sm:inline">•</span>
+                                                <span className="truncate">{post.categories?.emoji} {post.categories?.name || 'Sin categoria'}</span>
+                                                <span className="hidden sm:inline">&middot;</span>
                                                 <span className="hidden sm:inline">{new Date(post.created_at).toLocaleDateString('es-PE', { day: 'numeric', month: 'short' })}</span>
                                             </div>
                                         </div>
@@ -155,7 +211,7 @@ export default async function AdminDashboard() {
                                 <div className="w-7 h-7 rounded-lg bg-amber-500/10 flex items-center justify-center">
                                     <MessageSquare className="w-3.5 h-3.5 text-amber-400" />
                                 </div>
-                                <CardTitle className="text-sm font-semibold text-white">Últimos Mensajes</CardTitle>
+                                <CardTitle className="text-sm font-semibold text-white">Ultimos Mensajes</CardTitle>
                             </div>
                             <Link href="/admin/contacts" className="text-xs text-fc-cyan hover:text-fc-cyan-light transition-colors flex items-center gap-1">
                                 Ir a Bandeja <ArrowRight className="w-3 h-3" />
@@ -170,7 +226,7 @@ export default async function AdminDashboard() {
                                         <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-white/20" />
                                     </div>
                                     <p className="text-sm text-white/30">No hay mensajes nuevos</p>
-                                    <p className="text-xs text-white/15 mt-1">Los mensajes del formulario de contacto aparecerán aquí</p>
+                                    <p className="text-xs text-white/15 mt-1">Los mensajes del formulario de contacto apareceran aqui</p>
                                 </div>
                             ) : (
                                 recentContacts.map(contact => (

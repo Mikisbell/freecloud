@@ -76,6 +76,61 @@ export async function trackPageView(path: string, referrer?: string) {
 }
 
 // ==========================================
+// Admin Analytics Queries
+// ==========================================
+
+export async function getSubscribers() {
+  const { data, error } = await getClient()
+    .from('subscribers')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data as Subscriber[];
+}
+
+export async function getPageViewStats(days: number = 30) {
+  const since = new Date();
+  since.setDate(since.getDate() - days);
+
+  const { data, error } = await getClient()
+    .from('page_views')
+    .select('path, created_at')
+    .gte('created_at', since.toISOString())
+    .order('created_at', { ascending: false });
+  if (error) return [];
+  return data as PageView[];
+}
+
+export async function getTopPages(days: number = 30) {
+  const views = await getPageViewStats(days);
+  const counts: Record<string, number> = {};
+  for (const v of views) {
+    counts[v.path] = (counts[v.path] || 0) + 1;
+  }
+  return Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10)
+    .map(([path, count]) => ({ path, count }));
+}
+
+export async function getDownloads() {
+  const { data, error } = await getClient()
+    .from('downloads')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) return [];
+  return data as Download[];
+}
+
+export async function deleteSubscriber(id: string) {
+  const { error } = await getClient()
+    .from('subscribers')
+    .delete()
+    .eq('id', id);
+  if (error) throw error;
+}
+
+// ==========================================
 // Leads & Contacts
 // ==========================================
 

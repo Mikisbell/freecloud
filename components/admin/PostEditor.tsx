@@ -617,7 +617,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                 </div>
                 <CardHeader className="pb-3 border-b border-emerald-500/10">
                     <CardTitle className="text-base text-emerald-300 flex items-center gap-2">
-                        <ShoppingCart className="w-4 h-4" /> Producto a Vender
+                        <ShoppingCart className="w-4 h-4" /> Producto CTA (Gumroad)
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-4 space-y-4 relative z-10">
@@ -645,13 +645,13 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                         />
                     </div>
                     <div className="space-y-2">
-                        <Label className="text-emerald-200/70 text-xs">URL de Compra (Hotmart)</Label>
+                        <Label className="text-emerald-200/70 text-xs">URL de Compra (Gumroad)</Label>
                         <Input
                             type="text"
                             name="cta_product_url"
                             value={formData.cta_product_url || ''}
                             onChange={handleChange}
-                            placeholder="https://pay.hotmart.com/..."
+                            placeholder="https://freecloud.gumroad.com/l/..."
                             className="bg-black/20 border-emerald-500/20 text-white text-sm h-10 font-mono focus-visible:ring-emerald-500/50"
                         />
                     </div>

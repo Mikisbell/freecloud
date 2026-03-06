@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, FileText, FolderTree, PlusCircle, LogOut, MessageSquare, ChevronRight, Menu, X } from 'lucide-react'
+import { LayoutDashboard, FileText, FolderTree, PlusCircle, LogOut, MessageSquare, ChevronRight, Menu, X, BarChart3, Users, Settings } from 'lucide-react'
 import { logout } from '@/app/admin/actions'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
@@ -15,6 +15,9 @@ const navItems = [
     { name: 'Nueva Publicación', href: '/admin/posts/new', icon: PlusCircle },
     { name: 'Categorías', href: '/admin/categories', icon: FolderTree },
     { name: 'Contactos', href: '/admin/contacts', icon: MessageSquare },
+    { name: 'Estadisticas', href: '/admin/stats', icon: BarChart3 },
+    { name: 'Suscriptores', href: '/admin/subscribers', icon: Users },
+    { name: 'Configuracion', href: '/admin/settings', icon: Settings },
 ]
 
 function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
