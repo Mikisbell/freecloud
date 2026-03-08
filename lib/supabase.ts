@@ -70,8 +70,9 @@ export async function trackPageView(path: string, referrer?: string) {
       .from('page_views')
       .insert({ path, referrer });
     if (error) throw error;
-  } catch (err: any) {
-    console.warn('⚠️ Fallo silenciado en Analytics (ignorar si es high-traffic o adblocker):', err.message);
+  } catch (err: unknown) {
+    const errorMsg = err instanceof Error ? err.message : String(err);
+    console.warn('⚠️ Fallo silenciado en Analytics (ignorar si es high-traffic o adblocker):', errorMsg);
   }
 }
 
@@ -277,6 +278,10 @@ export async function getPosts(options?: GetPostsOptions) {
     query = query.eq('featured', options.featured);
   }
 
+  // Hide scheduled posts by default in public queries. 
+  // Future dates will only show up when the date arrives.
+  query = query.lte('published_at', new Date().toISOString());
+
   if (options?.limit) {
     const page = options.page || 1;
     const from = (page - 1) * options.limit;
@@ -294,6 +299,8 @@ export async function getPostBySlug(slug: string) {
     .from('posts')
     .select('*, categories(*)')
     .eq('slug', slug)
+    // Even direct hits by slug should respect the schedule to avoid manual URL leaking
+    .lte('published_at', new Date().toISOString())
     .single();
   if (error) return null;
   return data as Post;
@@ -306,6 +313,7 @@ export async function getRelatedPosts(postId: string, categoryId: string, limit:
     .eq('status', 'published')
     .eq('category_id', categoryId)
     .neq('id', postId)
+    .lte('published_at', new Date().toISOString())
     .order('published_at', { ascending: false })
     .limit(limit);
   if (error) return [];
@@ -317,6 +325,7 @@ export async function getPopularPosts(limit: number = 4) {
     .from('posts')
     .select('id, title, slug, cover_image, published_at')
     .eq('status', 'published')
+    .lte('published_at', new Date().toISOString())
     .order('published_at', { ascending: false }) // En el futuro se puede ordenar por 'views'
     .limit(limit);
   if (error) return [];
@@ -324,12 +333,16 @@ export async function getPopularPosts(limit: number = 4) {
 }
 
 export async function getAdjacentPosts(publishedAt: string, currentId: string) {
+  const now = new Date().toISOString();
+
   const { data: prevPost } = await getClient()
     .from('posts')
     .select('title, slug')
     .eq('status', 'published')
     .neq('id', currentId)
     .lt('published_at', publishedAt)
+    // Only fetch adjacents that are actually live
+    .lte('published_at', now)
     .order('published_at', { ascending: false })
     .limit(1)
     .maybeSingle();
@@ -340,6 +353,7 @@ export async function getAdjacentPosts(publishedAt: string, currentId: string) {
     .eq('status', 'published')
     .neq('id', currentId)
     .gt('published_at', publishedAt)
+    .lte('published_at', now)
     .order('published_at', { ascending: true })
     .limit(1)
     .maybeSingle();
@@ -428,4 +442,49 @@ export async function uploadImage(file: File) {
     .getPublicUrl(fileName);
 
   return urlData.publicUrl;
+}
+
+export interface StorageImage {
+  name: string;
+  id: string;
+  updated_at: string;
+  created_at: string;
+  last_accessed_at: string;
+  metadata: {
+    size: number;
+    mimetype: string;
+    cacheControl: string;
+  };
+  url: string;
+}
+
+export async function listImages() {
+  const { data, error } = await getClient()
+    .storage
+    .from('blog-images')
+    .list('', {
+      limit: 100,
+      offset: 0,
+      sortBy: { column: 'created_at', order: 'desc' },
+    });
+
+  if (error) {
+    console.error('Error listing images', error);
+    return [];
+  }
+
+  // Exclude empty hidden files like .emptyFolderPlaceholder
+  const validFiles = data?.filter(file => file.name !== '.emptyFolderPlaceholder' && file.id) || [];
+
+  return validFiles.map((file) => {
+    const { data: urlData } = getClient()
+      .storage
+      .from('blog-images')
+      .getPublicUrl(file.name);
+
+    return {
+      ...file,
+      url: urlData.publicUrl
+    } as unknown as StorageImage;
+  });
 }

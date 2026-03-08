@@ -1,75 +1,59 @@
 # Workflow: GGA — Guardian Angel en Git Commit
-description: Review independiente con IA antes de hacer git push
+description: Review independiente con IA automatizado mediante hooks de Git
 
 ---
 
-> **¿Qué es?** El GGA es una Capa 2 de protección independiente del agente principal.
-> No tiene contexto de la sesión — solo ve el diff y las reglas. Atrapa lo que se escapó en Capa 1.
+> **¿Qué es?** El GGA (Gentleman Guardian Angel) es la Capa 2 de protección independiente del Agente principal (Capa 1).
+> Actúa como un Senior Developer que intercepta tus commits para asegurar que el código no rompe las reglas establecidas en `AGENTS.md`.
 
 ## Cuándo usar
 
-- Antes de cualquier `git push` a `main` o `feat/*`
-- Especialmente en cambios que tocan seguridad, API routes, o Supabase
-- Opcional (pero recomendado) para refactors de componentes UI
+**Siempre.** El GGA se ejecuta **automáticamente** en cada `git commit` gracias a los hooks instalados localmente.
 
-## Pasos
+## Pasos del Workflow
 
-### Paso 1: Asegurarte de que el build pasa
+### Paso 1: Empaquetar estado SDD
+Si estás trabajando bajo el marco SDD, asegúrate de haber consolidado tus notas de diseño e implementación en `.sdd/`. Verifica que el directorio `.sdd/` **no** se incluya en tus commits.
 
-```powershell
-npm run build
+### Paso 2: Ejecutar Build y validación estricta
+Antes de hacer commit, confirma que no hay errores de sintaxis o renderizado mediante los lints y TypeScript.
+// turbo
+```bash
+npx tsc --noEmit && npm run build
 ```
 
-Si falla → corregir ANTES de continuar. No hacer commit con build roto.
-
-### Paso 2: Correr el GGA
-
-```powershell
-.\scripts\gga-review.ps1
+### Paso 3: Stage de archivos
+Agrega solo los archivos que modificarás. El caché inteligente de GGA ignorará los que no han cambiado.
+```bash
+git add app/ components/ lib/
 ```
 
-El script:
-1. Captura el diff de los cambios staged (`git diff --staged`)
-2. Carga el contexto de `AGENTS.md` como rulebook
-3. Envía ambos a la API de Anthropic (Claude)
-4. Imprime un reporte con: ✅ aprobado / ⚠️ advertencias / 🚫 bloqueadores
-
-### Paso 3: Interpretar el reporte
-
-| Resultado | Acción |
-|---|---|
-| ✅ Sin issues | Proceder con `git commit` |
-| ⚠️ Advertencias | Revisar, decidir conscientemente si son aceptables |
-| 🚫 Bloqueadores | Corregir antes de hacer commit |
-
-### Paso 4: Hacer commit con convención
-
-```powershell
-git add .
+### Paso 4: Commit interactivo
+Lanza el commit. El hook `pre-commit` enviará los archivos a GGA, y luego el hook `commit-msg` analizará tu mensaje.
+```bash
 git commit -m "feat(scope): descripción clara del cambio"
-git push origin main
 ```
 
-## Configuración requerida
+### Paso 5: Manejo del Reporte GGA
 
-El script necesita un GitHub Personal Access Token. Agregar a `.env.local`:
+- ✅ **Sin issues**: El commit pasará automáticamente y se guardará.
+- 🚫 **Violaciones de código (FAILED)**: El commit se abortará. Lee los errores listados en la consola, corrige tu código en los archivos mencionados, haz `git add` nuevamente, y repite el commit.
 
+### Paso 6: Push (Cierre del ciclo)
+Una vez que el código y el mensaje pasen el filtro del ángel guardián, realiza el push.
+```bash
+git push
 ```
-GITHUB_TOKEN=ghp_...
-```
 
-Crear el token en: **[github.com/settings/tokens](https://github.com/settings/tokens)**
-- Classic token o Fine-grained → ambos sirven
-- No necesita scopes especiales para acceder a GitHub Models
-- Acceso a GitHub Models: **[github.com/marketplace/models](https://github.com/marketplace/models)**
+## Comandos Útiles de GGA
 
-> ✅ Esta variable es segura en `.env.local` — ya está en `.gitignore`.
-> ⚠️ No agregar a variables de Vercel — es solo para uso local en desarrollo.
+Si necesitas interactuar manualmente con la herramienta:
 
-## Notas
+| Comando | Acción |
+|---|---|
+| `bash .agents/gentleman-guardian-angel/bin/gga run` | Forzar revisión de los archivos en *stage* sin hacer commit |
+| `bash .agents/gentleman-guardian-angel/bin/gga run --no-cache` | Revisar ignorando el caché guardado |
+| `bash .agents/gentleman-guardian-angel/bin/gga cache clear` | Limpiar el caché de la IA para este proyecto |
 
-- El GGA es **asíncrono y manual** — no bloquea el commit automáticamente.
-- Es una herramienta de revisión, no un guardián absoluto. La decisión final es tuya.
-- Si la API no responde, proceder con el criterio propio + reglas de `AGENTS.md`.
-- Modelo por defecto: `gpt-4o-mini`. Cambiar con: `.\scripts\gga-review.ps1 -Model "gpt-4o"`
-
+> **Nota para modificar modelo/proveedor:**  
+> Edita el archivo `.gga` en la raíz del proyecto. Por defecto usa `claude`. Puedes cambiar `PROVIDER` a `gemini`, `opencode`, o `ollama:llama3`.

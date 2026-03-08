@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
-import { createPost, updatePost, uploadImage } from '@/lib/supabase'
+import { createPost, updatePost, uploadImage, StorageImage } from '@/lib/supabase'
 import { Post, Category } from '@/types/supabase'
 import { Save, Eye, ArrowLeft, Image as ImageIcon, Sparkles, Check, X, Settings2, PenLine, Loader2, Upload, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
@@ -16,6 +16,8 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { MediaLibraryModal } from './MediaLibraryModal'
 
 interface PostEditorProps {
     post?: Post
@@ -79,12 +81,15 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
         cta_product_name: post?.cta_product_name || '',
         cta_product_url: post?.cta_product_url || '',
         cta_product_price: post?.cta_product_price || '',
+        published_at: post?.published_at || '',
     })
 
     const [saving, setSaving] = useState(false)
     const [lastSaved, setLastSaved] = useState<Date | null>(null)
     const [showPreview, setShowPreview] = useState(false)
     const [uploadingImage, setUploadingImage] = useState(false)
+    const [isMediaLibraryOpen, setIsMediaLibraryOpen] = useState(false)
+    const [mediaLibraryTarget, setMediaLibraryTarget] = useState<'content' | 'featured'>('content')
     const [dirty, setDirty] = useState(false)
     const [tagInput, setTagInput] = useState('')
     const [toastMsg, setToastMsg] = useState<{ text: string, type: 'success' | 'error' } | null>(null)
@@ -112,6 +117,15 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
             setUploadingImage(false);
         }
     };
+
+    const handleMediaSelect = (url: string, file: StorageImage | File) => {
+        if (mediaLibraryTarget === 'content') {
+            insertText(`![${file.name || 'image'}](${url})`);
+        } else {
+            setFormData(prev => ({ ...prev, featured_image: url }));
+            setDirty(true);
+        }
+    }
 
     useEffect(() => {
         if (!isEditing && formData.title && !formData.slug) {
@@ -184,16 +198,24 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
             const status = forceStatus || formData.status
             setFormData(prev => ({ ...prev, status }))
 
-            const payload: any = {
+            const payload: Partial<Post> & { reading_time: number } = {
                 ...formData,
                 status,
                 reading_time: readingTime,
-                ...(status === 'published' && !post?.published_at ? { published_at: new Date().toISOString() } : {})
             }
 
-            if (!payload.category_id) {
-                payload.category_id = null;
+            // Assign published_at logic based on whether we forced a schedule or it's a new publish
+            if (formData.published_at) {
+                // If the user specified a date, convert strictly to ISO
+                const isValidDate = !isNaN(new Date(formData.published_at).getTime())
+                if (isValidDate) {
+                    payload.published_at = new Date(formData.published_at).toISOString()
+                }
+            } else if (status === 'published' && !post?.published_at) {
+                // First time publish, no scheduling specified
+                payload.published_at = new Date().toISOString()
             }
+
 
             if (isEditing) {
                 await updatePost(post!.id, payload)
@@ -267,15 +289,9 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                     <div className="w-px h-4 bg-white/[0.06] mx-1 shrink-0"></div>
                     <Button variant="ghost" size="sm" onClick={() => insertText('[Texto](url)')} className="h-8 px-2 text-white/50 hover:text-white text-xs">Link</Button>
                     <Button variant="ghost" size="sm" onClick={() => {
-                        const input = document.createElement('input');
-                        input.type = 'file';
-                        input.accept = 'image/*';
-                        input.onchange = async (e) => {
-                            const file = (e.target as HTMLInputElement).files?.[0];
-                            if (file) handleImageUpload(file, 'content');
-                        };
-                        input.click();
-                    }} className="h-8 px-2 text-white/50 hover:text-white" disabled={uploadingImage}>
+                        setMediaLibraryTarget('content')
+                        setIsMediaLibraryOpen(true)
+                    }} className="h-8 px-2 text-white/50 hover:text-white" disabled={uploadingImage} title="Media Library">
                         {uploadingImage ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImageIcon className="w-4 h-4" />}
                     </Button>
                     <div className="w-px h-4 bg-white/[0.06] mx-1 shrink-0"></div>
@@ -289,30 +305,33 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                         size="sm"
                         variant={showPreview ? "default" : "secondary"}
                         onClick={() => setShowPreview(!showPreview)}
-                        className={`h-8 text-xs shrink-0 ${showPreview ? 'bg-fc-blue/20 text-fc-cyan hover:bg-fc-blue/30' : 'bg-white/[0.04] text-white/60 hover:text-white hover:bg-white/[0.08]'}`}
+                        className={`h-8 text-xs shrink-0 lg:hidden ${showPreview ? 'bg-fc-blue/20 text-fc-cyan hover:bg-fc-blue/30' : 'bg-white/[0.04] text-white/60 hover:text-white hover:bg-white/[0.08]'}`}
                     >
                         <Eye className="w-3.5 h-3.5 mr-1.5" />
-                        {showPreview ? 'Editando' : 'Preview'}
+                        {showPreview ? 'Editando' : 'Preview Móvil'}
                     </Button>
                 </div>
 
-                <div className="flex-1 overflow-hidden relative bg-[#08080f]/50">
-                    {showPreview ? (
-                        <div className="absolute inset-0 overflow-y-auto p-4 sm:p-6 prose prose-invert prose-p:text-white/70 prose-headings:text-white prose-a:text-fc-cyan prose-pre:bg-white/[0.03] prose-pre:border prose-pre:border-white/[0.06] max-w-none custom-scrollbar">
-                            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                                {formData.content || '*Aún no hay contenido... Escribe algo para ver la previsualización.*'}
-                            </ReactMarkdown>
-                        </div>
-                    ) : (
+                <div className="flex-1 overflow-hidden relative bg-[#08080f]/50 flex flex-col lg:flex-row">
+                    {/* LEFT PANE: Editor (always visible on desktop, hidden on mobile if previewing) */}
+                    <div className={`flex-1 overflow-hidden relative ${showPreview ? 'hidden lg:block' : 'block'} lg:border-r border-white/[0.06]`}>
                         <Textarea
                             id="content-editor"
                             name="content"
                             value={formData.content}
                             onChange={handleChange}
                             placeholder="Escribe el contenido en Markdown aquí *..."
-                            className="absolute inset-0 w-full h-full bg-transparent border-0 rounded-none p-4 sm:p-6 font-mono text-sm leading-relaxed text-white/80 placeholder:text-white/20 focus-visible:ring-0 resize-none custom-scrollbar"
+                            className="absolute inset-0 w-full h-full bg-transparent border-0 rounded-none p-4 sm:p-6 font-mono text-sm leading-relaxed text-white/80 placeholder:text-white/20 focus-visible:ring-0 resize-none custom-scrollbar pb-10"
                         />
-                    )}
+                    </div>
+                    {/* RIGHT PANE: Live Preview (always visible on desktop, shown on mobile if previewing) */}
+                    <div className={`flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar ${showPreview ? 'block' : 'hidden lg:block'} bg-white/[0.01]`}>
+                        <article className="prose prose-invert prose-p:text-white/70 prose-headings:text-white prose-a:text-fc-cyan prose-pre:bg-white/[0.03] prose-pre:border prose-pre:border-white/[0.06] max-w-none">
+                            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                                {formData.content || '*Aún no hay contenido... Escribe algo para ver la previsualización.*'}
+                            </ReactMarkdown>
+                        </article>
+                    </div>
                 </div>
             </Card>
         </div>
@@ -375,7 +394,26 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                             </>
                         )}
                     </div>
-                    <div className="pt-4 border-t border-white/[0.06] text-xs space-y-2">
+
+                    <div className="space-y-2 pt-2 border-t border-white/[0.06]">
+                        <Label className="text-white/50 text-xs">Programar Publicación (UTC)</Label>
+                        <Input
+                            type="datetime-local"
+                            name="published_at"
+                            value={formData.published_at ? new Date(formData.published_at).toISOString().slice(0, 16) : ''}
+                            onChange={(e) => {
+                                setFormData(prev => ({
+                                    ...prev,
+                                    published_at: e.target.value ? new Date(e.target.value).toISOString() : ''
+                                }))
+                                setDirty(true)
+                            }}
+                            className="bg-white/[0.04] border-white/[0.08] text-white text-sm h-10 w-full [color-scheme:dark]"
+                        />
+                        <p className="text-[10px] text-white/30">Deja en blanco para usar la fecha de ahora al publicar. Si programas al futuro, no será visible en el blog público todavía.</p>
+                    </div>
+
+                    <div className="pt-2 border-t border-white/[0.06] text-xs space-y-2">
                         <div className="flex justify-between text-white/40">
                             <span>Lectura estimada:</span>
                             <span className="text-white/80">{readingTime} min</span>
@@ -567,19 +605,13 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                                 className="h-6 text-[10px] text-fc-cyan hover:text-fc-cyan-light hover:bg-fc-blue/10 px-2"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    const input = document.createElement('input');
-                                    input.type = 'file';
-                                    input.accept = 'image/*';
-                                    input.onchange = async (e) => {
-                                        const file = (e.target as HTMLInputElement).files?.[0];
-                                        if (file) handleImageUpload(file, 'featured');
-                                    };
-                                    input.click();
+                                    setMediaLibraryTarget('featured')
+                                    setIsMediaLibraryOpen(true)
                                 }}
                                 disabled={uploadingImage}
                             >
-                                {uploadingImage ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <Upload className="w-3 h-3 mr-1" />}
-                                Subir
+                                {uploadingImage ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <ImageIcon className="w-3 h-3 mr-1" />}
+                                Library
                             </Button>
                         </div>
                         {formData.featured_image ? (
@@ -743,6 +775,13 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                     background-color: rgba(255, 255, 255, 0.2);
                 }
             `}</style>
+
+            {/* Global Modals */}
+            <MediaLibraryModal
+                open={isMediaLibraryOpen}
+                onOpenChange={setIsMediaLibraryOpen}
+                onImageSelect={handleMediaSelect}
+            />
         </div>
     )
 }
