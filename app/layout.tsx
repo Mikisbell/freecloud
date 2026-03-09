@@ -87,7 +87,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body suppressHydrationWarning className="font-body antialiased min-h-screen flex flex-col">
         {children}
-        {adsenseId && <AdSenseLoader clientId={adsenseId} />}
+        {/* AdSense — Script estático para que el bot de Google pueda verificar la propiedad del sitio */}
+        {adsenseId && (
+          <Script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(generateWebsiteSchema()) }}
