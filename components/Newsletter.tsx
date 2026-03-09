@@ -51,6 +51,8 @@ export default function Newsletter({ variant = 'card' }: NewsletterProps) {
     return (
       <form onSubmit={handleSubmit} className="flex gap-2">
         <input
+          id="newsletter-email-inline"
+          name="email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -97,6 +99,8 @@ export default function Newsletter({ variant = 'card' }: NewsletterProps) {
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
         <input
+          id="newsletter-email"
+          name="email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
