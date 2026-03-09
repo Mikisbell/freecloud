@@ -91,11 +91,12 @@ imageAlt: "Descripción de la imagen"
 
 ## Reglas IMPORTANTES
 - Todo contenido en **ESPAÑOL** contextualizado a **PERÚ** (normas E.030, E.020, Ley 32069).
-- SEO siempre: meta descriptions, keywords, estructura H2/H3, internal links.
-- Posts deben ser usables inmediatamente — creados desde el CMS admin.
-- **NUNCA perfeccionar código cuando hay contenido por publicar. Publicar > perfeccionar.**
-- La voz es técnica pero accesible. No académica ni influencer. Ingeniero que explica directo.
-- Incluir links internos entre posts y hacia /recursos y /apps cuando sea relevante.
+- **SEO Hacker:** meta descriptions precisas, keywords exactas del autocompletado de Google, y schemas JSON-LD para robar los *Featured Snippets*.
+- Posts deben ser usables e indexables inmediatamente. Minimizar dependencias.
+- **NUNCA perfeccionar código cuando hay que optimizar alcance SEO. Tráfico > perfeccionar.**
+- La voz es técnica, como ingeniero experimentado pero hacker growth.
+- Mantener en el frontend compatibilidad para `AdSense` reservando la altura estricta y evitando el CLS para salvaguardar el RPM del pago por click.
+- Incluir links internos entre posts y embeber videos YT para doble indexación.
 
 ## Normativa peruana de referencia
 - **E.030** — Diseño sismorresistente. Zonas sísmicas, factores de suelo, espectro.

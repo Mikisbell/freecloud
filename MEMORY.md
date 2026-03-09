@@ -100,9 +100,17 @@ MEMORY.md       → Este archivo — safety net de último recurso
 
 ## 💰 Monetización
 
-- **Productos digitales:** Gumroad (Pack HP Prime S/35, Excel E.030 S/25, etc.)
-- **AdSense:** Pendiente aprobación (componente `AdSense.tsx` listo)
-- **Newsletter:** Tabla `subscribers` en Supabase
+- **Productos digitales:** Plataformas externas como Gumroad (Pack HP Prime S/35, Excel E.030 S/25, automatizaciones Dynamo).
+- **AdSense B2C:** Componentes react estrictos para salvaguardar Core Web Vitals (CLS = 0) usando slots inyectables (`AdSenseArticle`, `AdSenseInFeed`).
+- **Newsletter:** Captación de correos para embudo B2B mediante Supabase (`subscribers`).
+
+---
+
+## 🚀 Hacker SEO Strategy (La Bomba 2026)
+
+Todo agente desarrollador de FreeCloud DEBE considerar que el código sirve al posicionamiento:
+1. **BIM Obligatorio 2026 (Ley 32069):** Posicionar contenido adelantándose al Estado y al CIP capturando los *Featured Snippets* (JSON-LD Schemas, estructuras claras H2/H3).
+2. **Performance SEO:** Next.js optimizado, links internos rigurosos, YouTube SSR embeds (`YouTubeFacade`), y velocidad Turbopack. Un build lento o con layout shift mata los ingresos de AdSense.
 
 ---
 

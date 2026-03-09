@@ -12,8 +12,8 @@
 - **Base de datos:** Supabase (PostgreSQL + Auth + Storage)
 - **Deploy:** Vercel (automático desde `main`)
 - **CMS contenido:** Supabase DB como CMS headless
-- **Monetización:** Google AdSense (pendiente de aprobación)
-- **SEO:** next-sitemap, JSON-LD, OpenGraph via `lib/seo.ts`
+- **Monetización:** AdSense (In-Feed, Sidebar, Article), Venta de Productos (Gumroad), Leads (Newsletter)
+- **SEO Hacker Strategy:** Generación de JSON-LD estricto (FAQPage, Organization), evasión de CLS (para ads), y contenido evergreen anticipatorio para la obligatoriedad BIM Perú 2026 (Ley 32069).
 
 ## Estructura de carpetas clave
 ```
