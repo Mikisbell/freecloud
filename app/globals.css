@@ -1,73 +1,183 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  /* FC — FreeCloud Design System CSS Variables */
+  --color-fc-cyan: #29ABE2;
+  --color-fc-cyan-light: #00D4FF;
+  --color-fc-blue: #0078C8;
+  --color-fc-navy: #003F8A;
+  --color-fc-navy-deep: #00265A;
+
+  --color-fc-gold: #C87800;
+  --color-fc-gold-dark: #A86400;
+  --color-fc-gold-light: #E09600;
+  --color-fc-gold-muted: #B88040;
+
+  --color-fc-surface: #F5F7FA;
+  --color-fc-border: #D6E4F0;
+  --color-fc-text: #0C2340;
+  --color-fc-text-muted: #4A6285;
+
+  /* Surface Scale */
+  --color-surface-50: #f8fafc;
+  --color-surface-100: #f1f5f9;
+  --color-surface-200: #e2e8f0;
+  --color-surface-300: #cbd5e1;
+  --color-surface-400: #94a3b8;
+  --color-surface-500: #64748b;
+  --color-surface-600: #475569;
+  --color-surface-700: #334155;
+  --color-surface-800: #1e293b;
+  --color-surface-900: #0f172a;
+  --color-surface-950: #020617;
+
+  /* Brand Scale */
+  --color-brand-50: #eef7ff;
+  --color-brand-100: #d9edff;
+  --color-brand-200: #bce0ff;
+  --color-brand-300: #8ecdff;
+  --color-brand-400: #59b0ff;
+  --color-brand-500: #338dff;
+  --color-brand-600: #1a6df5;
+  --color-brand-700: #1357e1;
+  --color-brand-800: #1647b6;
+  --color-brand-900: #183f8f;
+  --color-brand-950: #132857;
+
+  /* Teal Scale */
+  --color-teal-50: #edfcfb;
+  --color-teal-100: #d2f7f5;
+  --color-teal-200: #a9efec;
+  --color-teal-300: #72e2de;
+  --color-teal-400: #3dcdc9;
+  --color-teal-500: #2ab1ac;
+  --color-teal-600: #228f8c;
+  --color-teal-700: #1d7371;
+  --color-teal-800: #1c5b5a;
+  --color-teal-900: #1b4c4b;
+  --color-teal-950: #0a2e2e;
+
+  /* Accent Scale */
+  --color-accent-50: #fff7ed;
+  --color-accent-100: #ffeed4;
+  --color-accent-200: #ffd9a8;
+  --color-accent-300: #ffbd71;
+  --color-accent-400: #ff9633;
+  --color-accent-500: #ff7a0d;
+  --color-accent-600: #f06006;
+  --color-accent-700: #c74807;
+  --color-accent-800: #9e390e;
+  --color-accent-900: #7f310f;
+  --color-accent-950: #451605;
+
+  /* Dataiku Scale & Shadows */
+  --color-dataiku-navy: #1B2031;
+  --color-dataiku-teal: #2AB1AC;
+  --color-dataiku-hover_teal: #4DC9C3;
+  --color-dataiku-background: #F4F6F9;
+  --color-dataiku-border: #E2E8F0;
+  --shadow-dataiku: 0 2px 4px rgba(27, 32, 49, 0.05);
+  --shadow-dataiku-hover: 0 15px 35px -5px rgba(27, 32, 49, 0.15), 0 5px 15px -5px rgba(27, 32, 49, 0.1);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  /* Typografías */
+  --font-display: var(--font-display), system-ui, sans-serif;
+  --font-body: var(--font-body), system-ui, sans-serif;
+  --font-mono: var(--font-mono), monospace;
+  --font-brand: var(--font-brand), system-ui, sans-serif;
+  --font-slogan: var(--font-slogan), system-ui, sans-serif;
+
+  /* Shadcn UI Color Mappings */
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent-semantic: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  /* Animaciones Brand (FreeCloud) */
+  --animate-fade-in: fadeIn 0.6s ease-out forwards;
+  --animate-slide-up: slideUp 0.6s ease-out forwards;
+  --animate-slide-in-right: slideInRight 0.4s ease-out forwards;
+  --animate-reveal-up: revealUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    0% {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+
+  @keyframes revealUp {
+    0% {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
 
 @layer base {
-  :root {
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     * FC — FreeCloud Design System CSS Variables
-     * Fuente: Logo oficial FreeCloud (análisis cromático)
-     * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-
-    /* Familia Azul — Nube del logo */
-    --fc-cyan: #29ABE2;
-    --fc-cyan-light: #00D4FF;
-    --fc-blue: #0078C8;
-    --fc-navy: #003F8A;
-    --fc-navy-deep: #00265A;
-
-    /* Familia Dorada — Edificios del logo (píxeles reales) */
-    --fc-gold: #C87800;
-    --fc-gold-dark: #A86400;
-    --fc-gold-light: #E09600;
-    --fc-gold-muted: #B88040;
-
-    /* Neutros de marca */
-    --fc-surface: #F5F7FA;
-    --fc-border: #D6E4F0;
-    --fc-text: #0C2340;
-    --fc-text-muted: #4A6285;
-
-    /* Semánticos legacy (compatibilidad) */
-    --color-bg: #ffffff;
-    --color-bg-alt: #F5F7FA;
-    --color-text: #0C2340;
-    --color-text-muted: #4A6285;
-    --color-border: #D6E4F0;
-
-    /* ShadCN / Radix vars */
-    --background: 0 0% 100%;
-    --foreground: 214 91% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 214 91% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 214 91% 10%;
-    --primary: 208 75% 46%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 213 36% 95%;
-    --secondary-foreground: 214 91% 10%;
-    --muted: 213 36% 95%;
-    --muted-foreground: 213 30% 42%;
-    --accent: 42 91% 44%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 210 30% 84%;
-    --input: 210 30% 84%;
-    --ring: 208 75% 46%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 208 75% 46%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 42 91% 44%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-  }
-
-  html {
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
 
   body {
     @apply bg-white text-surface-900;
@@ -150,11 +260,11 @@
   }
 
   .btn-pill-primary {
-    @apply btn-pill bg-fc-gold text-white border-2 border-fc-gold hover:bg-fc-gold-dark hover:border-fc-gold-dark shadow-sm;
+    @apply inline-flex items-center gap-2 px-6 py-3 font-semibold text-sm rounded-full transition-all duration-200 bg-fc-gold text-white border-2 border-fc-gold hover:bg-fc-gold-dark hover:border-fc-gold-dark shadow-sm;
   }
 
   .btn-pill-secondary {
-    @apply btn-pill bg-white text-fc-navy border-2 border-fc-border hover:border-fc-cyan hover:text-fc-blue;
+    @apply inline-flex items-center gap-2 px-6 py-3 font-semibold text-sm rounded-full transition-all duration-200 bg-white text-fc-navy border-2 border-fc-border hover:border-fc-cyan hover:text-fc-blue;
   }
 
   /* === SECTION UTILITIES === */

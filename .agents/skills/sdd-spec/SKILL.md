@@ -1,88 +1,167 @@
 ---
 name: sdd-spec
 description: >
-  Sub-agente spec writer SDD. Convierte la propuesta técnica en requisitos
-  formales y escenarios de prueba (Given/When/Then). Practica TDD — los
-  tests se escriben ANTES que el código.
-triggers:
-  - "escribir especificaciones"
-  - "definir requisitos"
-  - "tests primero"
-  - "TDD"
-version: "1.0.0"
+  Write specifications with requirements and scenarios (delta specs for changes).
+  Trigger: When the orchestrator launches you to write or update specs for a change.
+license: MIT
+metadata:
+  author: gentleman-programming
+  version: "2.0"
 ---
 
-# SDD Spec — Agente Spec Writer
+## Purpose
 
-## Tu Rol
-Eres el **notario técnico**. Convertís intenciones vagas en requisitos precisos y verificables. Los tests existen antes que el código.
+You are a sub-agent responsible for writing SPECIFICATIONS. You take the proposal and produce delta specs — structured requirements and scenarios that describe what's being ADDED, MODIFIED, or REMOVED from the system's behavior.
 
-## Input que necesitás
-- Propuesta técnica del agente Propose
-- Reporte de contexto del agente Explore
+## What You Receive
 
-## Proceso
+From the orchestrator:
+- Change name
+- Artifact store mode (`engram | openspec | hybrid | none`)
 
-### 1. Requisitos Funcionales
-Para cada requisito, responder: ¿Qué debe hacer el sistema? ¿Cuándo? ¿Para quién?
+## Execution and Persistence Contract
 
-### 2. Escenarios TDD (Given/When/Then)
-Escribir al menos 3 escenarios por flujo principal:
-- **Happy path** — Todo funciona como se espera
-- **Edge case** — Caso límite
-- **Error case** — Qué pasa cuando algo falla
+Read and follow `skills/_shared/persistence-contract.md` for mode resolution rules.
 
-### 3. Criterios de Aceptación
-Definir los DoDs (Definition of Done) estrictamente.
+- If mode is `engram`: Read and follow `skills/_shared/engram-convention.md`. Artifact type: `spec`. Retrieve `proposal` as dependency. If specs span multiple domains, concatenate into a single artifact with domain headers.
+- If mode is `openspec`: Read and follow `skills/_shared/openspec-convention.md`.
+- If mode is `hybrid`: Follow BOTH conventions — persist to Engram (single concatenated artifact) AND write domain files to filesystem.
+- If mode is `none`: Return result only. Never create or modify project files.
 
-### 4. TDD Verdadero (Generación de Tests en Disco)
-Si la feature involucra lógica de negocio (no solo UI), **DEBES** crear un archivo físico en la carpeta `__tests__/` o junto al archivo original (ej. `utils.test.ts`). 
-- Usa tu tool `write_to_file` para generar el test.
-- El test debe estar en rojo (falla) apuntando a funciones que el agente `Apply` creará después.
-- Si no hay un framework instalado (Jest/Vitest), escribe el test armando aserciones nativas con `node:assert`.
+## What to Do
 
-## Output Format
+### Step 1: Identify Affected Domains
 
-```markdown
-## Especificación — [Nombre de la Feature]
+From the proposal's "Affected Areas", determine which spec domains are touched. Group changes by domain (e.g., `auth/`, `payments/`, `ui/`).
 
-### Requisitos Funcionales
-- RF01: El sistema DEBE [verbo en infinitivo] cuando [condición]
-- RF02: El sistema DEBE mostrar un error si [condición de falla]
-- RF03: El sistema PUEDE [característica opcional]
+### Step 2: Read Existing Specs
 
-### Escenarios de Prueba
+If `openspec/specs/{domain}/spec.md` exists, read it to understand CURRENT behavior. Your delta specs describe CHANGES to this behavior.
 
-#### Escenario 1 — [Happy Path]
-**Dado** que [estado inicial]
-**Cuando** el usuario [acción]
-**Entonces** el sistema [resultado esperado]
+### Step 3: Write Delta Specs
 
-#### Escenario 2 — [Edge Case]
-**Dado** que [estado edge]
-**Cuando** [acción]
-**Entonces** [resultado]
+Create specs inside the change folder:
 
-#### Escenario 3 — [Error Case]
-**Dado** que [condición de error]
-**Cuando** [acción]
-**Entonces** el sistema [maneja el error con mensaje claro]
-
-### Criterios de Aceptación (DoD — Definition of Done)
-- [ ] `npm run build` pasa sin errores ni warnings nuevos
-- [ ] No hay regresiones en páginas existentes
-- [ ] Los escenarios 1-3 se pueden verificar manualmente
-- [ ] TypeScript sin errores (`tsc --noEmit`)
-- [ ] Commit con mensaje convencional (`feat(scope): descripción`)
-
-### Fuera del alcance
-- [Qué NO se implementa en esta iteración]
+```
+openspec/changes/{change-name}/
+├── proposal.md              ← (already exists)
+└── specs/
+    └── {domain}/
+        └── spec.md          ← Delta spec
 ```
 
-## Reglas de Buena Spec
+#### Delta Spec Format
 
-1. **Verificable:** Cada requisito debe poder marcarse como ✅ o ❌ sin ambigüedad
-2. **Atómica:** Un requisito = una sola cosa
-3. **Sin implementación:** El spec dice QUÉ, no CÓMO
-4. **Negativo incluido:** Siempre incluir al menos un caso de error
-5. **Realista para FreeCloud:** Considerar que es un proyecto personal, no una app enterprise
+```markdown
+# Delta for {Domain}
+
+## ADDED Requirements
+
+### Requirement: {Requirement Name}
+
+{Description using RFC 2119 keywords: MUST, SHALL, SHOULD, MAY}
+
+The system {MUST/SHALL/SHOULD} {do something specific}.
+
+#### Scenario: {Happy path scenario}
+
+- GIVEN {precondition}
+- WHEN {action}
+- THEN {expected outcome}
+- AND {additional outcome, if any}
+
+#### Scenario: {Edge case scenario}
+
+- GIVEN {precondition}
+- WHEN {action}
+- THEN {expected outcome}
+
+## MODIFIED Requirements
+
+### Requirement: {Existing Requirement Name}
+
+{New description — replaces the existing one}
+(Previously: {what it was before})
+
+#### Scenario: {Updated scenario}
+
+- GIVEN {updated precondition}
+- WHEN {updated action}
+- THEN {updated outcome}
+
+## REMOVED Requirements
+
+### Requirement: {Requirement Being Removed}
+
+(Reason: {why this requirement is being deprecated/removed})
+```
+
+#### For NEW Specs (No Existing Spec)
+
+If this is a completely new domain, create a FULL spec (not a delta):
+
+```markdown
+# {Domain} Specification
+
+## Purpose
+
+{High-level description of this spec's domain.}
+
+## Requirements
+
+### Requirement: {Name}
+
+The system {MUST/SHALL/SHOULD} {behavior}.
+
+#### Scenario: {Name}
+
+- GIVEN {precondition}
+- WHEN {action}
+- THEN {outcome}
+```
+
+### Step 4: Return Summary
+
+Return to the orchestrator:
+
+```markdown
+## Specs Created
+
+**Change**: {change-name}
+
+### Specs Written
+| Domain | Type | Requirements | Scenarios |
+|--------|------|-------------|-----------|
+| {domain} | Delta/New | {N added, M modified, K removed} | {total scenarios} |
+
+### Coverage
+- Happy paths: {covered/missing}
+- Edge cases: {covered/missing}
+- Error states: {covered/missing}
+
+### Next Step
+Ready for design (sdd-design). If design already exists, ready for tasks (sdd-tasks).
+```
+
+## Rules
+
+- ALWAYS use Given/When/Then format for scenarios
+- ALWAYS use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY) for requirement strength
+- If existing specs exist, write DELTA specs (ADDED/MODIFIED/REMOVED sections)
+- If NO existing specs exist for the domain, write a FULL spec
+- Every requirement MUST have at least ONE scenario
+- Include both happy path AND edge case scenarios
+- Keep scenarios TESTABLE — someone should be able to write an automated test from each one
+- DO NOT include implementation details in specs — specs describe WHAT, not HOW
+- Apply any `rules.specs` from `openspec/config.yaml`
+- Return a structured envelope with: `status`, `executive_summary`, `detailed_report` (optional), `artifacts`, `next_recommended`, and `risks`
+
+## RFC 2119 Keywords Quick Reference
+
+| Keyword | Meaning |
+|---------|---------|
+| **MUST / SHALL** | Absolute requirement |
+| **MUST NOT / SHALL NOT** | Absolute prohibition |
+| **SHOULD** | Recommended, but exceptions may exist with justification |
+| **SHOULD NOT** | Not recommended, but may be acceptable with justification |
+| **MAY** | Optional |

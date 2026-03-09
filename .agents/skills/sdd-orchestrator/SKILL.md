@@ -11,10 +11,10 @@ triggers:
   - "refactoring complejo"
   - "cambio arquitectónico"
   - "implementar [cualquier feature grande]"
-version: "2.0.0"
+version: "3.1.0"
 ---
 
-# SDD Orchestrator — FreeCloud (V3 — Verificación de Sistema + Multi-Model Routing)
+# SDD Orchestrator — FreeCloud (V3.1 — Artifact Store Policy + Recovery)
 
 ## Cuándo usar esta Skill
 Cuando el trabajo involucra **una feature nueva, un cambio significativo de arquitectura o cualquier tarea que requiera más de 3 archivos modificados**.
@@ -23,13 +23,35 @@ Cuando el trabajo involucra **una feature nueva, un cambio significativo de arqu
 Eres el **coordinador liviano**. Tu única responsabilidad es:
 1. **Verificar el sistema** antes de iniciar
 2. Leer el requerimiento
-3. Crear sub-agentes en el orden correcto con rutas físicas
+3. Crear sub-agentes en el orden correcto
 4. Hacer checkpoint por fase
 5. Sintetizar el resultado final
 
 **NO escribas código directamente.** Delega siempre.
 
-## Paso 0 — Verificación del Sistema (NUEVO V3)
+## Core Operating Rules
+- Delegate-only: never do analysis/design/implementation/verification inline.
+- Launch sub-agents via Task for all phase work.
+- The lead only coordinates DAG state, user approvals, and concise summaries.
+- `/sdd-new`, `/sdd-continue`, and `/sdd-ff` are meta-commands handled by the orchestrator (not skills).
+
+## Artifact Store Policy
+- `artifact_store.mode`: `engram | openspec | hybrid | none`
+- Default: `engram` when available; `openspec` only if user explicitly requests file artifacts; `hybrid` for both backends simultaneously; otherwise `none`.
+- `hybrid` persists to BOTH Engram and OpenSpec. Provides cross-session recovery + local file artifacts. Consumes more tokens per operation.
+- In `none`, do not write project files. Return results inline and recommend enabling `engram` or `openspec`.
+
+## Commands
+- `/sdd-init` → launch `sdd-init` sub-agent
+- `/sdd-explore <topic>` → launch `sdd-explore` sub-agent
+- `/sdd-new <change>` → run `sdd-explore` then `sdd-propose`
+- `/sdd-continue [change]` → create next missing artifact in dependency chain
+- `/sdd-ff [change]` → run `sdd-propose` → `sdd-spec` → `sdd-design` → `sdd-tasks`
+- `/sdd-apply [change]` → launch `sdd-apply` in batches
+- `/sdd-verify [change]` → launch `sdd-verify`
+- `/sdd-archive [change]` → launch `sdd-archive`
+
+## Paso 0 — Verificación del Sistema
 
 Antes de iniciar cualquier DAG, verificar que Engram está activo:
 
@@ -37,31 +59,47 @@ Antes de iniciar cualquier DAG, verificar que Engram está activo:
 mem_stats()
 ```
 
-- Si responde: ✅ Sistema listo. Continuar con Paso 1.
-- Si falla: ⚠️ Engram no disponible. El flujo puede continuar pero sin memoria persistente. Notificar al usuario y continuar igualmente.
+- Si responde: ✅ Sistema listo. Mode = `engram`.
+- Si falla: ⚠️ Engram no disponible. Mode = `none`. Notificar al usuario y continuar.
 
-## Flujo DAG Paginado (.sdd/)
-
-Para evitar la "amnesia" del LLM, el Orquestador **siempre requiere** que cada agente lea y escriba archivos físicos en `.sdd/`. No dependemos de la memoria efímera del chat.
+## Dependency Graph
 
 ```
-0. [SISTEMA]  → Verificar Engram (mem_stats)
-    ↓
-1. [EXPLORE]  → mem_session_start + mem_search → lee codebase. Escribe: .sdd/1-explore.md
-    ↓
-2. [PROPOSE]  → Lee 1-explore.md → <reflexion> → Escribe: .sdd/2-propose.md
-    ↓
-3. [SPEC]     → Lee 2-propose.md → Escribe: .sdd/3-spec.md (Given/When/Then)
-    ↓
-4. [DESIGN]   → Lee 3-spec.md + 2-propose.md → Escribe: .sdd/4-design.md
-    ↓
-5. [TASKS]    → Lee 4-design.md → Escribe: .sdd/tasks.md (formato [ ])
-    ↓
-6. [APPLY]    → Lee tasks.md. Implementa [ ]. npx tsc (auto-heal 3 ciclos). Marca [x]. mem_save con topic_key.
-    ↓
-7. [VERIFY]   → Lee 3-spec.md, ejecuta npm run build. Escribe: .sdd/7-verify.md (✅/❌)
-    ↓
-8. [ARCHIVE]  → Lee .sdd/*, mem_save + mem_session_end, commit, rm -rf .sdd/
+proposal -> specs --> tasks -> apply -> verify -> archive
+             ^
+             |
+           design
+```
+- `specs` and `design` both depend on `proposal`.
+- `tasks` depends on both `specs` and `design`.
+
+## Sub-Agent Launch Pattern
+
+When launching a phase, require the sub-agent to read `~/.claude/skills/sdd-{phase}/SKILL.md` first and return:
+- `status`
+- `executive_summary`
+- `artifacts` (include IDs/paths)
+- `next_recommended`
+- `risks`
+
+## State & Conventions (source of truth)
+
+Keep this file lean. Do NOT inline full persistence and naming specs here.
+
+Use shared convention files installed under `.agents/skills/_shared/`:
+- `engram-convention.md` for artifact naming + two-step recovery
+- `persistence-contract.md` for mode behavior + state persistence/recovery
+- `openspec-convention.md` for file layout when mode is `openspec`
+
+## Recovery Rule
+
+If SDD state is missing (for example after context compaction), recover from backend state before continuing:
+
+```
+engram mode:    mem_search("sdd/{change-name}/state") → mem_get_observation(id) → parse → restore
+openspec mode:  Read openspec/changes/{change-name}/state.yaml → parse → restore
+hybrid mode:    Try engram first; fall back to filesystem
+none mode:      State is lost — restart from user input
 ```
 
 ## Motor Recomendado por Fase (Multi-Model Routing)
@@ -72,36 +110,38 @@ Para evitar la "amnesia" del LLM, el Orquestador **siempre requiere** que cada a
 | PROPOSE / DESIGN | **Gemini 2.0 Pro** | Razonamiento profundo espacial y creativo |
 | SPEC | Gemini Pro / Claude | Precisión en Given/When/Then |
 | TASKS | Claude Sonnet | Razonamiento secuencial y desglose |
-| **APPLY** | **Claude 3.7 Sonnet / Opus** | El mejor generando código TypeScript exacto |
+| **APPLY** | **Claude Sonnet / Opus** | El mejor generando código TypeScript exacto |
 | **VERIFY** | **Claude Sonnet** | Matador de bugs y triangulación TDD |
 | ARCHIVE | Cualquiera | Tarea mecánica |
 
 ## Cómo Lanzar un Sub-Agente
 
-Para cada fase, dale al agente las **rutas absolutas/relativas de los archivos `.sdd/`** para que use sus propias tools (`view_file`).
+Para cada fase, dale al agente la info necesaria para recuperar artefactos previos.
 
-**Regla Sagrada:** NO pegues el contenido completo del output anterior en el prompt. Dale la ruta del archivo y que lo lea él mismo. Así prevenimos desbordamiento de Token Context y alucinaciones.
+**Regla Sagrada:** NO pegues el contenido completo del output anterior en el prompt. Que el agente lo recupere desde Engram o filesystem. Así prevenimos desbordamiento de Token Context.
 
 ```
 # Ejemplo de prompt para lanzar PROPOSE:
 "Eres el agente PROPOSE del flujo SDD.
 Lee tu skill en: .agents/skills/sdd-propose/SKILL.md
-Lee el contexto en: .sdd/1-explore.md
+Change name: {change-name}
+Artifact store mode: engram
+Project: freecloud
 Feature original: [descripción]
-Evaluá opciones y escribí la propuesta en: .sdd/2-propose.md"
+Evaluá opciones y persistí la propuesta."
 ```
 
 ## Reglas del Orquestador
 
-1. **Contexto mínimo:** Pasa SOLO la ruta del archivo del agente anterior, no el contenido
-2. **Un agente a la vez:** No lances dos sub-agentes en paralelo salvo que sean independientes
+1. **Contexto mínimo:** Pasa SOLO referencias, no contenido completo
+2. **Un agente a la vez:** No lances dos sub-agentes en paralelo salvo que sean independientes (specs + design SÍ pueden ser paralelos)
 3. **Checkpoint por fase:** Si una fase falla (❌), no avances a la siguiente
 4. **Iterativo, no cascada:** Si el spec cambia, rebobinar desde DESIGN, no desde EXPLORE
-5. **Guardar en Engram** al finalizar cada feature via ARCHIVE
+5. **Guardar estado en Engram** después de cada transición de fase (ver persistence-contract.md)
 
 ## Sparking Prompt (Arranque en Frío)
 
-Si es la primera sesión del proyecto, antes de cualquier `/sdd-new`, ejecutar el Sparking Prompt:
+Si es la primera sesión del proyecto, antes de cualquier `/sdd-new`, ejecutar:
 ```
-Ver: docs/sparking-prompt.md
+/sdd-init
 ```

@@ -124,12 +124,68 @@ CLAUDE.md / AGENTS.md ── Router principal
  │
  ├─► Hooks ─────── Guardrails Capa 1 (.agents/hooks/pre-edit.md + post-edit.md)
  │
- ├─► SDD ──────── Cambios grandes → /sdd-new (.agents/workflows/)
+ ├─► SDD ──────── Orquestador + sub-agentes (ver sección SDD abajo)
  │
- ├─► GGA ──────── Guardrail Capa 2 — scripts/gga-review.ps1 antes de git push
+ ├─► GGA ──────── Guardrail Capa 2 — pre-commit hook antes de git commit
  │
  └─► MEMORY.md ── Safety net (fallback si todo lo anterior falla)
 ```
 
 **Capa 1 (mientras escribo código):** Claude + Hooks + Engram + Skills → previene errores ANTES de que existan
 **Capa 2 (al hacer commit):** GGA + Claude Haiku + AGENTS.md → atrapa lo que se escapó en Capa 1
+
+## Spec-Driven Development (SDD) Orchestrator
+
+Eres el ORQUESTADOR para Spec-Driven Development. Mantené tu identidad y aplicá SDD como overlay.
+
+### Core Operating Rules
+- Delegate-only: nunca hagas análisis/diseño/implementación/verificación inline.
+- Lanzá sub-agentes via Agent/Task para todo el trabajo de fase.
+- El orquestador solo coordina estado del DAG, aprobaciones del usuario y resúmenes concisos.
+- `/sdd-new`, `/sdd-continue` y `/sdd-ff` son meta-comandos manejados por el orquestador (no son skills).
+
+### Artifact Store Policy
+- `artifact_store.mode`: `engram | openspec | hybrid | none`
+- Default: `engram` cuando está disponible; `openspec` solo si el usuario pide archivos explícitamente; `hybrid` para ambos backends simultáneamente; sino `none`.
+- `hybrid` persiste en AMBOS Engram y OpenSpec. Cross-session recovery + archivos locales. Consume más tokens.
+- En `none`, no escribir archivos del proyecto. Retornar resultados inline y recomendar habilitar `engram` o `openspec`.
+
+### Commands
+- `/sdd-init` → lanzar sub-agente `sdd-init`
+- `/sdd-explore <topic>` → lanzar sub-agente `sdd-explore`
+- `/sdd-new <change>` → ejecutar `sdd-explore` luego `sdd-propose`
+- `/sdd-continue [change]` → crear el próximo artefacto faltante en la cadena de dependencias
+- `/sdd-ff [change]` → ejecutar `sdd-propose` → `sdd-spec` → `sdd-design` → `sdd-tasks`
+- `/sdd-apply [change]` → lanzar `sdd-apply` en batches
+- `/sdd-verify [change]` → lanzar `sdd-verify`
+- `/sdd-archive [change]` → lanzar `sdd-archive`
+
+### Dependency Graph
+```
+proposal -> specs --> tasks -> apply -> verify -> archive
+             ^
+             |
+           design
+```
+- `specs` y `design` dependen de `proposal`.
+- `tasks` depende de ambos `specs` y `design`.
+
+### Sub-Agent Launch Pattern
+Al lanzar una fase, el sub-agente debe leer `.agents/skills/sdd-{phase}/SKILL.md` primero y retornar:
+- `status`, `executive_summary`, `artifacts` (IDs/paths), `next_recommended`, `risks`
+
+### State & Conventions (source of truth)
+No inline completo acá. Usar archivos de convención compartidos en `.agents/skills/_shared/`:
+- `engram-convention.md` — naming de artefactos + recovery en 2 pasos
+- `persistence-contract.md` — comportamiento por modo + persistencia de estado
+- `openspec-convention.md` — layout de archivos cuando mode es `openspec`
+
+### Recovery Rule
+Si el estado SDD se pierde (por compactación de contexto), recuperar desde el backend antes de continuar:
+- `engram`: `mem_search("sdd/{change-name}/state")` → `mem_get_observation(id)` → parsear → restaurar
+- `openspec`: leer `openspec/changes/{change-name}/state.yaml`
+- `none`: estado perdido — reiniciar desde input del usuario
+
+### SDD Suggestion Rule
+Para features/refactors sustanciales → sugerir SDD.
+Para fixes chicos/preguntas → no forzar SDD.

@@ -61,13 +61,14 @@ Antes y después de cada edición de código:
 - **Post-edit:** leer `.agents/hooks/post-edit.md` — verificación de calidad + persistencia en Engram
 
 ## GGA — Guardian Angel (Capa 2 de protección)
-Antes de `git push`, correr el review independiente:
-```powershell
-npm run build  # primero
-.\scripts\gga-review.ps1  # luego
-```
-Ver workflow completo en `.agents/workflows/gga-commit.md`.
-Requiere `ANTHROPIC_API_KEY` en `.env.local`.
+GGA corre **automáticamente** como pre-commit hook en cada `git commit`.
+- Revisa solo archivos staged que coincidan con `FILE_PATTERNS` (`.ts`, `.tsx`, `.js`, `.jsx`)
+- Cachea archivos ya revisados (no re-valida si no cambiaron)
+- Config: `.gga` en la raíz del proyecto
+- Manual: `bash .agents/gentleman-guardian-angel/bin/gga run`
+- Sin caché: `bash .agents/gentleman-guardian-angel/bin/gga run --no-cache`
+- Ver workflow completo en `.agents/workflows/gga-commit.md`
+- Requiere `ANTHROPIC_API_KEY` en `.env.local`
 
 ## Memoria Persistente (Engram)
 Si Engram MCP está disponible:

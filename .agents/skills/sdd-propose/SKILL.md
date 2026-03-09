@@ -1,102 +1,129 @@
 ---
 name: sdd-propose
 description: >
-  Sub-agente proposer SDD. Toma el reporte del explorador y define
-  QUÉ cambiar, POR QUÉ y con QUÉ alternativas. No implementa — define la dirección.
-triggers:
-  - "qué deberíamos hacer"
-  - "cómo encarar esta feature"
-  - "propuesta técnica"
-version: "2.0.0"
+  Create a change proposal with intent, scope, and approach.
+  Trigger: When the orchestrator launches you to create or update a proposal for a change.
+license: MIT
+metadata:
+  author: gentleman-programming
+  version: "2.0"
 ---
 
-# SDD Propose — Agente Proposer (V3 — Zero-Shot Reflection)
+## Purpose
 
-## Tu Rol
-Eres el **arquitecto de la propuesta**. Tomás el contexto del explorador y definís la mejor solución técnica. Evaluás alternativas. No escribís código.
+You are a sub-agent responsible for creating PROPOSALS. You take the exploration analysis (or direct user input) and produce a structured `proposal.md` document inside the change folder.
 
-> 💡 **Hint de Motor (Multi-Model Routing):** Esta es una fase creativa y de razonamiento profundo. Si tenés routing de modelos disponible, Gemini Pro es óptimo para esta fase.
+## What You Receive
 
-## Input que necesitás
-Lee el reporte del agente Explore en `.sdd/1-explore.md` con `view_file`.
+From the orchestrator:
+- Change name (e.g., "add-dark-mode")
+- Exploration analysis (from sdd-explore) OR direct user description
+- Artifact store mode (`engram | openspec | hybrid | none`)
 
-## Proceso
+## Execution and Persistence Contract
 
-### Paso 1 — (V3.A) Zero-Shot Reflection OBLIGATORIO
-**CRÍTICO: Antes de escribir NADA en el archivo de output, DEBES abrir un tag `<reflexion>`.**
+Read and follow `skills/_shared/persistence-contract.md` for mode resolution rules.
 
-En el interior del tag, ataca y debilita tu propia propuesta inicial:
-- ¿Rompe el Server/Client boundary del proyecto?
-- ¿Introduce una N+1 query en Supabase?
-- ¿Agrega bundle size innecesario al cliente?
-- ¿Tiene dependencias que ya existen de otra forma?
-- ¿Hay un patrón existente en el codebase que resuelve esto más simple?
-- ¿El ROI de la implementación justifica la complejidad añadida?
+- If mode is `engram`: Read and follow `skills/_shared/engram-convention.md`. Artifact type: `proposal`. Retrieve `explore` and `sdd-init/{project}` as dependencies.
+- If mode is `openspec`: Read and follow `skills/_shared/openspec-convention.md`.
+- If mode is `hybrid`: Follow BOTH conventions — persist to Engram AND write to filesystem. Retrieve dependencies from Engram (primary) with filesystem fallback.
+- If mode is `none`: Return result only. Never create or modify project files.
+- Never force `openspec/` creation unless user requested file-based persistence or mode is `hybrid`.
 
-Solo cuando hayas criticado tus opciones y hayas elegido la más sólida, cierra `</reflexion>` y escribe la propuesta final.
+## What to Do
 
-```xml
-<reflexion>
-Mi idea inicial es [X]. Sin embargo...
-- Problema potencial 1: [descripción]
-- Problema potencial 2: [descripción]
-Alternativa más sólida: [Y] porque [razón]
-</reflexion>
+### Step 1: Create Change Directory
+
+Create the change folder structure:
+
+```
+openspec/changes/{change-name}/
+└── proposal.md
 ```
 
-### Paso 2 — Evaluar al menos 2 Alternativas
+### Step 2: Read Existing Specs
+
+If `openspec/specs/` has relevant specs, read them to understand current behavior that this change might affect.
+
+### Step 3: Write proposal.md
 
 ```markdown
-## Opción A — [Nombre]
-**Descripción:** [Qué hace]
-**Ventajas:** [Por qué es buena]
-**Desventajas:** [Riesgos o costos]
-**Complejidad:** Baja / Media / Alta
+# Proposal: {Change Title}
 
-## Opción B — [Nombre]
-...
+## Intent
 
-## Recomendación
-**Elegir Opción [X] porque:**
-- [Razón 1 — basada en el codebase explorado, no suposiciones]
-- [Razón 2]
+{What problem are we solving? Why does this change need to happen?
+Be specific about the user need or technical debt being addressed.}
+
+## Scope
+
+### In Scope
+- {Concrete deliverable 1}
+- {Concrete deliverable 2}
+- {Concrete deliverable 3}
+
+### Out of Scope
+- {What we're explicitly NOT doing}
+- {Future work that's related but deferred}
+
+## Approach
+
+{High-level technical approach. How will we solve this?
+Reference the recommended approach from exploration if available.}
+
+## Affected Areas
+
+| Area | Impact | Description |
+|------|--------|-------------|
+| `path/to/area` | New/Modified/Removed | {What changes} |
+
+## Risks
+
+| Risk | Likelihood | Mitigation |
+|------|------------|------------|
+| {Risk description} | Low/Med/High | {How we mitigate} |
+
+## Rollback Plan
+
+{How to revert if something goes wrong. Be specific.}
+
+## Dependencies
+
+- {External dependency or prerequisite, if any}
+
+## Success Criteria
+
+- [ ] {How do we know this change succeeded?}
+- [ ] {Measurable outcome}
 ```
 
-### Paso 3 — Consideraciones Específicas de FreeCloud
-Al proponer, siempre evaluar:
-- **Performance:** ¿Afecta LCP, CLS o TTFB?
-- **SEO:** ¿Impacta la indexación o el ranking?
-- **AdSense:** ¿Podría afectar la aprobación o CLS?
-- **Supabase RLS:** ¿Requiere cambios en Row Level Security?
-- **Build time:** ¿Agrega complejidad al build de Vercel?
+### Step 4: Return Summary
 
-## Output — Escribir en `.sdd/2-propose.md`
+Return to the orchestrator:
 
 ```markdown
-## Propuesta Técnica — [Nombre de la Feature]
+## Proposal Created
 
-### Problema
-[Una oración clara del problema a resolver]
+**Change**: {change-name}
+**Location**: openspec/changes/{change-name}/proposal.md
 
-### Solución elegida
-[Descripción de la solución elegida tras la reflexión]
+### Summary
+- **Intent**: {one-line summary}
+- **Scope**: {N deliverables in, M items deferred}
+- **Approach**: {one-line approach}
+- **Risk Level**: {Low/Medium/High}
 
-### Archivos a crear/modificar
-- [CREAR] `ruta/archivo.tsx` — [Por qué]
-- [MODIFICAR] `ruta/archivo.ts` — [Qué se cambia]
-
-### Cambios en DB (si aplica)
-- [Nuevo campo / tabla / función en Supabase]
-
-### Dependencias nuevas (si aplica)
-- [package] — [Por qué se necesita]
-
-### Lo que NO hacemos
-- [Alternativa descartada] — [Por qué]
+### Next Step
+Ready for specs (sdd-spec) or design (sdd-design).
 ```
 
-## Reglas
-1. **`<reflexion>` no es opcional.** Si no lo incluís, la propuesta es inválida.
-2. **Recomendá siempre una opción.** No dejes la decisión abierta.
-3. **Justificá con datos** del reporte de Explore, no con suposiciones generales.
-4. **Mantené coherencia** con las convenciones detectadas en el Explore.
+## Rules
+
+- In `openspec` mode, ALWAYS create the `proposal.md` file
+- If the change directory already exists with a proposal, READ it first and UPDATE it
+- Keep the proposal CONCISE - it's a thinking tool, not a novel
+- Every proposal MUST have a rollback plan
+- Every proposal MUST have success criteria
+- Use concrete file paths in "Affected Areas" when possible
+- Apply any `rules.proposal` from `openspec/config.yaml`
+- Return a structured envelope with: `status`, `executive_summary`, `detailed_report` (optional), `artifacts`, `next_recommended`, and `risks`

@@ -43,7 +43,8 @@
 Si vas a hacer `git commit`:
 1. Asegurarte de que `npm run build` pasó sin errores
 2. Usar convención: `feat(scope):`, `fix(scope):`, `style(scope):`, `refactor(scope):`
-3. (Opcional pero recomendado) Correr `.\scripts\gga-review.ps1` para review independiente
+3. GGA corre automáticamente como pre-commit hook — revisará los archivos staged
+4. Manual (opcional): `bash .agents/gentleman-guardian-angel/bin/gga run`
 
 ---
 

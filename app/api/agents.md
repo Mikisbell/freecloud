@@ -6,7 +6,7 @@
 
 | Tarea de Backend | Skill a Cargar Inmediatamente |
 | :--- | :--- |
-| Arquitectura de Base de Datos o Endpoints Completos (Usa Orquestador SDD V2) | `.agents/workflows/sdd-new.md` |
+| Arquitectura de Base de Datos o Endpoints Completos (Usa Orquestador SDD) | `.agents/workflows/sdd-new.md` |
 | Revisión estricta de seguridad o PR Backend | `.agents/skills/code-review-excellence/SKILL.md` |
 
 **Reglas de Backend (Inquebrantables):**

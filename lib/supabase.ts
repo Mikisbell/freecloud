@@ -278,9 +278,15 @@ export async function getPosts(options?: GetPostsOptions) {
     query = query.eq('featured', options.featured);
   }
 
-  // Hide scheduled posts by default in public queries. 
-  // Future dates will only show up when the date arrives.
-  query = query.lte('published_at', new Date().toISOString());
+  // En Next.js 15/16 con `cacheComponents` activado, requerimos consumir un
+  // "Request data source" genuino como `connection()` antes de evaluar `new Date()`.
+  try {
+    const { connection } = require('next/server');
+    await connection();
+  } catch (e) { }
+
+  const timeNow = new Date().toISOString();
+  query = query.lte('published_at', timeNow);
 
   if (options?.limit) {
     const page = options.page || 1;
@@ -295,25 +301,37 @@ export async function getPosts(options?: GetPostsOptions) {
 }
 
 export async function getPostBySlug(slug: string) {
+  try {
+    const { connection } = require('next/server');
+    await connection();
+  } catch (e) { }
+  const timeNow = new Date().toISOString();
+
   const { data, error } = await getClient()
     .from('posts')
     .select('*, categories(*)')
     .eq('slug', slug)
     // Even direct hits by slug should respect the schedule to avoid manual URL leaking
-    .lte('published_at', new Date().toISOString())
+    .lte('published_at', timeNow)
     .single();
   if (error) return null;
   return data as Post;
 }
 
 export async function getRelatedPosts(postId: string, categoryId: string, limit: number = 3) {
+  try {
+    const { connection } = require('next/server');
+    await connection();
+  } catch (e) { }
+  const timeNow = new Date().toISOString();
+
   const { data, error } = await getClient()
     .from('posts')
     .select('*, categories(*)')
     .eq('status', 'published')
     .eq('category_id', categoryId)
     .neq('id', postId)
-    .lte('published_at', new Date().toISOString())
+    .lte('published_at', timeNow)
     .order('published_at', { ascending: false })
     .limit(limit);
   if (error) return [];
