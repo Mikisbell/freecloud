@@ -2,9 +2,9 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Suspense } from 'react';
-import { Monitor, Settings, BookOpen, ArrowRight, Github, Linkedin, Youtube, Loader2 } from 'lucide-react';
+import { Monitor, Settings, BookOpen, ArrowRight, Github, Linkedin, Youtube } from 'lucide-react';
 import { getPosts } from '@/lib/supabase';
-import { generateOrganizationSchema } from '@/lib/seo';
+import { generateOrganizationSchema, generateWebsiteSchema, generateFAQSchema } from '@/lib/seo';
 import HeroCountdown from '@/components/HeroCountdown';
 import HeroBackground from '@/components/HeroBackground';
 import Newsletter from '@/components/Newsletter';
@@ -64,12 +64,39 @@ const A_TECH = [
 
 export default async function HomePage() {
   const orgSchema = generateOrganizationSchema();
+  const webSchema = generateWebsiteSchema();
+  const faqSchema = generateFAQSchema([
+    {
+      question: '¿Qué es BIM y por qué es obligatorio en Perú desde 2026?',
+      answer: 'BIM (Building Information Modeling) es una metodología de trabajo colaborativo que usa modelos digitales 3D inteligentes para planificar, diseñar y construir proyectos. En Perú, la Ley 32069 establece su obligatoriedad progresiva desde agosto de 2026, comenzando con proyectos de inversión pública mayores a 5 millones de soles.',
+    },
+    {
+      question: '¿Qué herramientas BIM debo aprender para cumplir con la Ley 32069?',
+      answer: 'Las herramientas más demandadas en el mercado peruano son Autodesk Revit (modelado arquitectónico y estructural), Navisworks (coordinación y detección de interferencias), Robot Structural Analysis (cálculo estructural) y Dynamo (automatización con scripts). Python también es fundamental para workfows avanzados con la API de Revit.',
+    },
+    {
+      question: '¿Cómo es el Plan BIM Perú y cuáles son sus fases?',
+      answer: 'El Plan BIM Perú, impulsado por el Decreto Supremo 289-2019-EF y la Ley 32069, se implementa en fases progresivas. Fase 1 (hasta 2024): proyectos piloto del Estado. Fase 2 (2024-2026): proyectos de inversión pública grandes. Fase 3 (desde agosto 2026): obligatoriedad generalizada para proyectos de inversión pública.',
+    },
+    {
+      question: '¿Cuánto cuesta aprender Revit en Perú?',
+      answer: 'Los cursos presenciales de Revit en Lima cuestan entre S/800 y S/2,500. FreeCloud ofrece tutoriales gratuitos con ejercicios descargables y plantillas, además de scripts de automatización con Dynamo en nuestra sección de Recursos.',
+    },
+  ]);
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
       {/* ── 1. HERO ── */}
@@ -165,15 +192,10 @@ export default async function HomePage() {
       </section >
 
       {/* ── 2. CARRUSEL DE TECNOLOGÍAS ── */}
-      < section className="bg-white py-[28px] overflow-hidden border-t border-gray-200" >
+      <section className="bg-white py-7 overflow-hidden border-t border-gray-200">
         <div className="text-center mb-[20px]">
           <span
-            className="font-semibold uppercase"
-            style={{
-              fontSize: '11px',
-              letterSpacing: '0.12em',
-              color: '#94a3b8'
-            }}
+            className="font-semibold uppercase text-[11px] tracking-[0.12em] text-slate-400"
           >
             Tecnologías que domino
           </span>
