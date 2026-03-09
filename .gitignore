@@ -41,3 +41,7 @@ build.log
 build_error.log
 build_output.log
 temp.html
+
+# Agent repos with embedded .git (prevent submodule warnings in Vercel)
+.agents/gentleman-guardian-angel/.git
+.agents/repos/
