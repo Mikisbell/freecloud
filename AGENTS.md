@@ -44,6 +44,12 @@ docs/arquitectura.md  → Documento vital de Core Technical Spec
 | **Arquitectura SDD:** Desarrollar nueva feature backend o bug | `.agents/workflows/sdd-new.md` |
 | **Ingeniería:** "Crea una skill para esto", automatizar proceso | `.agents/skills/skill-creator/SKILL.md` |
 | **DevOps / QA:** Revisión profunda de PRs, Code Review Estricto | `.agents/skills/code-review-excellence/SKILL.md` |
+| **Next.js:** App Router, Server Actions, Middleware, Data Fetching | `.agents/skills/nextjs-15/SKILL.md` |
+| **React:** Componentes, hooks, memoización, use() hook | `.agents/skills/react-19/SKILL.md` |
+| **Tailwind:** Estilos, cn(), theming, responsive, dark mode | `.agents/skills/tailwind-4/SKILL.md` |
+| **TypeScript:** Tipos, interfaces, generics, type guards | `.agents/skills/typescript/SKILL.md` |
+| **Testing E2E:** Playwright, Page Objects, selectores, MCP workflow | `.agents/skills/playwright/SKILL.md` |
+| **Validación:** Schemas Zod, React Hook Form, parsing | `.agents/skills/zod-4/SKILL.md` |
 
 **🛑 ENRUTAMIENTO POR SCOPE (CRÍTICO - V3):**
 - Si el usuario te pide tocar **UI, Formularios, Landing, Layouts de Next.js, Tailwnid o el Blog**: **ABORTA** la lectura de este archivo y ve OBLIGATORIAMENTE a leer el archivo de contexto `app/(main)/agents.md`. No programes sin él.
