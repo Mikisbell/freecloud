@@ -352,6 +352,7 @@ export default async function HomePage() {
                 alt="Miguel Angel Rivera"
                 width={500}
                 height={500}
+                priority={false}
                 className="rounded-2xl shadow-lg w-full max-w-md mx-auto object-cover aspect-square md:aspect-auto"
               />
             </div>

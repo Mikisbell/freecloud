@@ -73,7 +73,7 @@ const nextConfig = {
             value: [
               "default-src 'self'",
               // Scripts: self + Google AdSense / Analytics / Fonts + Vercel + Gumroad
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://gumroad.com https://assets.gumroad.com https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn.vercel-insights.com https://vitals.vercel-insights.com https://va.vercel-scripts.com https://*.adtrafficquality.google",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://gumroad.com https://assets.gumroad.com https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn.vercel-insights.com https://vitals.vercel-insights.com https://va.vercel-scripts.com https://*.adtrafficquality.google https://vercel.live https://*.vercel.live",
               // Estilos: self + inline (necesario para MDX/Tailwind) + Google Fonts + KaTeX + Gumroad
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://assets.gumroad.com",
               // Fuentes
