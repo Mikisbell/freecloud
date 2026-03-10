@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import Script from 'next/script';
+
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
@@ -205,6 +205,20 @@ export default async function BlogPostPage({ params }: Props) {
                 <span>Por {post.author}</span>
               </div>
             </header>
+
+            {/* Featured Image Hero */}
+            {post.featured_image && (
+              <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden mb-8 shadow-md">
+                <Image
+                  src={post.featured_image}
+                  alt={post.image_alt || post.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 800px"
+                  priority
+                />
+              </div>
+            )}
 
             {/* Mobile/Tablet Table of Contents (hidden on lg+) */}
             <div className="lg:hidden">
