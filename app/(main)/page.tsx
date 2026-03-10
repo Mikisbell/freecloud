@@ -194,7 +194,7 @@ export default async function HomePage() {
       <section className="bg-white py-7 overflow-hidden border-t border-gray-200">
         <div className="text-center mb-[20px]">
           <span
-            className="font-semibold uppercase text-[11px] tracking-[0.12em] text-slate-400"
+            className="font-semibold uppercase text-[11px] tracking-[0.12em] text-slate-500"
           >
             Tecnologías que domino
           </span>
@@ -209,7 +209,7 @@ export default async function HomePage() {
           <div className="flex w-max animate-scroll-logos group-hover:[animation-play-state:paused] gap-[32px] sm:gap-[48px] px-[16px] sm:px-[24px]">
             {/* Duplicated for loop */}
             {[...A_TECH, ...A_TECH].map((tech, i) => (
-              <div key={i} className="flex items-center gap-[10px] shrink-0 opacity-55 hover:opacity-100 transition-opacity duration-300">
+              <div key={`${tech.name}-${i}`} className="flex items-center gap-[10px] shrink-0 opacity-70 hover:opacity-100 transition-opacity duration-300">
                 <div
                   className="w-[32px] h-[32px] rounded-[8px] flex items-center justify-center overflow-hidden"
                   style={{ background: tech.dark ? '#1e293b' : '#f1f5f9', padding: '5px' }}
@@ -350,7 +350,7 @@ export default async function HomePage() {
       </Suspense >
 
       {/* ── 5. SOBRE MÍ ── */}
-      < section className="bg-gray-50 py-20 px-6" >
+      <section className="bg-gray-50 py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
@@ -411,10 +411,10 @@ export default async function HomePage() {
 
           </div>
         </div>
-      </section >
+      </section>
 
       {/* ── 6. NEWSLETTER ── */}
-      < section className="bg-blue-900 py-20 px-6 text-center" >
+      <section className="bg-blue-900 py-20 px-6 text-center">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
             Tutoriales y herramientas BIM cada semana
@@ -428,12 +428,12 @@ export default async function HomePage() {
             <div className="newsletter-clean-override">
               <Newsletter variant="inline" />
             </div>
-            <p className="text-xs text-blue-300 mt-4 opacity-80">
+            <p className="text-xs text-blue-200 mt-4">
               Sin spam. Cancela cuando quieras.
             </p>
           </div>
         </div>
-      </section >
+      </section>
 
     </>
   );
