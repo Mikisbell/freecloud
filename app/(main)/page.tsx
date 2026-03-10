@@ -99,23 +99,9 @@ export default async function HomePage() {
       />
 
       {/* ── 1. HERO ── */}
-      <section className="relative w-full flex flex-col items-center text-center overflow-hidden"
-        style={{
-          backgroundColor: '#0a1628',
-          padding: 'clamp(60px, 10vw, 80px) 24px clamp(40px, 8vw, 48px)',
-          minHeight: 'min(70vh, 620px)',
-        }}
-      >
+      <section className="relative w-full flex flex-col items-center text-center overflow-hidden bg-slate-950 px-6 min-h-[min(70svh,620px)] pt-[clamp(60px,10vw,80px)] pb-[clamp(40px,8vw,48px)]">
         {/* Background Gradients */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: `
-              radial-gradient(circle at 20% 30%, rgba(59,130,246,0.08) 0%, transparent 50%),
-              radial-gradient(circle at 80% 70%, rgba(6,182,212,0.06) 0%, transparent 50%)
-            `
-          }}
-        />
+        <div className="absolute inset-0 pointer-events-none bg-hero-radial" />
 
         {/* Canvas Animation - Edificio Wireframe + Matrix Rain */}
         <div className="absolute inset-0 pointer-events-none">
@@ -123,14 +109,9 @@ export default async function HomePage() {
         </div>
 
         {/* Protection Layer / Gradient Oscuro central */}
-        <div
-          className="absolute inset-0 pointer-events-none z-[5]"
-          style={{
-            background: 'radial-gradient(circle at center, rgba(10,22,40,0.85) 0%, rgba(10,22,40,0.4) 45%, transparent 75%)'
-          }}
-        />
+        <div className="absolute inset-0 pointer-events-none z-[5] bg-hero-overlay" />
 
-        <div className="relative z-10 w-full max-w-[740px] mx-auto flex flex-col items-center">
+        <div className="relative z-10 w-full max-w-2xl mx-auto flex flex-col items-center">
           {/* Elemento 1 — Badge countdown */}
           <div className="drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
             <HeroCountdown />
@@ -138,49 +119,35 @@ export default async function HomePage() {
 
           {/* Elemento 2 — H1 */}
           <h1
-            className="mt-[28px] font-extrabold leading-[1.15] tracking-[-0.03em] animate-fade-in-up flex flex-col items-center drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]"
-            style={{
-              fontSize: 'clamp(2rem, 5vw, 3.2rem)',
-              animationDelay: '0.15s',
-              animationFillMode: 'both'
-            }}
+            className="mt-7 font-extrabold leading-tight tracking-tight text-[clamp(2rem,5vw,3.2rem)] animate-fade-in-up [animation-delay:0.15s] [animation-fill-mode:both] flex flex-col items-center drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]"
           >
             <span className="text-white">Tecnología para</span>
-            <span
-              className="text-transparent bg-clip-text"
-              style={{ backgroundImage: 'linear-gradient(135deg, #3b82f6, #06b6d4)' }}
-            >
+            <span className="text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-cyan-500">
               Ingeniería Civil
             </span>
           </h1>
 
           {/* Elemento 3 — Subtítulo */}
           <p
-            className="mt-[16px] max-w-[620px] font-normal leading-[1.6] animate-fade-in-up text-slate-300 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] text-center"
-            style={{
-              fontSize: 'clamp(1rem, 2vw, 1.15rem)',
-              animationDelay: '0.3s',
-              animationFillMode: 'both'
-            }}
+            className="mt-4 max-w-xl font-normal leading-relaxed text-[clamp(1rem,2vw,1.15rem)] animate-fade-in-up [animation-delay:0.3s] [animation-fill-mode:both] text-slate-300 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] text-center"
           >
             Desarrollo de software a medida, automatización BIM y recursos técnicos para ingenieros y empresas de construcción en Perú.
           </p>
 
           {/* Elemento 4 — Botones */}
           <div
-            className="mt-[36px] flex flex-col sm:flex-row justify-center gap-[14px] w-full max-w-[320px] sm:max-w-none animate-fade-in-up"
-            style={{ animationDelay: '0.45s', animationFillMode: 'both' }}
+            className="mt-9 flex flex-col sm:flex-row justify-center gap-3.5 w-full max-w-xs sm:max-w-none animate-fade-in-up [animation-delay:0.45s] [animation-fill-mode:both]"
           >
             <Link
               href="/blog"
-              className="group flex justify-center items-center rounded-[10px] w-full sm:w-auto transition-all bg-white text-[#0a1628] font-bold text-[15px] px-[30px] py-[14px] hover:bg-[#f0f4ff] hover:-translate-y-[1px] hover:shadow-[0_8px_30px_rgba(255,255,255,0.15)]"
+              className="group flex justify-center items-center rounded-xl w-full sm:w-auto transition-all bg-white text-slate-900 font-bold text-sm px-8 py-3.5 hover:bg-slate-50 hover:-translate-y-px hover:shadow-[0_8px_30px_rgba(255,255,255,0.15)]"
             >
-              Explorar Tutoriales <span className="ml-1 text-[18px] transition-transform group-hover:translate-x-1">→</span>
+              Explorar Tutoriales <span className="ml-1 text-lg transition-transform group-hover:translate-x-1">→</span>
             </Link>
 
             <Link
               href="/sobre-mi#contacto"
-              className="flex justify-center items-center rounded-[10px] w-full sm:w-auto transition-all font-semibold text-[15px] px-[30px] py-[14px] bg-transparent text-white/70 border border-white/15 hover:border-white/35 hover:text-white hover:bg-white/5"
+              className="flex justify-center items-center rounded-xl w-full sm:w-auto transition-all font-semibold text-sm px-8 py-3.5 bg-transparent text-white/70 border border-white/15 hover:border-white/35 hover:text-white hover:bg-white/5"
             >
               Solicitar Cotización
             </Link>
@@ -188,31 +155,28 @@ export default async function HomePage() {
 
 
         </div>
-      </section >
+      </section>
 
       {/* ── 2. CARRUSEL DE TECNOLOGÍAS ── */}
       <section className="bg-white py-7 overflow-hidden border-t border-gray-200">
-        <div className="text-center mb-[20px]">
-          <span
-            className="font-semibold uppercase text-[11px] tracking-[0.12em] text-slate-500"
-          >
+        <div className="text-center mb-5">
+          <span className="font-semibold uppercase text-xs tracking-widest text-slate-500">
             Tecnologías que domino
           </span>
         </div>
 
         <div className="relative w-full overflow-hidden flex group">
           {/* Fades */}
-          <div className="absolute top-0 bottom-0 left-0 w-[60px] sm:w-[120px] z-10" style={{ background: 'linear-gradient(90deg, #fff 0%, transparent 100%)' }}></div>
-          <div className="absolute top-0 bottom-0 right-0 w-[60px] sm:w-[120px] z-10" style={{ background: 'linear-gradient(270deg, #fff 0%, transparent 100%)' }}></div>
+          <div className="absolute top-0 bottom-0 left-0 w-[60px] sm:w-[120px] z-10 brand-fade-left"></div>
+          <div className="absolute top-0 bottom-0 right-0 w-[60px] sm:w-[120px] z-10 brand-fade-right"></div>
 
           {/* Track */}
-          <div className="flex w-max animate-scroll-logos group-hover:[animation-play-state:paused] gap-[32px] sm:gap-[48px] px-[16px] sm:px-[24px]">
+          <div className="flex w-max animate-scroll-logos group-hover:[animation-play-state:paused] gap-8 sm:gap-12 px-4 sm:px-6">
             {/* Duplicated for loop */}
             {[...A_TECH, ...A_TECH].map((tech, i) => (
-              <div key={`${tech.name}-${i}`} className="flex items-center gap-[10px] shrink-0 opacity-70 hover:opacity-100 transition-opacity duration-300">
+              <div key={`${tech.name}-${i}`} className="flex items-center gap-2.5 shrink-0 opacity-70 hover:opacity-100 transition-opacity duration-300">
                 <div
-                  className="w-[32px] h-[32px] rounded-[8px] flex items-center justify-center overflow-hidden"
-                  style={{ background: tech.dark ? '#1e293b' : '#f1f5f9', padding: '5px' }}
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden p-1 ${tech.dark ? 'bg-slate-800' : 'bg-slate-100'}`}
                 >
                   <Image
                     src={tech.logo}
@@ -223,17 +187,17 @@ export default async function HomePage() {
                     unoptimized
                   />
                 </div>
-                <span className="text-[14px] font-semibold text-[#1e293b] whitespace-nowrap">
+                <span className="text-sm font-semibold text-slate-800 whitespace-nowrap">
                   {tech.name}
                 </span>
               </div>
             ))}
           </div>
         </div>
-      </section >
+      </section>
 
       {/* ── 2. SERVICIOS ── */}
-      < section className="bg-white py-20 px-6" >
+      <section className="bg-white py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="mb-12">
             <p className="text-sm font-semibold text-blue-700 uppercase tracking-wider mb-3">
@@ -262,10 +226,10 @@ export default async function HomePage() {
             ))}
           </div>
         </div>
-      </section >
+      </section>
 
       {/* ── 3. PRODUCTOS DIGITALES ── */}
-      < section className="bg-gray-50 py-20 px-6" >
+      <section className="bg-gray-50 py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="mb-12">
             <p className="text-sm font-semibold text-blue-700 uppercase tracking-wider mb-3">
@@ -283,15 +247,12 @@ export default async function HomePage() {
             {PRODUCTS.map((prod, i) => (
               <div key={i} className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col group">
                 {/* Placeholder de imagen — reemplazar con imagen real cuando exista */}
-                <div
-                  className="w-full h-48 relative border-b border-gray-100 flex items-center justify-center"
-                  style={{ background: `linear-gradient(135deg, ${prod.tagBg}18 0%, ${prod.tagBg}30 100%)` }}
-                >
+                <div className="w-full h-48 relative border-b border-gray-100 bg-slate-50 flex items-center justify-center">
                   <div className="text-center">
-                    <span className="text-5xl font-black tracking-tighter opacity-20" style={{ color: prod.tagBg }}>
+                    <span className="text-5xl font-black tracking-tighter opacity-20 text-slate-400">
                       {prod.tag}
                     </span>
-                    <p className="text-xs opacity-40 mt-1 font-medium" style={{ color: prod.tagBg }}>Imagen próximamente</p>
+                    <p className="text-xs opacity-40 mt-1 font-medium text-slate-500">Imagen próximamente</p>
                   </div>
                 </div>
 
@@ -322,11 +283,11 @@ export default async function HomePage() {
             ))}
           </div>
         </div>
-      </section >
+      </section>
 
       {/* ── 4. BLOG ── */}
-      < Suspense fallback={
-        < section className="bg-white py-20 px-6 border-y border-gray-100" >
+      <Suspense fallback={
+        <section className="bg-white py-20 px-6 border-y border-gray-100">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
               <div className="animate-pulse">
@@ -344,10 +305,10 @@ export default async function HomePage() {
               ))}
             </div>
           </div>
-        </section >
+        </section>
       }>
         <RecentBlogPosts />
-      </Suspense >
+      </Suspense>
 
       {/* ── 5. SOBRE MÍ ── */}
       <section className="bg-gray-50 py-20 px-6">

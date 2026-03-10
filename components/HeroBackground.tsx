@@ -36,11 +36,23 @@ export default function HeroBackground() {
 
         // Resize handler
         const resize = () => {
+            const width = window.innerWidth;
+            const isMobile = width < 768;
+            
+            // Si es móvil, no renderizamos el canvas para salvar batería y TBT
+            if (isMobile) {
+               canvas.width = 0;
+               canvas.height = 0;
+               return;
+            }
+
             if (canvas.parentElement) {
-                canvas.width = canvas.parentElement.offsetWidth;
-                canvas.height = canvas.parentElement.offsetHeight;
+                // Usamos `getBoundingClientRect` o tomamos la ventana para no forzar layout thrashing en carga inicial
+                const rect = canvas.parentElement.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
             } else {
-                canvas.width = window.innerWidth;
+                canvas.width = width;
                 canvas.height = 620;
             }
             initLabels();
@@ -72,14 +84,19 @@ export default function HeroBackground() {
             while (drops.length > columns) drops.pop();
         };
 
-        const project = (x: number, y: number, z: number, scale: number, offsetX: number, offsetY: number) => {
+        interface Point2D {
+            cx: number;
+            cy: number;
+        }
+
+        const project = (x: number, y: number, z: number, scale: number, offsetX: number, offsetY: number): Point2D => {
             return {
                 cx: (x - z) * COS_A * scale + offsetX,
                 cy: (x + z) * SIN_A * scale - y * scale + offsetY
             };
         };
 
-        const drawLine = (p1: any, p2: any, color: string, width = 1) => {
+        const drawLine = (p1: Point2D, p2: Point2D, color: string, width = 1) => {
             ctx.beginPath();
             ctx.moveTo(p1.cx, p1.cy);
             ctx.lineTo(p2.cx, p2.cy);
@@ -100,37 +117,37 @@ export default function HeroBackground() {
             ctx.setLineDash([5, 5]);
             const gridColor = 'rgba(255, 255, 255, 0.15)';
             for (let i = 0; i <= cols; i++) {
-                let start = project(i * spanX, 0, -20, scale, offX, offY);
-                let end = project(i * spanX, 0, (rows * spanZ) + 20, scale, offX, offY);
+                const start = project(i * spanX, 0, -20, scale, offX, offY);
+                const end = project(i * spanX, 0, (rows * spanZ) + 20, scale, offX, offY);
                 drawLine(start, end, gridColor);
             }
             for (let i = 0; i <= rows; i++) {
-                let start = project(-20, 0, i * spanZ, scale, offX, offY);
-                let end = project((cols * spanX) + 20, 0, i * spanZ, scale, offX, offY);
+                const start = project(-20, 0, i * spanZ, scale, offX, offY);
+                const end = project((cols * spanX) + 20, 0, i * spanZ, scale, offX, offY);
                 drawLine(start, end, gridColor);
             }
             ctx.setLineDash([]); // Reset
 
             // 2. PORTICOS (Columnas y Vigas interactuando con Scanner)
             for (let f = 0; f <= floors; f++) {
-                let y = f * floorH;
-                let distToScannerY = Math.abs(scannerY - y);
-                let isScannedFloor = distToScannerY < 20;
+                const y = f * floorH;
+                const distToScannerY = Math.abs(scannerY - y);
+                const isScannedFloor = distToScannerY < 20;
 
                 for (let c = 0; c <= cols; c++) {
                     for (let r = 0; r <= rows; r++) {
-                        let x = c * spanX;
-                        let z = r * spanZ;
+                        const x = c * spanX;
+                        const z = r * spanZ;
 
                         // Columna
                         if (f < floors) {
-                            let yTop = (f + 1) * floorH;
-                            let isColScanned = scannerY > y && scannerY < yTop;
-                            let colColor = isColScanned ? 'rgba(6, 182, 212, 0.9)' : 'rgba(59, 130, 246, 0.2)';
-                            let colWidth = isColScanned ? 2 : 1;
+                            const yTop = (f + 1) * floorH;
+                            const isColScanned = scannerY > y && scannerY < yTop;
+                            const colColor = isColScanned ? 'rgba(6, 182, 212, 0.9)' : 'rgba(59, 130, 246, 0.2)';
+                            const colWidth = isColScanned ? 2 : 1;
 
-                            let p1 = project(x, y, z, scale, offX, offY);
-                            let p2 = project(x, yTop, z, scale, offX, offY);
+                            const p1 = project(x, y, z, scale, offX, offY);
+                            const p2 = project(x, yTop, z, scale, offX, offY);
                             drawLine(p1, p2, colColor, colWidth);
 
                             if (isColScanned && Math.random() > 0.95) {
@@ -140,19 +157,19 @@ export default function HeroBackground() {
 
                         // Vigas X
                         if (c < cols) {
-                            let beamColor = isScannedFloor ? 'rgba(234, 179, 8, 0.8)' : 'rgba(255, 255, 255, 0.2)';
-                            let beamW = isScannedFloor ? 1.5 : 0.8;
-                            let p1 = project(x, y, z, scale, offX, offY);
-                            let p2 = project((c + 1) * spanX, y, z, scale, offX, offY);
+                            const beamColor = isScannedFloor ? 'rgba(234, 179, 8, 0.8)' : 'rgba(255, 255, 255, 0.2)';
+                            const beamW = isScannedFloor ? 1.5 : 0.8;
+                            const p1 = project(x, y, z, scale, offX, offY);
+                            const p2 = project((c + 1) * spanX, y, z, scale, offX, offY);
                             drawLine(p1, p2, beamColor, beamW);
                         }
 
                         // Vigas Z
                         if (r < rows) {
-                            let beamColor = isScannedFloor ? 'rgba(234, 179, 8, 0.8)' : 'rgba(255, 255, 255, 0.2)';
-                            let beamW = isScannedFloor ? 1.5 : 0.8;
-                            let p1 = project(x, y, z, scale, offX, offY);
-                            let p2 = project(x, y, (r + 1) * spanZ, scale, offX, offY);
+                            const beamColor = isScannedFloor ? 'rgba(234, 179, 8, 0.8)' : 'rgba(255, 255, 255, 0.2)';
+                            const beamW = isScannedFloor ? 1.5 : 0.8;
+                            const p1 = project(x, y, z, scale, offX, offY);
+                            const p2 = project(x, y, (r + 1) * spanZ, scale, offX, offY);
                             drawLine(p1, p2, beamColor, beamW);
                         }
                     }
@@ -161,9 +178,9 @@ export default function HeroBackground() {
 
             // 3. ETIQUETAS BIM
             labels.forEach(lbl => {
-                let lblHoverY = Math.sin((frameCount + lbl.id * 100) * 0.02) * 10;
-                let targetPoint = project(lbl.x, lbl.y, lbl.z, scale, offX, offY);
-                let uiPoint = project(lbl.x, lbl.y + 70 + lblHoverY, lbl.z, scale, offX, offY);
+                const lblHoverY = Math.sin((frameCount + lbl.id * 100) * 0.02) * 10;
+                const targetPoint = project(lbl.x, lbl.y, lbl.z, scale, offX, offY);
+                const uiPoint = project(lbl.x, lbl.y + 70 + lblHoverY, lbl.z, scale, offX, offY);
 
                 ctx.setLineDash([2, 4]);
                 drawLine(targetPoint, uiPoint, 'rgba(255,255,255,0.4)', 1);
@@ -173,10 +190,10 @@ export default function HeroBackground() {
                 ctx.strokeStyle = 'rgba(6, 182, 212, 0.6)';
                 ctx.lineWidth = 1;
 
-                let tw = ctx.measureText(lbl.text).width + 16;
-                let th = 22;
-                let rx = uiPoint.cx - tw / 2;
-                let ry = uiPoint.cy - th / 2;
+                const tw = ctx.measureText(lbl.text).width + 16;
+                const th = 22;
+                const rx = uiPoint.cx - tw / 2;
+                const ry = uiPoint.cy - th / 2;
 
                 ctx.beginPath();
                 ctx.roundRect(rx, ry, tw, th, 4);
@@ -195,10 +212,10 @@ export default function HeroBackground() {
             // 4. PLANO LÁSER TRANSLÚCIDO
             ctx.fillStyle = 'rgba(6, 182, 212, 0.05)';
             ctx.beginPath();
-            let s1 = project(-20, scannerY, -20, scale, offX, offY);
-            let s2 = project((cols * spanX) + 20, scannerY, -20, scale, offX, offY);
-            let s3 = project((cols * spanX) + 20, scannerY, (rows * spanZ) + 20, scale, offX, offY);
-            let s4 = project(-20, scannerY, (rows * spanZ) + 20, scale, offX, offY);
+            const s1 = project(-20, scannerY, -20, scale, offX, offY);
+            const s2 = project((cols * spanX) + 20, scannerY, -20, scale, offX, offY);
+            const s3 = project((cols * spanX) + 20, scannerY, (rows * spanZ) + 20, scale, offX, offY);
+            const s4 = project(-20, scannerY, (rows * spanZ) + 20, scale, offX, offY);
             ctx.moveTo(s1.cx, s1.cy); ctx.lineTo(s2.cx, s2.cy); ctx.lineTo(s3.cx, s3.cy); ctx.lineTo(s4.cx, s4.cy);
             ctx.fill();
 
@@ -208,7 +225,7 @@ export default function HeroBackground() {
             drawLine(s4, s1, 'rgba(6, 182, 212, 0.4)', 1);
         };
 
-        const drawNode = (p: any, radius: number, color: string) => {
+        const drawNode = (p: Point2D, radius: number, color: string) => {
             ctx.beginPath();
             ctx.arc(p.cx, p.cy, radius, 0, Math.PI * 2);
             ctx.fillStyle = color;
@@ -247,30 +264,31 @@ export default function HeroBackground() {
         resize();
 
         const animate = () => {
-            // 1. CAPA DE FONDO / EFECTO ESTELA (Aplica fading a BIM y Matrix)
-            ctx.fillStyle = 'rgba(10, 22, 40, 0.25)'; // Hero #0a1628 Base
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (window.innerWidth >= 768) {
+                // 1. CAPA DE FONDO / EFECTO ESTELA (Aplica fading a BIM y Matrix)
+                ctx.fillStyle = 'rgba(10, 22, 40, 0.25)'; // Hero #0a1628 Base
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 2. DIBUJAR MATRIX RAIN (Se dibuja antes, al fondo del Z-index)
-            drawMatrixRain();
+                // 2. DIBUJAR MATRIX RAIN (Se dibuja antes, al fondo del Z-index)
+                drawMatrixRain();
 
-            // 3. CAPA BIM FOREGROUND (Con posiciones flotantes variables)
-            const isMobile = canvas.width < 768;
-            const buildingScale = isMobile ? 0.9 : 1.25;
-            const offX = isMobile ? canvas.width / 2 : canvas.width * 0.20;
+                // 3. CAPA BIM FOREGROUND (Con posiciones flotantes variables)
+                const buildingScale = 1.25;
+                const offX = canvas.width * 0.20;
 
-            const camHoverX = Math.cos(frameCount * 0.005) * 20;
-            const camHoverY = Math.sin(frameCount * 0.005) * 10;
-            const offY = canvas.height * 0.8 + camHoverY;
+                const camHoverX = Math.cos(frameCount * 0.005) * 20;
+                const camHoverY = Math.sin(frameCount * 0.005) * 10;
+                const offY = canvas.height * 0.8 + camHoverY;
 
-            // Dibujar estructura BIM que sobresaldr\u00e1 sobre la Matrix
-            drawBimStructure(buildingScale, offX + camHoverX, offY);
+                // Dibujar estructura BIM que sobresaldrá sobre la Matrix
+                drawBimStructure(buildingScale, offX + camHoverX, offY);
 
-            // 4. L\u00d3GICA DEL ESC\u00c1NER
-            scannerY += scannerSpeed;
-            if (scannerY > scannerHeightRange || scannerY < -50) {
-                scannerSpeed *= -1;
-                if (scannerY < 0) initLabels();
+                // 4. LÓGICA DEL ESCÁNER
+                scannerY += scannerSpeed;
+                if (scannerY > scannerHeightRange || scannerY < -50) {
+                    scannerSpeed *= -1;
+                    if (scannerY < 0) initLabels();
+                }
             }
 
             frameCount++;
