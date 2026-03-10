@@ -202,7 +202,7 @@ export async function markContactAsRead(id: string) {
 // CMS (Blog) Functions
 // ==========================================
 
-import { Post, Category } from '@/types/supabase';
+import { Post, Category, Software, SoftwareMetric } from '@/types/supabase';
 
 export async function getCategories() {
   const { data, error } = await getClient()
@@ -505,4 +505,61 @@ export async function listImages() {
       url: urlData.publicUrl
     } as unknown as StorageImage;
   });
+}
+
+// ==========================================
+// BIM-RTINGS — Programmatic SEO Functions
+// ==========================================
+
+/**
+ * Task 2.1 — Obtener listado de software activos.
+ * Opcionalmente filtrado por categoría (ej: 'BIM Modeling', 'Structural').
+ */
+export async function getSoftware(category?: string): Promise<Software[]> {
+  let query = getClient()
+    .from('software')
+    .select('*, metrics:software_metrics(*)')
+    .eq('is_active', true)
+    .order('name');
+
+  if (category) {
+    query = query.eq('category', category);
+  }
+
+  const { data, error } = await query;
+  if (error) throw error;
+  return (data ?? []) as Software[];
+}
+
+/**
+ * Task 2.2 — Obtener un software específico con todas sus métricas.
+ * Usado en páginas de ficha individual de herramienta.
+ */
+export async function getSoftwareBySlug(slug: string): Promise<Software | null> {
+  const { data, error } = await getClient()
+    .from('software')
+    .select('*, metrics:software_metrics(*)')
+    .eq('slug', slug)
+    .eq('is_active', true)
+    .single();
+
+  if (error) return null;
+  return data as Software;
+}
+
+/**
+ * Task 2.3 — Comparar dos herramientas BIM por sus slugs.
+ * Retorna ambas entidades con sus métricas para el template de /comparativas/[a]-vs-[b].
+ * Si alguno de los slugs no existe, retorna null en esa posición.
+ */
+export async function compareSoftware(
+  slugA: string,
+  slugB: string
+): Promise<{ a: Software | null; b: Software | null }> {
+  const [resultA, resultB] = await Promise.all([
+    getSoftwareBySlug(slugA),
+    getSoftwareBySlug(slugB),
+  ]);
+
+  return { a: resultA, b: resultB };
 }

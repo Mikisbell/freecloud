@@ -51,3 +51,38 @@ export interface Post {
     date?: string;
     readingTime?: string;
 }
+
+// ==========================================
+// BIM-RTINGS Programmatic SEO Entities
+// ==========================================
+
+export interface SoftwareMetric {
+    id: string;
+    software_id: string;
+    /** Clave normalizada del atributo: ej. 'learning_curve', 'price_tier', 'os_windows' */
+    metric_key: string;
+    /** Valor numérico (0-10 score) o null si no aplica */
+    value_numeric: number | null;
+    /** Valor de texto libre o null si no aplica */
+    value_string: string | null;
+    /** Valor booleano (ej: soporta BIM Level 2?) o null si no aplica */
+    value_boolean: boolean | null;
+    created_at: string;
+}
+
+export interface Software {
+    id: string;
+    name: string;
+    /** URL slug único para rutas como /comparativas/revit-2026-vs-archicad-27 */
+    slug: string;
+    description: string | null;
+    logo_url: string | null;
+    /** Categoría del software: 'BIM Modeling', 'Structural', 'Rendering', 'MEP', 'Coordination' */
+    category: string;
+    /** Solo los software activos se muestran en la UI pública */
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+    /** Joined data — presente cuando se llama con select('*, software_metrics(*)') */
+    metrics?: SoftwareMetric[];
+}
