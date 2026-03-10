@@ -1,0 +1,58 @@
+
+> freecloud-blog@1.0.0 build
+> next build
+
+Ôû▓ Next.js 16.1.6 (Turbopack, Cache Components)
+- Environments: .env.local, .env
+- Experiments (use with caution):
+  Ô£ô inlineCss
+  ┬À optimizePackageImports
+
+  Creating an optimized production build ...
+Ô£ô Compiled successfully in 5.3s
+  Running TypeScript ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/37) ...
+  Generating static pages using 11 workers (9/37) 
+  Generating static pages using 11 workers (18/37) 
+  Generating static pages using 11 workers (27/37) 
+Ô£ô Generating static pages using 11 workers (37/37) in 2.7s
+  Finalizing page optimization ...
+
+Route (app)
+Ôöî ÔùÉ /
+Ôö£ Ôùï /_not-found
+Ôö£ ÔùÉ /admin
+Ôö£ ÔùÉ /admin/categories
+Ôö£ Ôùï /admin/contacts
+Ôö£ ÔùÉ /admin/login
+Ôö£ ÔùÉ /admin/posts
+Ôö£ ÔùÉ /admin/posts/[id]/edit
+Ôöé Ôöö /admin/posts/[id]/edit
+Ôö£ ÔùÉ /admin/posts/new
+Ôö£ Ôùï /admin/settings
+Ôö£ Ôùï /admin/stats
+Ôö£ Ôùï /admin/subscribers
+Ôö£ ãÆ /api/contact
+Ôö£ ãÆ /api/newsletter
+Ôö£ Ôùï /apps
+Ôö£ Ôùï /apps/calculadora-sismica
+Ôö£ ÔùÉ /blog
+Ôö£ ÔùÉ /blog/[slug]
+Ôöé Ôö£ /blog/[slug]
+Ôöé Ôö£ /blog/predimensionamiento-columnas-vigas-e060-practico
+Ôöé Ôö£ /blog/excel-plantilla-metrados-obra-automatica
+Ôöé Ôöö [+11 more paths]
+Ôö£ Ôùï /recursos
+Ôö£ Ôùï /robots.txt
+Ôö£ Ôùï /servicios
+Ôö£ ãÆ /sitemap.xml
+Ôöö Ôùï /sobre-mi
+
+
+ãÆ Proxy (Middleware)
+
+Ôùï  (Static)             prerendered as static content
+ÔùÉ  (Partial Prerender)  prerendered as static HTML with dynamic server-streamed content
+ãÆ  (Dynamic)            server-rendered on demand
+

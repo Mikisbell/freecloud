@@ -1,226 +1,317 @@
+```
 import { Metadata } from 'next';
-import { Bot, Building2, Code2, ArrowRight, CheckCircle2, MessageSquare, Wrench, HardHat } from 'lucide-react';
-import ContactForm from '@/components/ContactForm';
-import Link from 'next/link';
+import {
+    ArrowRight,
+    Code2,
+    Building2,
+    Calculator,
+    CheckCircle2,
+    Workflow,
+    Search,
+    Hammer
+} from 'lucide-react';
 
 export const metadata: Metadata = {
-    title: 'Servicios - Consultoría BIM y Desarrollo a Medida',
-    description: 'Soluciones B2B donde la ingeniería civil y el código se encuentran. Consultoría BIM, desarrollo de macros, scripts Python y diseño estructural.',
-    openGraph: {
-        title: 'Servicios de Consultoría BIM y Desarrollo - FreeCloud',
-        description: 'Transforma tu flujo de trabajo en ingeniería y construcción. Automatización, Revit API, y Estructuras.',
-    }
+    title: 'Servicios de Consultoría BIM y Desarrollo Tecnológico | FreeCloud',
+    description: 'Especialistas en Modelado BIM (LOD 400), desarrollo de scripts Python/API a medida, y cálculo estructural sismorresistente para empresas en Perú.',
 };
+
+const TRUST_SIGNALS = [
+    '✓ Metodología Ágil',
+    '✓ Entregas 100% Documentadas',
+    '✓ Cumplimiento Normativo (E.030)',
+    '✓ Soporte Post-Despliegue',
+];
 
 const SERVICES = [
     {
+        id: 'desarrollo',
         icon: <Code2 className="w-8 h-8 text-fc-cyan" />,
-        title: 'Desarrollo de Software a Medida',
-        description: 'Automatizamos los cuellos de botella de tu equipo técnico. Deja que el software haga el trabajo repetitivo.',
+        title: 'Desarrollo Tech & Automatización',
+        desc: 'Transformamos flujos de trabajo lentos en procesos automáticos con código a medida. Ahorra cientos de horas hombre por proyecto.',
         features: [
-            'Scripts en Python para Revit API',
-            'Rutinas avanzadas en Dynamo BIM',
-            'Plantillas Excel inteligentes con Macros VBA',
-            'Aplicaciones web para gestión de proyectos'
+            'Scripts en Python para Revit',
+            'Desarrollo de APIs e Integraciones',
+            'Macros Avanzadas en Excel (VBA)',
+            'Web Apps Internas'
         ],
-        color: 'border-fc-cyan/20 hover:border-fc-cyan/50',
-        bgIcon: 'bg-fc-cyan/10'
+        bgClass: 'bg-surface-50 border-fc-cyan/20'
     },
     {
-        icon: <Building2 className="w-8 h-8 text-fc-gold" />,
-        title: 'Consultoría e Implementación BIM',
-        description: 'Prepara a tu empresa para el mandato BIM Perú 2026. Te guiamos desde el modelado hasta la gestión de la información.',
+        id: 'bim',
+        icon: <Building2 className="w-8 h-8 text-fc-blue" />,
+        title: 'Consultoría y Modelado BIM',
+        desc: 'Implementación BIM real para obras de ingeniería civil. Modelos precisos que previenen interferencias antes de llegar a campo.',
         features: [
-            'Redacción de Planes de Ejecución BIM (PEB)',
-            'Estandarización de flujos y plantillas corporativas',
-            'Modelado 3D avanzado interdisciplinario (LOD 300-400)',
-            'Capacitación de equipos presencial y remota'
+            'Modelado LOD 300 - LOD 400',
+            'Detección de Interferencias (Navisworks)',
+            'Extracción Cuantitativa (Metrados)',
+            'Implementación de BEP'
         ],
-        color: 'border-fc-gold/20 hover:border-fc-gold/50',
-        bgIcon: 'bg-fc-gold/10'
+        bgClass: 'bg-surface-50 border-fc-blue/20'
     },
     {
-        icon: <HardHat className="w-8 h-8 text-fc-blue" />,
+        id: 'estructuras',
+        icon: <Calculator className="w-8 h-8 text-fc-gold" />,
         title: 'Ingeniería Estructural',
-        description: 'Diseño sismorresistente hiper-optimizado ejecutado por especialistas con experiencia de campo a través de Rivamez.',
+        desc: 'Diseño analítico y detallado de edificaciones seguras y eficientes, optimizando materiales bajo normativas vigentes.',
         features: [
-            'Cálculo y diseño en concreto armado (E.030, E.060)',
-            'Desarrollo de expedientes técnicos',
-            'Elaboración de planos estructurales de alto nivel',
-            'Supervisión y residencia de obra civil'
+            'Cálculo Sismorresistente (E.030)',
+            'Expedientes Técnicos',
+            'Evaluación Estructural',
+            'Cimentaciones Complejas'
         ],
-        color: 'border-fc-blue/20 hover:border-fc-blue/50',
-        bgIcon: 'bg-fc-blue/10'
+        bgClass: 'bg-surface-50 border-fc-gold/20'
     }
 ];
 
-const METHODOLOGY = [
-    { step: '01', title: 'Diagnóstico', desc: 'Analizamos profundamente tu flujo actual para detectar dónde la tecnología o la automatización pueden tener el mayor impacto técnico y financiero.' },
-    { step: '02', title: 'Propuesta Técnica', desc: 'Presentamos una solución documentada, con tiempos claros, alcance cerrado y un retorno de inversión (ROI) estimado para tu empresa.' },
-    { step: '03', title: 'Desarrollo', desc: 'En metodologías ágiles, desarrollamos el script, modelo o consultoría manteniendo feedback constante contigo.' },
-    { step: '04', title: 'Implementación', desc: 'Entregamos el producto y capacitamos a tu equipo para asegurar la adopción real de la solución en tu oficina.' }
+const PROCESS_STEPS = [
+    {
+        num: '01',
+        title: 'Auditoría Inicial',
+        desc: 'Analizamos tus flujos de trabajo o planos actuales sin compromiso para identificar cuellos de botella.',
+        icon: <Search className="w-6 h-6 text-fc-cyan" />
+    },
+    {
+        num: '02',
+        title: 'Desarrollo & Modelado',
+        desc: 'Ejecutamos el código o estructuramos el modelo BIM con reportes semanales de avance continuo.',
+        icon: <Hammer className="w-6 h-6 text-fc-blue" />
+    },
+    {
+        num: '03',
+        title: 'Entrega & Capacitación',
+        desc: 'Te entregamos el producto final junto con manuales, código fuente y talleres de capacitación a tu equipo.',
+        icon: <CheckCircle2 className="w-6 h-6 text-fc-cyan" />
+    }
 ];
 
 export default function ServiciosPage() {
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'ProfessionalService',
+        name: 'FreeCloud Consultoría BIM y Desarrollo',
+        image: 'https://freecloud.pe/logo.png',
+        description: 'Especialistas en Modelado BIM (LOD 400), desarrollo de scripts Python/API a medida, y cálculo estructural sismorresistente para empresas en Perú.',
+        address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'Lima',
+            addressCountry: 'PE'
+        },
+        url: 'https://freecloud.pe/servicios'
+    };
+
     return (
         <div className="bg-surface-50 min-h-screen">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            {/* ── HERO DE CONVERSIÓN B2B ── */}
+            <section className="bg-dataiku-navy text-white relative overflow-hidden pb-20 pt-24 border-b-4 border-fc-blue">
+                <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.08]" />
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-fc-cyan/10 rounded-full blur-[140px] pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-fc-blue/10 rounded-full blur-[100px] pointer-events-none" />
 
-            {/* ── HERO SECTION ── */}
-            <section className="relative overflow-hidden bg-dataiku-navy border-b-4 border-fc-gold pt-24 pb-32">
-                <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]" />
-                {/* Glow Effects */}
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-fc-cyan/10 rounded-full blur-[100px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
-                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-fc-blue/10 rounded-full blur-[100px] pointer-events-none -translate-x-1/3 translate-y-1/3" />
-
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10 text-center animate-in fade-in slide-in-from-bottom-8 duration-700">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-fc-cyan text-sm font-semibold tracking-wide uppercase mb-8">
-                        <Wrench className="w-4 h-4" /> B2B Engineering Solutions
-                    </div>
-
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-black text-white mb-6 leading-tight tracking-tight">
-                        Donde la <span className="text-transparent bg-clip-text bg-gradient-to-r from-fc-gold to-fc-gold-light">ingeniería dura</span> y el <span className="text-transparent bg-clip-text bg-gradient-to-r from-fc-cyan to-fc-blue">código</span> se encuentran
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 text-center animate-fade-in">
+                    <span className="inline-block py-1.5 px-3 rounded-full bg-fc-cyan/10 border border-fc-cyan/20 text-fc-cyan text-sm font-bold tracking-widest uppercase mb-6">
+                        Servicios B2B
+                    </span>
+                    <h1 className="text-4xl md:text-5xl lg:text-7xl font-display font-black mb-6 leading-tight max-w-5xl mx-auto">
+                        Aceleramos tu ingeniería con{' '}
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-fc-cyan to-fc-blue block md:inline">
+                            Código y BIM
+                        </span>
                     </h1>
-
-                    <p className="text-xl md:text-2xl text-surface-400 max-w-3xl mx-auto mb-12 leading-relaxed font-light">
-                        Soluciones B2B para estudios de ingeniería y constructoras. Transformamos procesos lentos en automatizaciones rentables y preparamos a tu equipo para el estándar BIM 2026.
+                    <p className="text-lg md:text-2xl text-surface-300 max-w-3xl mx-auto mb-10 leading-relaxed font-light">
+                        Soluciones tecnológicas a medida para empresas constructoras y estudios de diseño que necesitan escalar sus operaciones sin multiplicar sus costos.
                     </p>
 
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up stagger-1">
                         <a
                             href="#contacto"
-                            className="w-full sm:w-auto px-8 py-4 bg-fc-blue text-white rounded-xl font-bold text-lg hover:bg-fc-navy transition-all shadow-lg hover:shadow-fc-blue/25 flex items-center justify-center gap-2 group"
+                            className="w-full sm:w-auto px-8 py-4 bg-fc-cyan text-fc-navy font-bold rounded-lg hover:bg-white hover:shadow-lg hover:shadow-fc-cyan/20 transition-all duration-300 text-lg flex items-center justify-center gap-2 group"
                         >
-                            Agendar Diagnóstico Gratuito
+                            Agendar Reunión Técnica
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </a>
-                        <Link
-                            href="/sobre-mi"
-                            className="w-full sm:w-auto px-8 py-4 bg-white/5 text-white border border-white/10 rounded-xl font-bold text-lg hover:bg-white/10 transition-colors flex items-center justify-center"
+                        <a
+                            href="#metodologia"
+                            className="w-full sm:w-auto px-8 py-4 bg-transparent border border-surface-700 text-white font-semibold rounded-lg hover:bg-surface-800 transition-all duration-300 text-lg flex items-center justify-center gap-2"
                         >
-                            Conoce mi perfil
-                        </Link>
+                            Ver Metodología
+                            <Workflow className="w-5 h-5 opacity-70" />
+                        </a>
+                    </div>
+
+                    {/* Trust signals */}
+                    <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 pt-12 mt-12 border-t border-surface-800 animate-slide-up stagger-2">
+                        <span className="text-sm text-surface-400 font-semibold uppercase tracking-widest w-full md:w-auto mb-2 md:mb-0">Nuestro Estándar:</span>
+                        {TRUST_SIGNALS.map((signal, idx) => (
+                            <span key={idx} className="text-sm font-medium text-surface-300 flex items-center gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-fc-cyan opacity-80" />
+                                {signal.replace('✓ ', '')}
+                            </span>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            {/* ── SERVICIOS VERTICALES (Cards) ── */}
-            <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 relative -mt-16 z-20">
-                <div className="grid lg:grid-cols-3 gap-8">
-                    {SERVICES.map((srv, index) => (
-                        <div
-                            key={srv.title}
-                            className={`bg-white rounded-3xl p-8 border ${srv.color} shadow-xl shadow-surface-200/50 flex flex-col transition-transform hover:-translate-y-2 duration-300 animate-in fade-in slide-in-from-bottom-12 delay-${index * 200}`}
-                        >
-                            <div className={`w-16 h-16 rounded-2xl ${srv.bgIcon} flex items-center justify-center mb-6`}>
-                                {srv.icon}
-                            </div>
-                            <h3 className="text-2xl font-display font-bold text-surface-900 mb-4">{srv.title}</h3>
-                            <p className="text-surface-600 mb-8 leading-relaxed flex-1">{srv.description}</p>
-
-                            <ul className="space-y-3">
-                                {srv.features.map(feat => (
-                                    <li key={feat} className="flex items-start gap-3 text-surface-700">
-                                        <CheckCircle2 className="w-5 h-5 text-fc-gold shrink-0 mt-0.5" />
-                                        <span className="font-medium text-sm">{feat}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* ── METODOLOGÍA ── */}
-            <section className="py-24 bg-surface-100 border-y border-surface-200">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6">
-                    <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom-8">
-                        <h2 className="text-3xl md:text-5xl font-display font-black text-surface-900 mb-4">Metodología de Trabajo</h2>
-                        <p className="text-lg text-surface-600 max-w-2xl mx-auto">Nuestro proceso asegura que la solución entregada realmente resuelva un problema y sea adoptada por tu equipo.</p>
+            {/* ── SERVICIOS CORE GRID ── */}
+            <section className="py-24 relative" id="servicios">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl md:text-4xl font-display font-bold text-surface-900 mb-4">
+                            ¿Cómo podemos ayudarte?
+                        </h2>
+                        <p className="text-lg text-surface-600 max-w-2xl mx-auto">
+                            No hacemos plantillas genéricas. Nos metemos al barro de tus procesos para construir herramientas que realmente multipliquen tus márgenes.
+                        </p>
                     </div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {METHODOLOGY.map((step, idx) => (
-                            <div key={step.step} className="bg-white p-8 rounded-2xl border border-surface-200 relative animate-in fade-in scale-in-95 delay-[300ms]">
-                                <div className="text-5xl font-display font-black text-surface-100 absolute top-4 right-4 pointer-events-none select-none">
-                                    {step.step}
+                    <div className="grid lg:grid-cols-3 gap-8">
+                        {SERVICES.map((service, i) => (
+                            <div
+                                key={service.id}
+                                className={`dataiku - card p - 8 flex flex - col hover: shadow - xl transition - shadow duration - 300 ${ service.bgClass } border - t - 4`}
+                                style={{ animationDelay: `${ i * 150 } ms` }}
+                            >
+                                <div className="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6">
+                                    {service.icon}
                                 </div>
-                                <h3 className="text-xl font-bold text-surface-900 mb-3 relative z-10">{step.title}</h3>
-                                <p className="text-surface-600 text-sm leading-relaxed relative z-10">{step.desc}</p>
-                                {/* Arrow connector for large screens */}
-                                {idx < METHODOLOGY.length - 1 && (
-                                    <ArrowRight className="hidden lg:block absolute -right-6 top-1/2 -translate-y-1/2 w-8 h-8 text-surface-300 z-20" />
-                                )}
+                                <h3 className="text-2xl font-display font-bold text-surface-900 mb-3">
+                                    {service.title}
+                                </h3>
+                                <p className="text-surface-600 mb-8 leading-relaxed flex-1">
+                                    {service.desc}
+                                </p>
+                                <ul className="space-y-3 mt-auto">
+                                    {service.features.map((feature, j) => (
+                                        <li key={j} className="flex items-start gap-3 text-surface-700 font-medium">
+                                            <CheckCircle2 className="w-5 h-5 text-gray-400 shrink-0 mt-0.5" />
+                                            {feature}
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* ── CTA & CONTACTO ── */}
-            <section id="contacto" className="py-24 max-w-5xl mx-auto px-4 sm:px-6 animate-in fade-in slide-in-from-bottom-12 delay-[400ms]">
-                <div className="bg-surface-900 rounded-[2.5rem] p-8 md:p-14 shadow-2xl overflow-hidden relative border border-surface-800">
-                    <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-fc-blue/10 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+            {/* ── METODOLOGÍA (TIMELINE) ── */}
+            <section className="py-24 bg-white border-y border-surface-200" id="metodologia">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                    <div className="text-center mb-16">
+                        <span className="text-fc-blue font-bold tracking-wider text-sm uppercase mb-2 block">El Proceso</span>
+                        <h2 className="text-3xl md:text-4xl font-display font-bold text-surface-900 mb-4">
+                            Transparencia desde el día 1
+                        </h2>
+                    </div>
 
-                    <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
-                        {/* Context Header */}
-                        <div>
-                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white/10 text-fc-cyan mb-6">
-                                <MessageSquare className="w-6 h-6" />
-                            </div>
-                            <h2 className="text-3xl md:text-4xl font-display font-black text-white mb-4 leading-tight">
-                                Empecemos tu próximo proyecto.
-                            </h2>
-                            <p className="text-surface-400 text-lg mb-8 leading-relaxed">
-                                Cuéntame los detalles de lo que tu empresa necesita. Ya sea optimizar un proceso en Revit, modelar un proyecto complejo o un desarrollo a medida.
-                            </p>
+                    <div className="grid md:grid-cols-3 gap-8 md:gap-12 relative">
+                        {/* Línea conectora desktop */}
+                        <div className="hidden md:block absolute top-[45px] left-[15%] right-[15%] h-0.5 bg-surface-100 -z-10" />
 
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-3 text-surface-300 bg-white/5 p-4 rounded-xl border border-white/5">
-                                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                                    <span className="font-medium text-sm">Disponibilidad para nuevos proyectos B2B</span>
+                        {PROCESS_STEPS.map((step, i) => (
+                            <div key={i} className="relative flex flex-col items-center text-center">
+                                <div className="w-24 h-24 rounded-full bg-surface-50 border-4 border-white shadow-lg flex items-center justify-center mb-6 relative z-10">
+                                    {step.icon}
+                                    <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-fc-navy text-white flex items-center justify-center text-sm font-bold shadow-sm">
+                                        {step.num}
+                                    </div>
                                 </div>
+                                <h3 className="text-xl font-bold text-surface-900 mb-3">{step.title}</h3>
+                                <p className="text-surface-600 leading-relaxed max-w-xs">{step.desc}</p>
                             </div>
-                        </div>
-
-                        {/* Contact Form Reused */}
-                        <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl">
-                            <ContactForm />
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            {/* JSON-LD Service Schema */}
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        '@context': 'https://schema.org',
-                        '@type': 'ProfessionalService',
-                        name: 'FreeCloud - Servicios de Ingenieria y BIM',
-                        url: 'https://freecloud.pe/servicios',
-                        description: 'Soluciones B2B de consultoria BIM, desarrollo de software a medida e ingenieria estructural para empresas de construccion en Peru.',
-                        areaServed: { '@type': 'Country', name: 'Peru' },
-                        provider: {
-                            '@type': 'Organization',
-                            name: 'FreeCloud',
-                            url: 'https://freecloud.pe',
-                        },
-                        hasOfferCatalog: {
-                            '@type': 'OfferCatalog',
-                            name: 'Servicios B2B',
-                            itemListElement: SERVICES.map((srv, i) => ({
-                                '@type': 'Offer',
-                                itemOffered: {
-                                    '@type': 'Service',
-                                    name: srv.title,
-                                    description: srv.description,
-                                },
-                            })),
-                        },
-                    })
-                }}
-            />
+            {/* ── FORMULARIO DE CONTACTO INTEGRADO ── */}
+            <section className="py-24 relative bg-surface-50" id="contacto">
+                <div className="absolute left-0 top-0 w-full h-[50%] bg-white" />
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
+                    <div className="bg-dataiku-navy text-white rounded-2xl shadow-2xl p-8 md:p-12 overflow-hidden relative">
+                        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-fc-blue/20 rounded-full blur-[100px] pointer-events-none" />
+
+                        <div className="text-center mb-10 relative z-10">
+                            <h2 className="text-3xl md:text-4xl font-display font-black mb-4">
+                                Empecemos tu proyecto
+                            </h2>
+                            <p className="text-surface-300 text-lg max-w-xl mx-auto">
+                                Cuéntame los detalles técnicos de tu necesidad y te responderé en menos de 24 horas con una propuesta o para agendar una call.
+                            </p>
+                        </div>
+
+                        <form
+                            action="https://formspree.io/f/mqkolgve"
+                            method="POST"
+                            className="space-y-6 relative z-10"
+                        >
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label htmlFor="name" className="block text-sm font-semibold text-surface-300 mb-2">Nombre o Empresa</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        required
+                                        className="w-full bg-surface-800/50 border border-surface-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fc-cyan transition-all"
+                                        placeholder="Ingenieros SAC"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="email" className="block text-sm font-semibold text-surface-300 mb-2">Correo Electrónico</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        required
+                                        className="w-full bg-surface-800/50 border border-surface-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fc-cyan transition-all"
+                                        placeholder="contacto@empresa.com"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label htmlFor="service" className="block text-sm font-semibold text-surface-300 mb-2">Servicio de Interés</label>
+                                <select
+                                    id="service"
+                                    name="service"
+                                    className="w-full bg-surface-800/50 border border-surface-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fc-cyan transition-all appearance-none"
+                                >
+                                    <option value="desarrollo">Desarrollo Tech & Automatización</option>
+                                    <option value="bim">Consultoría y Modelado BIM</option>
+                                    <option value="estructuras">Ingeniería Estructural</option>
+                                    <option value="otro">Otro / Consulta General</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label htmlFor="message" className="block text-sm font-semibold text-surface-300 mb-2">Detalles del Proyecto</label>
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    rows={4}
+                                    required
+                                    className="w-full bg-surface-800/50 border border-surface-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fc-cyan transition-all resize-y"
+                                    placeholder="Describe brevemente tus requerimientos o el problema a resolver..."
+                                ></textarea>
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="w-full bg-fc-cyan text-fc-navy font-bold text-lg rounded-lg px-8 py-4 hover:bg-white hover:shadow-lg hover:shadow-fc-cyan/20 transition-all duration-300 flex items-center justify-center gap-2"
+                            >
+                                Enviar Solicitud
+                                <ArrowRight className="w-5 h-5" />
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
         </div>
     );
 }
