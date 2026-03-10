@@ -50,6 +50,7 @@ docs/arquitectura.md  → Documento vital de Core Technical Spec
 | **TypeScript:** Tipos, interfaces, generics, type guards | `.agents/skills/typescript/SKILL.md` |
 | **Testing E2E:** Playwright, Page Objects, selectores, MCP workflow | `.agents/skills/playwright/SKILL.md` |
 | **Validación:** Schemas Zod, React Hook Form, parsing | `.agents/skills/zod-4/SKILL.md` |
+| **Rutina Diaria SEO:** Crear blog post optimizado (Nicho Nauta) | `.agents/workflows/daily-seo-blog.md` |
 
 **🛑 ENRUTAMIENTO POR SCOPE (CRÍTICO - V3):**
 - Si el usuario te pide tocar **UI, Formularios, Landing, Layouts de Next.js, Tailwnid o el Blog**: **ABORTA** la lectura de este archivo y ve OBLIGATORIAMENTE a leer el archivo de contexto `app/(main)/agents.md`. No programes sin él.
