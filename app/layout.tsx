@@ -82,11 +82,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* ▶ 2026 Best Practice: preconnect reduce la latencia de fuentes en ~100ms (LCP) */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* AdSense — script nativo en <head> para verificación y sin data-nscript */}
+        {/* AdSense — Script optimizado con next/script para no bloquear el renderizado inicial y mejorar LCP */}
         {adsenseId && (
-          // eslint-disable-next-line @next/next/no-sync-scripts
-          <script
-            async
+          <Script
+            id="adsense-init"
+            strategy="afterInteractive"
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
             crossOrigin="anonymous"
           />
