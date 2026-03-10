@@ -247,12 +247,12 @@ export default async function HomePage() {
             {PRODUCTS.map((prod, i) => (
               <div key={i} className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col group">
                 {/* Placeholder de imagen — reemplazar con imagen real cuando exista */}
-                <div className="w-full h-48 relative border-b border-gray-100 bg-slate-50 flex items-center justify-center">
+                <div className="w-full h-48 relative border-b border-gray-100 bg-slate-50 flex items-center justify-center overflow-hidden">
                   <div className="text-center">
-                    <span className="text-5xl font-black tracking-tighter opacity-20 text-slate-400">
+                    <span className="text-5xl font-black tracking-tighter text-slate-200">
                       {prod.tag}
                     </span>
-                    <p className="text-xs opacity-40 mt-1 font-medium text-slate-500">Imagen próximamente</p>
+                    <p className="text-xs mt-1 font-medium text-slate-400">Imagen próximamente</p>
                   </div>
                 </div>
 
