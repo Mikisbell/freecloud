@@ -62,7 +62,7 @@ async function main() {
       slug: 'automatizacion-bim-python',
       content: contentBody,
       excerpt: 'Descubre cómo la automatización BIM con Python y plataformas como Revit o Dynamo está transformando la ingeniería. Ejemplos, librerías clave.',
-      cover_image: '/blog/img1.png', // Fallback cover_image
+      featured_image: '/blog/img1.png', // Fallback image mapping
       meta_title: 'Automatización BIM con Python y Revit | Guía',
       meta_description: 'Descubre cómo la automatización BIM con Python y plataformas como Revit o Dynamo está transformando la ingeniería civil y estructural.',
       status: 'published',
@@ -99,7 +99,7 @@ async function main() {
     if (error instanceof Error) {
       console.error('Error:', error.message);
     } else {
-      console.error('Error:', String(error));
+      console.error('Error Details:', JSON.stringify(error, null, 2));
     }
   }
 }
