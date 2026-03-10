@@ -48,18 +48,17 @@ const SKILLS = [
 ];
 
 const A_TECH = [
-  { name: 'Revit', icon: '🏗️' },
-  { name: 'Dynamo', icon: '⚡' },
-  { name: 'Python', icon: '🐍' },
-  { name: 'ETABS', icon: '🏢' },
-  { name: 'Robot Structural', icon: '🔧' },
-  { name: 'AutoCAD', icon: '📐' },
-  { name: 'Civil 3D', icon: '🛤️' },
-  { name: 'Navisworks', icon: '🔍' },
-  { name: 'Next.js', icon: '▲' },
-  { name: 'TypeScript', icon: '🔷' },
-  { name: 'Supabase', icon: '⚡' },
-  { name: 'Excel VBA', icon: '📊' }
+  { name: 'Revit', logo: '/logos/autodesk-revit-logo-brandlogos.net_3f4zcg8n5.svg', dark: false },
+  { name: 'Python', logo: '/logos/python-logo.svg', dark: false },
+  { name: 'ETABS', logo: '/logos/etabs.svg', dark: true },
+  { name: 'Robot Structural', logo: '/logos/Robot.svg', dark: true },
+  { name: 'AutoCAD', logo: '/logos/autocad-2018-logo-brandlogos.net_daa2e8ebk.svg', dark: false },
+  { name: 'Civil 3D', logo: '/logos/autodesk-civil-3d-icon.svg', dark: false },
+  { name: 'Navisworks', logo: '/logos/navisworks-logo-brandlogos.net_7nhvw5zx3.svg', dark: false },
+  { name: 'TypeScript', logo: '/logos/typescript-logo-brandlogos.net_8m25t2gyq.svg', dark: false },
+  { name: 'Supabase', logo: '/logos/supabase-logo-brandlogos.net_t0244mcpn.svg', dark: false },
+  { name: 'Excel', logo: '/logos/microsoft-excel-2025-logo-brandlogos.net_ztffjkq0v.svg', dark: false },
+  { name: 'SketchUp', logo: '/logos/SketchUp-OkCVaMpMm_brandlogos.net.svg', dark: false },
 ];
 
 export default async function HomePage() {
@@ -210,9 +209,19 @@ export default async function HomePage() {
           <div className="flex w-max animate-scroll-logos group-hover:[animation-play-state:paused] gap-[32px] sm:gap-[48px] px-[16px] sm:px-[24px]">
             {/* Duplicated for loop */}
             {[...A_TECH, ...A_TECH].map((tech, i) => (
-              <div key={i} className="flex items-center gap-[10px] shrink-0 opacity-45 hover:opacity-100 transition-opacity duration-300">
-                <div className="w-[32px] h-[32px] bg-[#f1f5f9] rounded-[8px] flex items-center justify-center text-lg">
-                  {tech.icon}
+              <div key={i} className="flex items-center gap-[10px] shrink-0 opacity-55 hover:opacity-100 transition-opacity duration-300">
+                <div
+                  className="w-[32px] h-[32px] rounded-[8px] flex items-center justify-center overflow-hidden"
+                  style={{ background: tech.dark ? '#1e293b' : '#f1f5f9', padding: '5px' }}
+                >
+                  <Image
+                    src={tech.logo}
+                    alt={tech.name}
+                    width={22}
+                    height={22}
+                    className="object-contain w-full h-full"
+                    unoptimized
+                  />
                 </div>
                 <span className="text-[14px] font-semibold text-[#1e293b] whitespace-nowrap">
                   {tech.name}
