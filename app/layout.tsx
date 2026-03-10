@@ -2,7 +2,6 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { DM_Sans, Space_Grotesk, JetBrains_Mono, Montserrat, Rajdhani, Barlow_Condensed, Nunito } from 'next/font/google';
 import { generateSiteMetadata, generateWebsiteSchema } from '@/lib/seo';
-import AdSenseLoader from '@/components/AdSenseLoader';
 import ClientAnalytics from '@/components/ClientAnalytics';
 import Script from 'next/script';
 import './globals.css';
@@ -86,7 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {adsenseId && (
           <Script
             id="adsense-init"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
             crossOrigin="anonymous"
           />

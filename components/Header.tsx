@@ -17,10 +17,15 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 10;
+      if (scrolled !== isScrolled) {
+        setScrolled(isScrolled);
+      }
+    };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [scrolled]);
 
   return (
     <header className={`sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b transition-all duration-200 ${scrolled ? 'border-surface-200 shadow-sm' : 'border-transparent'
