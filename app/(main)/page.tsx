@@ -287,7 +287,7 @@ export default async function HomePage() {
 
       {/* ── 4. BLOG ── */}
       <Suspense fallback={
-        <section className="bg-white py-20 px-6 border-y border-gray-100">
+        <section className="bg-white py-20 px-6 border-y border-gray-100 min-h-[450px]">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
               <div className="animate-pulse">
