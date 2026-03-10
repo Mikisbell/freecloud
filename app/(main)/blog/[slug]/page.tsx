@@ -59,6 +59,14 @@ const mdxComponents = {
       ⬇️ {label}
     </a>
   ),
+  InlineRelatedPost: ({ url, title }: { url: string; title: string }) => (
+    <div className="my-6 p-5 bg-fc-blue/5 border-l-4 border-fc-blue rounded-r-xl shadow-sm">
+      <p className="text-xs font-semibold text-fc-navy uppercase tracking-wider mb-2">💡 Te puede interesar</p>
+      <Link href={url} className="text-lg font-bold text-surface-900 hover:text-fc-blue transition-colors">
+        {title}
+      </Link>
+    </div>
+  ),
   // Facade pattern: solo carga el iframe al hacer click, mejora LCP y CLS
   YouTube: ({ id, title }: { id: string; title?: string }) => (
     <YouTubeFacade id={id} title={title} />
