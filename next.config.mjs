@@ -93,22 +93,6 @@ const nextConfig = {
       },
     ];
   },
-  webpack(config) {
-    // Fix for SVGR
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: [
-        {
-          loader: '@svgr/webpack',
-          options: {
-            icon: true,
-          },
-        },
-      ],
-    });
-
-    return config;
-  },
 };
 
 export default nextConfig;
