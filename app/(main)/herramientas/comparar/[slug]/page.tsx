@@ -2,7 +2,12 @@ import { compareSoftware } from '@/lib/supabase';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { SoftwareCompareHero } from '@/components/herramientas/SoftwareCompareHero';
+import { SoftwareCompareScores } from '@/components/herramientas/SoftwareCompareScores';
+import { SoftwareCompareProsCons } from '@/components/herramientas/SoftwareCompareProsCons';
+import { SoftwareVerdict } from '@/components/herramientas/SoftwareVerdict';
 import { SoftwareCompareTable } from '@/components/herramientas/SoftwareCompareTable';
+import { getGodTierComparison } from '@/lib/data/rtingsFetcher';
+import { InteractiveScoreTable } from '@/components/herramientas/rtings/InteractiveScoreTable';
 
 interface ComparePageProps {
   params: Promise<{
@@ -60,6 +65,9 @@ export default async function ComparePage(props: ComparePageProps) {
 
   // Fetch parallelized en db con cache nativo de Next.js
   const { a, b } = await compareSoftware(slugA, slugB);
+  
+  // Fetcher Algorítmico M x N
+  const rtingsData = await getGodTierComparison(slugA, slugB);
 
   // Validar existencia en base de datos
   if (!a || !b) {
@@ -69,21 +77,36 @@ export default async function ComparePage(props: ComparePageProps) {
   return (
     <article className="min-h-screen bg-background pb-24">
       <SoftwareCompareHero a={a} b={b} />
-      
-      {/* Veredicto Express o TL;DR (Futuro componente) */}
-      <section className="mx-auto max-w-5xl px-6 lg:px-8 mt-12">
-        <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6 sm:p-8">
-          <h2 className="text-xl font-bold flex items-center gap-2 mb-4">
-            <span className="text-2xl">💡</span> Veredicto Express
+
+      {/* MOTOR M x N (Evaluado Matemáticamente) */}
+      {rtingsData && (
+        <section className="container mx-auto max-w-6xl px-4 mt-16 mb-16">
+          <h2 className="text-3xl font-bold tracking-tight mb-8">
+             Análisis de Laboratorio: <span className="text-blue-500">{rtingsData.softwareA.releaseName}</span> vs <span className="text-blue-500">{rtingsData.softwareB.releaseName}</span>
           </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            Tanto <strong>{a.name}</strong> como <strong>{b.name}</strong> son soluciones excepcionales 
-            dentro de la categoría de <em>{a.category}</em>. La elección final dependerá 
-            estrictamente del tamaño de la oficina, los requisitos del cliente y la curva 
-            de aprendizaje de tu equipo (ver tabla técnica abajo).
-          </p>
-        </div>
-      </section>
+          <InteractiveScoreTable initialData={rtingsData} />
+        </section>
+      )}
+      <SoftwareCompareScores 
+        a={a} 
+        b={b} 
+        reviewA={a.software_reviews?.[0]} 
+        reviewB={b.software_reviews?.[0]} 
+      />
+      
+      <SoftwareCompareProsCons 
+        a={a} 
+        b={b} 
+        reviewA={a.software_reviews?.[0]} 
+        reviewB={b.software_reviews?.[0]} 
+      />
+
+      <SoftwareVerdict 
+        a={a} 
+        b={b} 
+        reviewA={a.software_reviews?.[0]} 
+        reviewB={b.software_reviews?.[0]} 
+      />
 
       <SoftwareCompareTable a={a} b={b} />
     </article>

@@ -518,7 +518,7 @@ export async function listImages() {
 export async function getSoftware(category?: string): Promise<Software[]> {
   let query = getClient()
     .from('software')
-    .select('*, metrics:software_metrics(*)')
+    .select('*, software_metrics(*), software_reviews(*)')
     .eq('is_active', true)
     .order('name');
 
@@ -538,7 +538,7 @@ export async function getSoftware(category?: string): Promise<Software[]> {
 export async function getSoftwareBySlug(slug: string): Promise<Software | null> {
   const { data, error } = await getClient()
     .from('software')
-    .select('*, metrics:software_metrics(*)')
+    .select('*, software_metrics(*), software_reviews(*)')
     .eq('slug', slug)
     .eq('is_active', true)
     .single();

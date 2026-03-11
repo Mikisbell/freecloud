@@ -48,8 +48,8 @@ function humanizeKey(key: string): string {
 }
 
 export function SoftwareCompareTable({ a, b }: SoftwareCompareTableProps) {
-  const metricsA = a.metrics || [];
-  const metricsB = b.metrics || [];
+  const metricsA = a.software_metrics || [];
+  const metricsB = b.software_metrics || [];
 
   // Extraer todas las llaves únicas de ambas herramientas para construir las filas
   const allKeys = Array.from(new Set([

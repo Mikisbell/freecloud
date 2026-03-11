@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -14,22 +14,32 @@ const NAV_ITEMS = [
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 10;
-      if (scrolled !== isScrolled) {
-        setScrolled(isScrolled);
+      if (window.scrollY > 10) {
+        header.classList.add('border-slate-200', 'shadow-sm');
+        header.classList.remove('border-transparent');
+      } else {
+        header.classList.remove('border-slate-200', 'shadow-sm');
+        header.classList.add('border-transparent');
       }
     };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [scrolled]);
+  }, []);
 
   return (
-    <header className={`sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b transition-all duration-200 ${scrolled ? 'border-surface-200 shadow-sm' : 'border-transparent'
-      }`}>
+    // La clase base es siempre la misma en SSR y client → sin hydration mismatch
+    <header
+      ref={headerRef}
+      className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-transparent transition-all duration-200"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}

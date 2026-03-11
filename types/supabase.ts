@@ -30,6 +30,7 @@ export interface Post {
     key_question?: string | null;
     key_answer?: string | null;
     reading_time?: number;
+
     cta_product_name?: string | null;
     cta_product_price?: string | null;
     cta_product_url?: string | null;
@@ -70,6 +71,16 @@ export interface SoftwareMetric {
     created_at: string;
 }
 
+export interface SoftwareReview {
+    id: string;
+    software_id: string;
+    overall_score: number;
+    verdict: string;
+    pros: string[];
+    cons: string[];
+    created_at: string;
+}
+
 export interface Software {
     id: string;
     name: string;
@@ -84,5 +95,6 @@ export interface Software {
     created_at: string;
     updated_at: string;
     /** Joined data — presente cuando se llama con select('*, software_metrics(*)') */
-    metrics?: SoftwareMetric[];
+    software_metrics?: SoftwareMetric[];
+    software_reviews?: SoftwareReview[];
 }
