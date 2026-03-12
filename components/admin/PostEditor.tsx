@@ -17,7 +17,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { MediaLibraryModal } from './MediaLibraryModal'
+import { MediaLibraryModal } from '@/components/admin/MediaLibraryModal'
 
 interface PostEditorProps {
     post?: Post
@@ -93,6 +93,66 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
     const [dirty, setDirty] = useState(false)
     const [tagInput, setTagInput] = useState('')
     const [toastMsg, setToastMsg] = useState<{ text: string, type: 'success' | 'error' } | null>(null)
+
+    // Editor Resizer state
+    const [editorWidth, setEditorWidth] = useState(50) // percentage
+    const isDragging = useRef(false)
+
+    // SSR-safe window width tracker
+    const [isLargeScreen, setIsLargeScreen] = useState(false)
+    useEffect(() => {
+        const check = () => setIsLargeScreen(window.innerWidth >= 1024)
+        check()
+        window.addEventListener('resize', check)
+        return () => window.removeEventListener('resize', check)
+    }, [])
+
+    // Markdown Debounce
+    const [debouncedContent, setDebouncedContent] = useState(post?.content || '')
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedContent(formData.content || '')
+        }, 300)
+        return () => clearTimeout(timer)
+    }, [formData.content])
+
+    const handleMouseDown = () => {
+        isDragging.current = true
+        document.addEventListener('mousemove', handleMouseMove)
+        document.addEventListener('mouseup', handleMouseUp)
+        document.body.style.cursor = 'col-resize'
+        document.body.style.userSelect = 'none'
+    }
+
+    const handleMouseMove = (e: MouseEvent) => {
+        if (!isDragging.current) return
+        const container = document.getElementById('editor-split-container')
+        if (container) {
+            const rect = container.getBoundingClientRect()
+            const newWidth = ((e.clientX - rect.left) / rect.width) * 100
+            if (newWidth > 20 && newWidth < 80) {
+                setEditorWidth(newWidth)
+            }
+        }
+    }
+
+    const handleMouseUp = () => {
+        isDragging.current = false
+        document.removeEventListener('mousemove', handleMouseMove)
+        document.removeEventListener('mouseup', handleMouseUp)
+        document.body.style.cursor = ''
+        document.body.style.userSelect = ''
+    }
+
+    useEffect(() => {
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove)
+            document.removeEventListener('mouseup', handleMouseUp)
+            document.body.style.cursor = ''
+            document.body.style.userSelect = ''
+        }
+    }, [])
 
     const showToast = (text: string, type: 'success' | 'error' = 'success') => {
         setToastMsg({ text, type });
@@ -312,9 +372,12 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                     </Button>
                 </div>
 
-                <div className="flex-1 overflow-hidden relative bg-[#08080f]/50 flex flex-col lg:flex-row">
+                <div id="editor-split-container" className="flex-1 overflow-hidden relative bg-[var(--color-admin-bg)]/50 flex flex-col lg:flex-row">
                     {/* LEFT PANE: Editor (always visible on desktop, hidden on mobile if previewing) */}
-                    <div className={`flex-1 overflow-hidden relative ${showPreview ? 'hidden lg:block' : 'block'} lg:border-r border-white/[0.06]`}>
+                    <div 
+                        style={{ width: showPreview && isLargeScreen ? `${editorWidth}%` : '100%' }}
+                        className={`overflow-hidden relative ${showPreview ? 'hidden lg:flex' : 'flex flex-1'} flex-col shrink-0`}
+                    >
                         <Textarea
                             id="content-editor"
                             name="content"
@@ -324,11 +387,25 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                             className="absolute inset-0 w-full h-full bg-transparent border-0 rounded-none p-4 sm:p-6 font-mono text-sm leading-relaxed text-white/80 placeholder:text-white/20 focus-visible:ring-0 resize-none custom-scrollbar pb-10"
                         />
                     </div>
+
+                    {/* RESIZER HANDLE (Desktop only, when preview is showing) */}
+                    {showPreview && (
+                        <div 
+                            className="hidden lg:flex w-1 bg-white/[0.04] hover:bg-fc-cyan/50 cursor-col-resize shrink-0 transition-colors group items-center justify-center relative z-10"
+                            onMouseDown={handleMouseDown}
+                        >
+                            <div className="w-1 h-8 rounded-full bg-white/20 group-hover:bg-white/80 transition-colors" />
+                        </div>
+                    )}
+
                     {/* RIGHT PANE: Live Preview (always visible on desktop, shown on mobile if previewing) */}
-                    <div className={`flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar ${showPreview ? 'block' : 'hidden lg:block'} bg-white/[0.01]`}>
+                    <div 
+                        style={{ width: showPreview && isLargeScreen ? `${100 - editorWidth}%` : '100%' }}
+                        className={`overflow-y-auto p-4 sm:p-6 custom-scrollbar ${showPreview ? 'flex-1 lg:block' : 'hidden lg:block lg:flex-1'} bg-white/[0.01]`}
+                    >
                         <article className="prose prose-invert prose-p:text-white/70 prose-headings:text-white prose-a:text-fc-cyan prose-pre:bg-white/[0.03] prose-pre:border prose-pre:border-white/[0.06] max-w-none">
                             <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                                {formData.content || '*Aún no hay contenido... Escribe algo para ver la previsualización.*'}
+                                {debouncedContent || '*Aún no hay contenido... Escribe algo para ver la previsualización.*'}
                             </ReactMarkdown>
                         </article>
                     </div>
@@ -477,7 +554,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                     {/* SERP Preview */}
                     <div className="pt-2">
                         <Label className="text-[10px] text-white/30 uppercase tracking-wider mb-2 block">Preview en Google (SERP)</Label>
-                        <div className="bg-[#1f1f1f] p-3 sm:p-4 rounded-lg font-sans border border-white/[0.06]">
+                        <div className="bg-[var(--color-admin-surface-3)] p-3 sm:p-4 rounded-lg font-sans border border-white/[0.06]">
                             <div className="flex items-center gap-2 mb-1">
                                 <div className="w-6 h-6 bg-white/10 rounded-full flex items-center justify-center text-[10px]">🌍</div>
                                 <div>
@@ -509,7 +586,7 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
             </Card>
 
             {/* 3. AEO (IA) */}
-            <Card className="bg-[#1A1A2E]/50 border-blue-500/20 relative overflow-hidden backdrop-blur-sm">
+            <Card className="bg-[var(--color-admin-surface-2)]/50 border-blue-500/20 relative overflow-hidden backdrop-blur-sm">
                 <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
                     <Sparkles className="w-24 h-24 text-blue-400" />
                 </div>
@@ -563,8 +640,8 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                             onChange={handleChange}
                             className="w-full bg-white/[0.04] border border-white/[0.08] rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-fc-blue/50 min-h-10 cursor-pointer appearance-none"
                         >
-                            <option value="" className="bg-[#08080f]">Selecciona Categoría...</option>
-                            {categories.map(c => <option key={c.id} value={c.id} className="bg-[#08080f]">{c.emoji} {c.name}</option>)}
+                            <option value="" className="bg-[var(--color-admin-bg)]">Selecciona Categoría...</option>
+                            {categories.map(c => <option key={c.id} value={c.id} className="bg-[var(--color-admin-bg)]">{c.emoji} {c.name}</option>)}
                         </select>
                     </div>
 

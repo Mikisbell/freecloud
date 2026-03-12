@@ -98,3 +98,39 @@ export interface Software {
     software_metrics?: SoftwareMetric[];
     software_reviews?: SoftwareReview[];
 }
+
+// ==========================================
+// Settings & Products
+// ==========================================
+
+export interface SiteSettings {
+    id: string;
+    name: string;
+    url: string;
+    description: string;
+    author: string;
+    author_title: string;
+    email: string;
+    social_youtube: string | null;
+    social_linkedin: string | null;
+    social_github: string | null;
+    social_facebook: string | null;
+    updated_at: string;
+}
+
+export interface ProductDB {
+    slug: string;
+    tag: string;
+    tag_color: string;
+    tag_bg: string;
+    title: string;
+    price: string;
+    price_display: string;
+    description: string;
+    href: string;
+    is_gumroad: boolean;
+    cover_image: string | null;
+    created_at: string;
+    updated_at: string;
+    is_active: boolean;
+}

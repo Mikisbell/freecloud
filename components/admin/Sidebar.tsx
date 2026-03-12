@@ -2,11 +2,10 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, FileText, FolderTree, PlusCircle, LogOut, MessageSquare, ChevronRight, Menu, X, BarChart3, Users, Settings } from 'lucide-react'
+import { LayoutDashboard, FileText, FolderTree, PlusCircle, LogOut, MessageSquare, ChevronRight, Menu, BarChart3, Users, Settings } from 'lucide-react'
 import { logout } from '@/app/admin/actions'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
 import { useState } from 'react'
 
 const navItems = [
@@ -14,13 +13,13 @@ const navItems = [
     { name: 'Posts', href: '/admin/posts', icon: FileText },
     { name: 'Nueva Publicación', href: '/admin/posts/new', icon: PlusCircle },
     { name: 'Categorías', href: '/admin/categories', icon: FolderTree },
-    { name: 'Contactos', href: '/admin/contacts', icon: MessageSquare },
-    { name: 'Estadisticas', href: '/admin/stats', icon: BarChart3 },
+    { name: 'Contactos', href: '/admin/contacts', icon: MessageSquare, badgeKey: 'contacts' },
+    { name: 'Estadísticas', href: '/admin/stats', icon: BarChart3 },
     { name: 'Suscriptores', href: '/admin/subscribers', icon: Users },
-    { name: 'Configuracion', href: '/admin/settings', icon: Settings },
+    { name: 'Configuración', href: '/admin/settings', icon: Settings },
 ]
 
-function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
+function SidebarContent({ pathname, onNavigate, unreadContacts = 0 }: { pathname: string; onNavigate?: () => void; unreadContacts?: number }) {
     return (
         <>
             {/* Logo */}
@@ -47,6 +46,7 @@ function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate
 
                     const isActive = item.href === '/admin' ? pathname === '/admin' : isBestMatch
 
+                    const badgeCount = 'badgeKey' in item && item.badgeKey === 'contacts' ? unreadContacts : 0
                     return (
                         <Link
                             key={item.href}
@@ -60,8 +60,18 @@ function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate
                             {isActive && (
                                 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-fc-cyan rounded-r-full" />
                             )}
-                            <item.icon className={`w-[18px] h-[18px] shrink-0 transition-colors ${isActive ? 'text-fc-cyan' : 'text-white/30 group-hover:text-white/60'}`} />
+                            <div className="relative shrink-0">
+                                <item.icon className={`w-[18px] h-[18px] transition-colors ${isActive ? 'text-fc-cyan' : 'text-white/30 group-hover:text-white/60'}`} />
+                                {badgeCount > 0 && !isActive && (
+                                    <span className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 bg-amber-500 text-[8px] font-bold text-black rounded-full flex items-center justify-center leading-none">
+                                        {badgeCount > 9 ? '9+' : badgeCount}
+                                    </span>
+                                )}
+                            </div>
                             <span className="flex-1">{item.name}</span>
+                            {badgeCount > 0 && !isActive && (
+                                <span className="text-[10px] font-semibold bg-amber-500/15 text-amber-400 px-1.5 py-0.5 rounded-full">{badgeCount}</span>
+                            )}
                             {isActive && <ChevronRight className="w-3.5 h-3.5 text-fc-cyan/50" />}
                         </Link>
                     )
@@ -92,11 +102,11 @@ function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate
     )
 }
 
-export function MobileHeader({ pathname }: { pathname: string }) {
+export function MobileHeader({ pathname, unreadContacts = 0 }: { pathname: string; unreadContacts?: number }) {
     const [open, setOpen] = useState(false)
 
     return (
-        <header className="lg:hidden sticky top-0 z-50 flex items-center justify-between h-14 px-4 bg-[#0f0f1a]/95 backdrop-blur-md border-b border-white/[0.06]">
+        <header className="lg:hidden sticky top-0 z-50 flex items-center justify-between h-14 px-4 bg-[var(--color-admin-surface)]/95 backdrop-blur-md border-b border-white/[0.06]">
             <Link href="/admin" className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-fc-cyan to-fc-navy flex items-center justify-center">
                     <span className="text-white font-bold text-xs font-grotesk">FC</span>
@@ -104,23 +114,30 @@ export function MobileHeader({ pathname }: { pathname: string }) {
                 <span className="text-sm font-bold font-grotesk text-white">FreeCloud</span>
             </Link>
 
-            <Sheet open={open} onOpenChange={setOpen}>
-                <SheetTrigger asChild>
-                    <Button variant="ghost" size="icon" className="text-white/60 hover:text-white hover:bg-white/[0.06] min-h-11 min-w-11">
-                        <Menu className="w-5 h-5" />
-                        <span className="sr-only">Abrir menú</span>
-                    </Button>
-                </SheetTrigger>
-                <SheetContent side="left" className="w-72 p-0 bg-gradient-to-b from-[#0f0f1a] via-[#111127] to-[#0a0a18] border-r border-white/[0.06] flex flex-col">
-                    <SheetTitle className="sr-only">Menú de navegación</SheetTitle>
-                    <SidebarContent pathname={pathname} onNavigate={() => setOpen(false)} />
-                </SheetContent>
-            </Sheet>
+            <div className="flex items-center gap-2">
+                {unreadContacts > 0 && (
+                    <span className="text-[11px] font-semibold bg-amber-500/15 text-amber-400 px-2 py-0.5 rounded-full border border-amber-500/20">
+                        {unreadContacts} nuevo{unreadContacts > 1 ? 's' : ''}
+                    </span>
+                )}
+                <Sheet open={open} onOpenChange={setOpen}>
+                    <SheetTrigger asChild>
+                        <Button variant="ghost" size="icon" className="text-white/60 hover:text-white hover:bg-white/[0.06] min-h-11 min-w-11">
+                            <Menu className="w-5 h-5" />
+                            <span className="sr-only">Abrir menú</span>
+                        </Button>
+                    </SheetTrigger>
+                    <SheetContent side="left" className="w-72 p-0 bg-gradient-to-b from-[var(--color-admin-surface)] via-[#111127] to-[#0a0a18] border-r border-white/[0.06] flex flex-col">
+                        <SheetTitle className="sr-only">Menú de navegación</SheetTitle>
+                        <SidebarContent pathname={pathname} onNavigate={() => setOpen(false)} unreadContacts={unreadContacts} />
+                    </SheetContent>
+                </Sheet>
+            </div>
         </header>
     )
 }
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ unreadContacts = 0 }: { unreadContacts?: number }) {
     const pathname = usePathname()
 
     if (pathname === '/admin/login') return null
@@ -128,11 +145,11 @@ export default function AdminSidebar() {
     return (
         <>
             {/* Mobile Header with Drawer */}
-            <MobileHeader pathname={pathname} />
+            <MobileHeader pathname={pathname} unreadContacts={unreadContacts} />
 
             {/* Desktop Sidebar - hidden on mobile, visible on lg+ */}
-            <aside className="hidden lg:flex w-64 min-h-screen flex-col fixed left-0 top-0 z-40 bg-gradient-to-b from-[#0f0f1a] via-[#111127] to-[#0a0a18] border-r border-white/[0.06]">
-                <SidebarContent pathname={pathname} />
+            <aside className="hidden lg:flex w-64 min-h-screen flex-col fixed left-0 top-0 z-40 bg-gradient-to-b from-[var(--color-admin-surface)] via-[#111127] to-[#0a0a18] border-r border-white/[0.06]">
+                <SidebarContent pathname={pathname} unreadContacts={unreadContacts} />
             </aside>
         </>
     )

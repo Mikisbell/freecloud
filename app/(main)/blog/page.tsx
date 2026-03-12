@@ -13,22 +13,27 @@ export const metadata: Metadata = {
 };
 
 interface Props {
-  searchParams: Promise<{ cat?: string; tag?: string }>;
+  searchParams: Promise<{ cat?: string; tag?: string; page?: string }>;
 }
 
 export default async function BlogPage({ searchParams }: Props) {
-  const { cat: categorySlug } = await searchParams;
+  const { cat: categorySlug, page: pageStr } = await searchParams;
+  const currentPage = Math.max(1, parseInt(pageStr || '1') || 1);
+  const postsPerPage = 9;
 
   // Parallel fetch — evita waterfall de 2 round-trips seguidos a Supabase
-  const [dbCategories, { posts: allPosts }] = await Promise.all([
+  const [dbCategories, { posts: fetchedPosts, count: totalPosts }] = await Promise.all([
     getCategories(),
-    getPosts({ category: categorySlug }),
+    getPosts({ category: categorySlug, page: currentPage, limit: postsPerPage }),
   ]);
 
   const activeCat = categorySlug ? dbCategories.find(c => c.slug === categorySlug) : null;
 
-  const featuredPost = !categorySlug ? allPosts.find(p => p.featured) || allPosts[0] : null;
-  const posts = featuredPost ? allPosts.filter(p => p.slug !== featuredPost.slug) : allPosts;
+  const isFirstPage = currentPage === 1;
+  const featuredPost = (isFirstPage && !categorySlug) ? fetchedPosts.find(p => p.featured) || fetchedPosts[0] : null;
+  const posts = featuredPost ? fetchedPosts.filter(p => p.slug !== featuredPost.slug) : fetchedPosts;
+  
+  const totalPages = totalPosts ? Math.ceil(totalPosts / postsPerPage) : 1;
 
   return (
     <>
@@ -160,7 +165,7 @@ export default async function BlogPage({ searchParams }: Props) {
                   Artículos recientes
                 </h2>
                 <span className="text-sm text-surface-400">
-                  {allPosts.length} artículo{allPosts.length !== 1 ? 's' : ''}
+                  Página {currentPage} de {totalPages}
                 </span>
               </div>
             )}
@@ -236,6 +241,57 @@ export default async function BlogPage({ searchParams }: Props) {
             </div>
 
             {/* In-feed Ads ya están integrados en el grid usando la Inyección Dinámica */}
+            
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="mt-12 flex justify-center items-center gap-2">
+                {currentPage > 1 && (
+                  <Link
+                    href={`/blog?${categorySlug ? `cat=${categorySlug}&` : ''}page=${currentPage - 1}`}
+                    className="px-4 py-2 bg-surface-100 hover:bg-surface-200 text-surface-600 rounded-lg transition-colors font-medium text-sm"
+                  >
+                    ← Anterior
+                  </Link>
+                )}
+                
+                <div className="hidden sm:flex items-center gap-1 mx-2">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1)
+                    .filter(p => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
+                    .reduce<(number | string)[]>((acc, p, i, arr) => {
+                      if (i > 0 && typeof arr[i - 1] === 'number' && (p as number) - (arr[i - 1] as number) > 1) acc.push('...')
+                      acc.push(p)
+                      return acc
+                    }, [])
+                    .map((p, i) => 
+                      p === '...' ? (
+                        <span key={`ell-${i}`} className="px-2 text-surface-400">…</span>
+                      ) : (
+                        <Link
+                          key={p}
+                          href={`/blog?${categorySlug ? `cat=${categorySlug}&` : ''}page=${p}`}
+                          className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors ${
+                            currentPage === p
+                              ? 'bg-fc-blue text-white shadow-md shadow-fc-blue/20'
+                              : 'bg-transparent text-surface-500 hover:bg-surface-100'
+                          }`}
+                        >
+                          {p}
+                        </Link>
+                      )
+                  )}
+                </div>
+
+                {currentPage < totalPages && (
+                  <Link
+                    href={`/blog?${categorySlug ? `cat=${categorySlug}&` : ''}page=${currentPage + 1}`}
+                    className="px-4 py-2 bg-surface-100 hover:bg-surface-200 text-surface-600 rounded-lg transition-colors font-medium text-sm"
+                  >
+                    Siguiente →
+                  </Link>
+                )}
+              </div>
+            )}
+            
           </section>
         ) : (
           <div className="text-center py-20">
@@ -307,3 +363,4 @@ export default async function BlogPage({ searchParams }: Props) {
     </>
   );
 }
+

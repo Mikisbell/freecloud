@@ -43,16 +43,15 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group w-28 md:w-32">
+          <Link href="/" className="flex items-center gap-2.5 group w-auto">
             <Image
               src="/logo.png"
               alt="FreeCloud logo"
-              width={128}
-              height={32}
-              sizes="(max-width: 768px) 112px, 128px"
-              quality={60}
-              className="w-full object-contain"
-              style={{ height: 'auto' }}
+              width={141}
+              height={24}
+              sizes="(max-width: 768px) 120px, 141px"
+              quality={80}
+              className="w-[120px] md:w-[141px] h-auto object-contain"
               priority
               fetchPriority="high"
             />

@@ -198,11 +198,19 @@ export async function markContactAsRead(id: string) {
   if (error) throw error;
 }
 
+export async function deleteContact(id: string) {
+  const { error } = await getClient()
+    .from('contacts')
+    .delete()
+    .eq('id', id);
+  if (error) throw error;
+}
+
 // ==========================================
 // CMS (Blog) Functions
 // ==========================================
 
-import { Post, Category, Software, SoftwareMetric } from '@/types/supabase';
+import { Post, Category, Software, SoftwareMetric, SiteSettings, ProductDB } from '@/types/supabase';
 
 export async function getCategories() {
   const { data, error } = await getClient()
@@ -281,9 +289,9 @@ export async function getPosts(options?: GetPostsOptions) {
   // En Next.js 15/16 con `cacheComponents` activado, requerimos consumir un
   // "Request data source" genuino como `connection()` antes de evaluar `new Date()`.
   try {
-    const { connection } = require('next/server');
+    const { connection } = await import('next/server');
     await connection();
-  } catch (e) { }
+  } catch (_) { /* ignorado fuera de Next.js server context */ }
 
   const timeNow = new Date().toISOString();
   query = query.lte('published_at', timeNow);
@@ -302,9 +310,9 @@ export async function getPosts(options?: GetPostsOptions) {
 
 export async function getPostBySlug(slug: string) {
   try {
-    const { connection } = require('next/server');
+    const { connection } = await import('next/server');
     await connection();
-  } catch (e) { }
+  } catch (_) { /* ignorado fuera de context */ }
   const timeNow = new Date().toISOString();
 
   const { data, error } = await getClient()
@@ -320,9 +328,9 @@ export async function getPostBySlug(slug: string) {
 
 export async function getRelatedPosts(postId: string, categoryId: string, limit: number = 3) {
   try {
-    const { connection } = require('next/server');
+    const { connection } = await import('next/server');
     await connection();
-  } catch (e) { }
+  } catch (_) { /* ignorado fuera de context */ }
   const timeNow = new Date().toISOString();
 
   const { data, error } = await getClient()
@@ -424,6 +432,25 @@ export async function deletePost(id: string) {
     .from('posts')
     .delete()
     .eq('id', id);
+  if (error) throw error;
+}
+
+export async function updatePosts(ids: string[], postData: Partial<Post>) {
+  const updateData = { ...postData, updated_at: new Date().toISOString() };
+  const { data, error } = await getClient()
+    .from('posts')
+    .update(updateData)
+    .in('id', ids)
+    .select();
+  if (error) throw error;
+  return data as Post[];
+}
+
+export async function deletePosts(ids: string[]) {
+  const { error } = await getClient()
+    .from('posts')
+    .delete()
+    .in('id', ids);
   if (error) throw error;
 }
 
@@ -562,4 +589,81 @@ export async function compareSoftware(
   ]);
 
   return { a: resultA, b: resultB };
+}
+
+// ==========================================
+// Settings & Products
+// ==========================================
+
+export async function getSiteSettings(): Promise<SiteSettings> {
+  const { data, error } = await getClient()
+    .from('site_settings')
+    .select('*')
+    .eq('id', 'global')
+    .single();
+  
+  // Si no existe, lanza error (el script SQL lo insertó por defecto)
+  if (error) throw error;
+  return data as SiteSettings;
+}
+
+export async function updateSiteSettings(data: Partial<SiteSettings>): Promise<SiteSettings> {
+  const updateData = { ...data, updated_at: new Date().toISOString() };
+  const { data: updatedData, error } = await getClient()
+    .from('site_settings')
+    .update(updateData)
+    .eq('id', 'global')
+    .select()
+    .single();
+  
+  if (error) throw error;
+  return updatedData as SiteSettings;
+}
+
+export async function getProducts(options?: { onlyActive?: boolean }): Promise<ProductDB[]> {
+  let query = getClient()
+    .from('products')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (options?.onlyActive) {
+    query = query.eq('is_active', true);
+  }
+
+  const { data, error } = await query;
+  if (error) throw error;
+  return (data ?? []) as ProductDB[];
+}
+
+export async function updateProduct(slug: string, data: Partial<ProductDB>): Promise<ProductDB> {
+  const updateData = { ...data, updated_at: new Date().toISOString() };
+  const { data: updatedData, error } = await getClient()
+    .from('products')
+    .update(updateData)
+    .eq('slug', slug)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return updatedData as ProductDB;
+}
+
+export async function createProduct(data: Partial<ProductDB>): Promise<ProductDB> {
+  const { data: newData, error } = await getClient()
+    .from('products')
+    .insert([data])
+    .select()
+    .single();
+
+  if (error) throw error;
+  return newData as ProductDB;
+}
+
+export async function deleteProduct(slug: string): Promise<void> {
+  const { error } = await getClient()
+    .from('products')
+    .delete()
+    .eq('slug', slug);
+
+  if (error) throw error;
 }

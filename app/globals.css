@@ -8,6 +8,13 @@
   --color-fc-navy: #003F8A;
   --color-fc-navy-deep: #00265A;
 
+  /* Admin Panel Dark Palette */
+  --color-admin-bg: #08080f;
+  --color-admin-surface: #0f0f1a;
+  --color-admin-surface-2: #1A1A2E;
+  --color-admin-surface-3: #1f1f1f;
+  --color-admin-modal: #0a0a14;
+
   --color-fc-gold: #C87800;
   --color-fc-gold-dark: #A86400;
   --color-fc-gold-light: #E09600;

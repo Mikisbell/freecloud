@@ -68,10 +68,7 @@ export function InteractiveScoreTable({ initialData }: InteractiveScoreTableProp
     return 'bg-red-500/10 text-red-600 dark:text-red-400';
   };
 
-  const getWinnerBadge = (scoreThis: number, scoreOpponent: number) => {
-    if (scoreThis > scoreOpponent + 0.5) return '👑';
-    return '';
-  };
+
 
   const formatRawValue = (val: string | number | null, unit: string | null) => {
     if (val === null) return <span className="text-slate-400">-</span>;
@@ -108,8 +105,52 @@ export function InteractiveScoreTable({ initialData }: InteractiveScoreTableProp
         </div>
       </div>
 
+      {/* PERSONALIZA TU PRIORIDAD — Sliders de Peso */}
+      <div className="rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20 p-5">
+        <p className="text-sm font-semibold text-blue-700 dark:text-blue-300 mb-4 flex items-center gap-2">
+          <span>⚙️</span> Personaliza tu prioridad
+          <span className="text-xs font-normal text-blue-500 dark:text-blue-400">— Ajusta cuánto pesa cada área para tu flujo de trabajo</span>
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
+          {initialData.categories.map((cat) => (
+            <div key={cat.id} className="flex items-center gap-3">
+              <span className="text-xs font-medium text-slate-600 dark:text-slate-400 w-28 shrink-0 truncate" title={cat.name}>
+                {cat.name}
+              </span>
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={5}
+                value={weights[cat.id] ?? cat.weight}
+                onChange={(e) =>
+                  setWeights((prev) => ({ ...prev, [cat.id]: Number(e.target.value) }))
+                }
+                className="flex-1 h-1.5 accent-blue-600 cursor-pointer"
+                aria-label={`Peso de ${cat.name}`}
+              />
+              <span className="text-xs font-bold text-blue-600 dark:text-blue-400 w-8 text-right tabular-nums">
+                {weights[cat.id] ?? cat.weight}
+              </span>
+            </div>
+          ))}
+        </div>
+        <button
+          onClick={() =>
+            setWeights(
+              Object.fromEntries(
+                initialData.categories.map((c) => [c.id, c.weight])
+              )
+            )
+          }
+          className="mt-4 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 underline underline-offset-2 transition-colors"
+        >
+          Restablecer pesos predeterminados
+        </button>
+      </div>
+
       {/* MATRIZ DE TEST BENCH */}
-      <div className="w-full border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden bg-white dark:bg-[#0B1120]">
+      <div className="w-full border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden bg-white dark:bg-slate-950">
         
         {/* ENCABEZADOS DE COLUMNA */}
         <div className="grid grid-cols-[1fr_120px_120px] bg-slate-50 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800">

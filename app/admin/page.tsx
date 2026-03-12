@@ -2,6 +2,8 @@ import { connection } from 'next/server'
 import Link from 'next/link'
 import { FileText, Eye, Users, MessageSquare, Edit3, Clock, ArrowRight, TrendingUp } from 'lucide-react'
 import { getAdminPosts, getCategories, getContacts, getSubscribers, getPageViewStats, getDownloads } from '@/lib/supabase'
+import type { PageView, Subscriber, Contact } from '@/lib/supabase'
+import type { Post } from '@/types/supabase'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -14,24 +16,47 @@ export default async function AdminDashboard() {
         getCategories(),
         getContacts(),
         getSubscribers(),
-        getPageViewStats(30),
+        getPageViewStats(60), // Pedimos 60 para poder calcular los últimos 30 vs los 30 anteriores
         getDownloads(),
     ])
 
-    const totalViews = pageViews.length
+    const now = new Date()
+    const thirtyDaysAgo = new Date(now)
+    thirtyDaysAgo.setDate(now.getDate() - 30)
+
+    const sixtyDaysAgo = new Date(now)
+    sixtyDaysAgo.setDate(now.getDate() - 60)
+
+    // Current & previous 30 days filtering for metrics
+    const currentViews = pageViews.filter((v: PageView) => new Date(v.created_at) >= thirtyDaysAgo)
+    const previousViews = pageViews.filter((v: PageView) => new Date(v.created_at) >= sixtyDaysAgo && new Date(v.created_at) < thirtyDaysAgo)
+    const viewsPercent = previousViews.length ? ((currentViews.length - previousViews.length) / previousViews.length) * 100 : 0
+
+    const currentSubs = subscribers.filter((s: Subscriber) => new Date(s.created_at) >= thirtyDaysAgo)
+    const previousSubs = subscribers.filter((s: Subscriber) => new Date(s.created_at) >= sixtyDaysAgo && new Date(s.created_at) < thirtyDaysAgo)
+    const subsPercent = previousSubs.length ? ((currentSubs.length - previousSubs.length) / previousSubs.length) * 100 : 0
+
+    const currentContacts = contacts.filter((c: Contact) => new Date(c.created_at!) >= thirtyDaysAgo)
+    const previousContacts = contacts.filter((c: Contact) => new Date(c.created_at!) >= sixtyDaysAgo && new Date(c.created_at!) < thirtyDaysAgo)
+    const contactsPercent = previousContacts.length ? ((currentContacts.length - previousContacts.length) / previousContacts.length) * 100 : 0
+
+    const currentPosts = posts.filter((p: Post) => new Date(p.created_at) >= thirtyDaysAgo)
+    const previousPosts = posts.filter((p: Post) => new Date(p.created_at) >= sixtyDaysAgo && new Date(p.created_at) < thirtyDaysAgo)
+    const postsPercent = previousPosts.length ? ((currentPosts.length - previousPosts.length) / previousPosts.length) * 100 : 0
+
+    const totalViews = currentViews.length
     const recentPosts = posts.slice(0, 5)
     const recentContacts = contacts.slice(0, 3)
 
     // 14-day sparkline data
     const sparklineDays = 14
     const dailyCounts: Record<string, number> = {}
-    const now = new Date()
     for (let i = sparklineDays - 1; i >= 0; i--) {
         const d = new Date(now)
         d.setDate(d.getDate() - i)
         dailyCounts[d.toISOString().split('T')[0]] = 0
     }
-    for (const v of pageViews) {
+    for (const v of currentViews) {
         const day = v.created_at.split('T')[0]
         if (dailyCounts[day] !== undefined) dailyCounts[day]++
     }
@@ -42,6 +67,7 @@ export default async function AdminDashboard() {
         {
             label: 'Total Posts',
             value: posts.length,
+            trend: postsPercent,
             icon: FileText,
             gradient: 'from-blue-500/10 to-blue-600/5',
             iconColor: 'text-blue-400',
@@ -51,6 +77,7 @@ export default async function AdminDashboard() {
         {
             label: 'Visitas (30d)',
             value: totalViews.toLocaleString(),
+            trend: viewsPercent,
             icon: Eye,
             gradient: 'from-violet-500/10 to-violet-600/5',
             iconColor: 'text-violet-400',
@@ -60,6 +87,7 @@ export default async function AdminDashboard() {
         {
             label: 'Suscriptores',
             value: subscribers.length,
+            trend: subsPercent,
             icon: Users,
             gradient: 'from-emerald-500/10 to-emerald-600/5',
             iconColor: 'text-emerald-400',
@@ -69,6 +97,7 @@ export default async function AdminDashboard() {
         {
             label: 'Mensajes',
             value: contacts.length,
+            trend: contactsPercent,
             icon: MessageSquare,
             gradient: 'from-amber-500/10 to-amber-600/5',
             iconColor: 'text-amber-400',
@@ -103,7 +132,15 @@ export default async function AdminDashboard() {
                                     <h3 className="text-[11px] sm:text-[13px] text-white/50 font-medium">{stat.label}</h3>
                                     <stat.icon className={`w-4 h-4 sm:w-[18px] sm:h-[18px] ${stat.iconColor}`} />
                                 </div>
-                                <p className="text-2xl sm:text-3xl font-bold text-white font-grotesk">{stat.value}</p>
+                                <div className="flex items-end justify-between">
+                                    <p className="text-2xl sm:text-3xl font-bold text-white font-grotesk">{stat.value}</p>
+                                    {stat.trend !== 0 && (
+                                        <div className={`flex items-center gap-1 text-[10px] sm:text-xs font-medium px-1.5 py-0.5 rounded ${stat.trend > 0 ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
+                                            <TrendingUp className={`w-3 h-3 ${stat.trend < 0 ? 'rotate-180' : ''}`} />
+                                            {Math.abs(stat.trend).toFixed(1)}%
+                                        </div>
+                                    )}
+                                </div>
                             </CardContent>
                         </Card>
                     </Link>
