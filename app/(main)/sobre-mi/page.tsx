@@ -81,20 +81,20 @@ export default function SobreMiPage() {
       {/* ── HERO ESTANDARIZADO 2026 ── */}
       <PageHeader
         badge="Sobre Mí"
-        title="Miguel Angel Rivera Ospina"
-        description={<span className="text-fc-cyan font-medium">Ingeniero Civil & Ingeniero de Sistemas</span>}
+        title={<>Miguel Angel <span className="text-transparent bg-clip-text bg-gradient-to-r from-fc-cyan to-fc-cyan-light block md:inline">Rivera Ospina</span></>}
+        description="Ingeniero Civil & Ingeniero de Sistemas — fundador de FreeCloud y Rivamez"
       />
 
       {/* CONTENEDOR GLOBAL TIPO BLOG */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* ── PERFIL Y REDES (Top Section) ── */}
-        <section className="py-12 border-b border-surface-100 relative mt-[-60px] md:mt-[-80px]">
+        <section className="py-10 border-b border-surface-100">
           <div className="flex flex-col items-center justify-center gap-6">
-            <div className="w-32 h-32 md:w-40 md:h-40 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0 border-4 border-white bg-surface-50 relative z-20 mx-auto">
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0 border-4 border-white bg-surface-50 mx-auto">
               <img src="/me.png" alt="Miguel Angel Rivera Ospina" className="w-full h-full object-cover" />
             </div>
-            <div className="flex flex-col items-center text-center gap-4 relative z-20">
+            <div className="flex flex-col items-center text-center gap-4">
                <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-surface-600">
                 <span className="flex items-center gap-1.5 bg-surface-100 border border-surface-200 px-3 py-1 rounded-full"><MapPin className="w-4 h-4 text-fc-cyan" /> Huancayo, Perú</span>
                 <span className="flex items-center gap-1.5 bg-surface-100 border border-surface-200 px-3 py-1 rounded-full"><Building2 className="w-4 h-4 text-fc-gold" /> FreeCloud &amp; Rivamez</span>
