@@ -103,14 +103,35 @@ export function generateArticleSchema(post: Partial<Post>) {
     author: {
       '@type': 'Person',
       name: post.author || siteConfig.author,
-      url: SITE_URL,
+      url: `${SITE_URL}/sobre-mi`,
       jobTitle: siteConfig.authorTitle,
+      sameAs: [
+        siteConfig.links.linkedin,
+        siteConfig.links.youtube
+      ]
+    },
+    // 🔥 SEO HACKER: Señal E-E-A-T masiva para AdSense (Revisión Editorial)
+    reviewedBy: {
+      '@type': 'Person',
+      name: 'Equipo Técnico FreeCloud',
+      jobTitle: 'Revisor Jefe de Ingeniería',
     },
     publisher: {
       '@type': 'Organization',
       name: SITE_NAME,
       url: SITE_URL,
-      logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.png` },
+      logo: { 
+        '@type': 'ImageObject', 
+        url: `${SITE_URL}/logo.png`,
+        width: 600,
+        height: 60
+      },
+      foundingDate: "2023",
+      contactPoint: {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "admin@freecloud.pe"
+      }
     },
     mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/blog/${post.slug}` },
     keywords: tags.join(', '),
@@ -118,27 +139,58 @@ export function generateArticleSchema(post: Partial<Post>) {
       '@type': 'Thing',
       name: post.categories?.name || post.category || 'Ingeniería',
     },
+    // 🔥 SEO HACKER: IsAccessibleForFree le dice al bot que el contenido principal no está detrás de un muro de pago, crucial para AdSense
+    isAccessibleForFree: true,
   };
 }
 
 export function generateWebsiteSchema() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: SITE_NAME,
-    url: SITE_URL,
-    description: DEFAULT_DESCRIPTION,
-    publisher: {
-      '@type': 'Organization',
+  return [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
       name: SITE_NAME,
       url: SITE_URL,
+      description: DEFAULT_DESCRIPTION,
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_NAME,
+        url: SITE_URL,
+      },
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: `${SITE_URL}/blog?q={search_term_string}`,
+        'query-input': 'required name=search_term_string',
+      },
     },
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: `${SITE_URL}/blog?q={search_term_string}`,
-      'query-input': 'required name=search_term_string',
-    },
-  };
+    // 🔥 SEO HACKER: Inyección directa del esquema de Organización súper detallado en todas las páginas (a través del layout) para forzar autoridad de marca ante AdSense
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      '@id': `${SITE_URL}/#organization`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}/logo.png`,
+      },
+      description: DEFAULT_DESCRIPTION,
+      founder: {
+        '@type': 'Person',
+        name: siteConfig.author,
+        url: `${SITE_URL}/sobre-mi`
+      },
+      sameAs: [
+        siteConfig.links.youtube,
+        siteConfig.links.linkedin,
+        siteConfig.links.facebook,
+      ],
+      address: {
+        '@type': 'PostalAddress',
+        addressCountry: 'PE' // Refuerza tráfico local
+      }
+    }
+  ];
 }
 
 export function generateOrganizationSchema() {
