@@ -9,6 +9,7 @@ import {
     Search,
     Hammer
 } from 'lucide-react';
+import PageHeader from '@/components/PageHeader';
 
 export const metadata: Metadata = {
     title: 'Servicios de Consultoría BIM y Desarrollo Tecnológico | FreeCloud',
@@ -101,31 +102,23 @@ export default function ServiciosPage() {
     };
 
     return (
-        <div className="bg-surface-50 min-h-screen">
+        <>
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
-            {/* ── HERO DE CONVERSIÓN B2B ── */}
-            <section className="bg-dataiku-navy text-white relative overflow-hidden pb-20 pt-24 border-b-4 border-fc-blue">
-                <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.08]" />
-                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-fc-cyan/10 rounded-full blur-[140px] pointer-events-none" />
-                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-fc-blue/10 rounded-full blur-[100px] pointer-events-none" />
+            {/* ── HERO ESTANDARIZADO 2026 ── */}
+            <PageHeader
+                badge="Servicios B2B"
+                title={<>Aceleramos tu ingeniería con <span className="text-transparent bg-clip-text bg-gradient-to-r from-fc-cyan to-fc-cyan-light block md:inline">Código y BIM</span></>}
+                description="Soluciones tecnológicas a medida para empresas constructoras y estudios de diseño que necesitan escalar sus operaciones sin multiplicar sus costos."
+            />
 
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 text-center animate-fade-in">
-                    <span className="inline-block py-1.5 px-3 rounded-full bg-fc-cyan/10 border border-fc-cyan/20 text-fc-cyan text-sm font-bold tracking-widest uppercase mb-6">
-                        Servicios B2B
-                    </span>
-                    <h1 className="text-4xl md:text-5xl lg:text-7xl font-display font-black mb-6 leading-tight max-w-5xl mx-auto">
-                        Aceleramos tu ingeniería con{' '}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-fc-cyan to-fc-blue block md:inline">
-                            Código y BIM
-                        </span>
-                    </h1>
-                    <p className="text-lg md:text-2xl text-surface-300 max-w-3xl mx-auto mb-10 leading-relaxed font-light">
-                        Soluciones tecnológicas a medida para empresas constructoras y estudios de diseño que necesitan escalar sus operaciones sin multiplicar sus costos.
-                    </p>
-
+            {/* CONTENEDOR GLOBAL TIPO BLOG */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                
+                {/* ── ACCIONES Y TRUST SIGNALS (Intro) ── */}
+                <section className="py-12 border-b border-surface-200">
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up stagger-1">
                         <a
                             href="#contacto"
@@ -136,7 +129,7 @@ export default function ServiciosPage() {
                         </a>
                         <a
                             href="#metodologia"
-                            className="w-full sm:w-auto px-8 py-4 bg-transparent border border-surface-700 text-white font-semibold rounded-lg hover:bg-surface-800 transition-all duration-300 text-lg flex items-center justify-center gap-2"
+                            className="w-full sm:w-auto px-8 py-4 bg-transparent border border-surface-300 text-surface-700 font-semibold rounded-lg hover:bg-surface-50 transition-all duration-300 text-lg flex items-center justify-center gap-2"
                         >
                             Ver Metodología
                             <Workflow className="w-5 h-5 opacity-70" />
@@ -144,23 +137,21 @@ export default function ServiciosPage() {
                     </div>
 
                     {/* Trust signals */}
-                    <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 pt-12 mt-12 border-t border-surface-800 animate-slide-up stagger-2">
-                        <span className="text-sm text-surface-400 font-semibold uppercase tracking-widest w-full md:w-auto mb-2 md:mb-0">Nuestro Estándar:</span>
+                    <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 pt-10 mt-10 border-t border-surface-100 animate-slide-up stagger-2">
+                        <span className="text-sm text-surface-500 font-semibold uppercase tracking-widest w-full md:w-auto mb-2 md:mb-0">Nuestro Estándar:</span>
                         {TRUST_SIGNALS.map((signal, idx) => (
-                            <span key={idx} className="text-sm font-medium text-surface-300 flex items-center gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-fc-cyan opacity-80" />
+                            <span key={idx} className="text-sm font-medium text-surface-600 flex items-center gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-fc-cyan" />
                                 {signal.replace('✓ ', '')}
                             </span>
                         ))}
                     </div>
-                </div>
-            </section>
+                </section>
 
-            {/* ── SERVICIOS CORE GRID ── */}
-            <section className="py-24 relative" id="servicios">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-display font-bold text-surface-900 mb-4">
+                {/* ── SERVICIOS CORE GRID ── */}
+                <section className="py-12 md:py-16 relative" id="servicios">
+                    <div className="text-center mb-12">
+                        <h2 className="text-2xl md:text-3xl font-display font-bold text-surface-900 mb-4">
                             ¿Cómo podemos ayudarte?
                         </h2>
                         <p className="text-lg text-surface-600 max-w-2xl mx-auto">
@@ -172,8 +163,8 @@ export default function ServiciosPage() {
                         {SERVICES.map((service, i) => (
                             <div
                                 key={service.id}
-                                className={`dataiku - card p - 8 flex flex - col hover: shadow - xl transition - shadow duration - 300 ${ service.bgClass } border - t - 4`}
-                                style={{ animationDelay: `${ i * 150 } ms` }}
+                                className={`dataiku-card p-8 flex flex-col hover:shadow-xl transition-shadow duration-300 ${service.bgClass} border-t-4`}
+                                style={{ animationDelay: `${i * 150}ms` }}
                             >
                                 <div className="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6">
                                     {service.icon}
@@ -195,15 +186,13 @@ export default function ServiciosPage() {
                             </div>
                         ))}
                     </div>
-                </div>
-            </section>
+                </section>
 
-            {/* ── METODOLOGÍA (TIMELINE) ── */}
-            <section className="py-24 bg-white border-y border-surface-200" id="metodologia">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6">
-                    <div className="text-center mb-16">
+                {/* ── METODOLOGÍA (TIMELINE) ── */}
+                <section className="py-16 border-t border-surface-100" id="metodologia">
+                    <div className="text-center mb-12">
                         <span className="text-fc-blue font-bold tracking-wider text-sm uppercase mb-2 block">El Proceso</span>
-                        <h2 className="text-3xl md:text-4xl font-display font-bold text-surface-900 mb-4">
+                        <h2 className="text-2xl md:text-3xl font-display font-bold text-surface-900 mb-4">
                             Transparencia desde el día 1
                         </h2>
                     </div>
@@ -225,92 +214,91 @@ export default function ServiciosPage() {
                             </div>
                         ))}
                     </div>
-                </div>
-            </section>
+                </section>
 
-            {/* ── FORMULARIO DE CONTACTO INTEGRADO ── */}
-            <section className="py-24 relative bg-surface-50" id="contacto">
-                <div className="absolute left-0 top-0 w-full h-[50%] bg-white" />
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
-                    <div className="bg-dataiku-navy text-white rounded-2xl shadow-2xl p-8 md:p-12 overflow-hidden relative">
-                        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-fc-blue/20 rounded-full blur-[100px] pointer-events-none" />
+                {/* ── FORMULARIO DE CONTACTO INTEGRADO ── */}
+                <section className="py-16 border-t border-surface-100 mb-12" id="contacto">
+                    <div className="max-w-4xl mx-auto relative z-10">
+                        <div className="bg-dataiku-navy text-white rounded-2xl shadow-2xl p-8 md:p-12 overflow-hidden relative">
+                            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-fc-blue/20 rounded-full blur-[100px] pointer-events-none" />
 
-                        <div className="text-center mb-10 relative z-10">
-                            <h2 className="text-3xl md:text-4xl font-display font-black mb-4">
-                                Empecemos tu proyecto
-                            </h2>
-                            <p className="text-surface-300 text-lg max-w-xl mx-auto">
-                                Cuéntame los detalles técnicos de tu necesidad y te responderé en menos de 24 horas con una propuesta o para agendar una call.
-                            </p>
-                        </div>
-
-                        <form
-                            action="https://formspree.io/f/mqkolgve"
-                            method="POST"
-                            className="space-y-6 relative z-10"
-                        >
-                            <div className="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <label htmlFor="name" className="block text-sm font-semibold text-surface-300 mb-2">Nombre o Empresa</label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        name="name"
-                                        required
-                                        className="w-full bg-surface-800/50 border border-surface-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fc-cyan transition-all"
-                                        placeholder="Ingenieros SAC"
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="email" className="block text-sm font-semibold text-surface-300 mb-2">Correo Electrónico</label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        required
-                                        className="w-full bg-surface-800/50 border border-surface-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fc-cyan transition-all"
-                                        placeholder="contacto@empresa.com"
-                                    />
-                                </div>
+                            <div className="text-center mb-10 relative z-10">
+                                <h2 className="text-2xl md:text-3xl font-display font-black mb-4">
+                                    Empecemos tu proyecto
+                                </h2>
+                                <p className="text-surface-300 text-lg max-w-xl mx-auto">
+                                    Cuéntame los detalles técnicos de tu necesidad y te responderé en menos de 24 horas con una propuesta o para agendar una call.
+                                </p>
                             </div>
 
-                            <div>
-                                <label htmlFor="service" className="block text-sm font-semibold text-surface-300 mb-2">Servicio de Interés</label>
-                                <select
-                                    id="service"
-                                    name="service"
-                                    className="w-full bg-surface-800/50 border border-surface-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fc-cyan transition-all appearance-none"
-                                >
-                                    <option value="desarrollo">Desarrollo Tech & Automatización</option>
-                                    <option value="bim">Consultoría y Modelado BIM</option>
-                                    <option value="estructuras">Ingeniería Estructural</option>
-                                    <option value="otro">Otro / Consulta General</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label htmlFor="message" className="block text-sm font-semibold text-surface-300 mb-2">Detalles del Proyecto</label>
-                                <textarea
-                                    id="message"
-                                    name="message"
-                                    rows={4}
-                                    required
-                                    className="w-full bg-surface-800/50 border border-surface-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fc-cyan transition-all resize-y"
-                                    placeholder="Describe brevemente tus requerimientos o el problema a resolver..."
-                                ></textarea>
-                            </div>
-
-                            <button
-                                type="submit"
-                                className="w-full bg-fc-cyan text-fc-navy font-bold text-lg rounded-lg px-8 py-4 hover:bg-white hover:shadow-lg hover:shadow-fc-cyan/20 transition-all duration-300 flex items-center justify-center gap-2"
+                            <form
+                                action="https://formspree.io/f/mqkolgve"
+                                method="POST"
+                                className="space-y-6 relative z-10"
                             >
-                                Enviar Solicitud
-                                <ArrowRight className="w-5 h-5" />
-                            </button>
-                        </form>
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label htmlFor="name" className="block text-sm font-semibold text-surface-300 mb-2">Nombre o Empresa</label>
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            name="name"
+                                            required
+                                            className="w-full bg-surface-800/50 border border-surface-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fc-cyan transition-all"
+                                            placeholder="Ingenieros SAC"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="email" className="block text-sm font-semibold text-surface-300 mb-2">Correo Electrónico</label>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            name="email"
+                                            required
+                                            className="w-full bg-surface-800/50 border border-surface-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fc-cyan transition-all"
+                                            placeholder="contacto@empresa.com"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label htmlFor="service" className="block text-sm font-semibold text-surface-300 mb-2">Servicio de Interés</label>
+                                    <select
+                                        id="service"
+                                        name="service"
+                                        className="w-full bg-surface-800/50 border border-surface-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fc-cyan transition-all appearance-none"
+                                    >
+                                        <option value="desarrollo">Desarrollo Tech & Automatización</option>
+                                        <option value="bim">Consultoría y Modelado BIM</option>
+                                        <option value="estructuras">Ingeniería Estructural</option>
+                                        <option value="otro">Otro / Consulta General</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label htmlFor="message" className="block text-sm font-semibold text-surface-300 mb-2">Detalles del Proyecto</label>
+                                    <textarea
+                                        id="message"
+                                        name="message"
+                                        rows={4}
+                                        required
+                                        className="w-full bg-surface-800/50 border border-surface-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fc-cyan transition-all resize-y"
+                                        placeholder="Describe brevemente tus requerimientos o el problema a resolver..."
+                                    ></textarea>
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    className="w-full bg-fc-cyan text-fc-navy font-bold text-lg rounded-lg px-8 py-4 hover:bg-white hover:shadow-lg hover:shadow-fc-cyan/20 transition-all duration-300 flex items-center justify-center gap-2"
+                                >
+                                    Enviar Solicitud
+                                    <ArrowRight className="w-5 h-5" />
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            </section>
-        </div>
+                </section>
+            </div>
+        </>
     );
 }

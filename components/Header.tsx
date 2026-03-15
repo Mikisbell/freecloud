@@ -50,7 +50,8 @@ export default function Header() {
               width={141}
               height={24}
               sizes="(max-width: 768px) 120px, 141px"
-              quality={80}
+              quality={100}
+              unoptimized={true}
               className="w-[120px] md:w-[141px] h-auto object-contain"
               priority
               fetchPriority="high"

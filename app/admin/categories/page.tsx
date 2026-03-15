@@ -1,18 +1,17 @@
 import { getCategories, getAdminPosts } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/server'
 import CategoriesClientTable from './CategoriesClientTable'
-
-import { cookies } from 'next/headers'
 
 export const metadata = {
     title: 'Categorías | FreeCloud Admin',
 }
 
 export default async function AdminCategoriesPage() {
-    await cookies() // Force dynamic render
-    const categories = await getCategories()
+    const supabase = await createClient()
+    const categories = await getCategories(supabase)
     // Fetch posts to count how many posts per category.
     // In a large app, you'd do a grouped query, but here getting all posts is fine for this scale.
-    const posts = await getAdminPosts()
+    const posts = await getAdminPosts({}, supabase)
 
     const categoriesWithCount = categories.map(cat => ({
         ...cat,

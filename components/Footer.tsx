@@ -32,8 +32,9 @@ export default function Footer() {
                 src="/logo.png"
                 alt="FreeCloud"
                 width={160}
-                height={40}
-                className="brightness-0 invert opacity-90"
+                height={27}
+                style={{ height: 'auto' }}
+                className="brightness-0 invert opacity-90 w-[140px]"
               />
             </Link>
             <p className="text-sm mt-3 leading-relaxed text-gray-400">

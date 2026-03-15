@@ -21,7 +21,7 @@ export default async function AdminLayoutWrapper({
     }
 
     return (
-        <div className="min-h-screen bg-[var(--color-admin-bg)] text-white">
+        <div className="min-h-screen bg-admin-bg text-white">
             {/* Subtle grid pattern */}
             <div className="fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:64px_64px] pointer-events-none" />
             {/* Glow effects */}

@@ -1,6 +1,7 @@
 import { connection } from 'next/server'
 import Link from 'next/link'
 import { FileText, Eye, Users, MessageSquare, Edit3, Clock, ArrowRight, TrendingUp } from 'lucide-react'
+import { createClient } from '@/lib/supabase/server'
 import { getAdminPosts, getCategories, getContacts, getSubscribers, getPageViewStats, getDownloads } from '@/lib/supabase'
 import type { PageView, Subscriber, Contact } from '@/lib/supabase'
 import type { Post } from '@/types/supabase'
@@ -10,14 +11,15 @@ import { Button } from '@/components/ui/button'
 
 export default async function AdminDashboard() {
     await connection()
+    const supabase = await createClient()
 
     const [posts, categories, contacts, subscribers, pageViews, downloads] = await Promise.all([
-        getAdminPosts(),
-        getCategories(),
-        getContacts(),
-        getSubscribers(),
-        getPageViewStats(60), // Pedimos 60 para poder calcular los últimos 30 vs los 30 anteriores
-        getDownloads(),
+        getAdminPosts({}, supabase),
+        getCategories(supabase),
+        getContacts(supabase),
+        getSubscribers(supabase),
+        getPageViewStats(60, supabase), 
+        getDownloads(supabase),
     ])
 
     const now = new Date()

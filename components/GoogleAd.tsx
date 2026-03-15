@@ -25,6 +25,7 @@ export default function GoogleAd({
     reservedHeight = 250,
 }: GoogleAdProps) {
     const adRef = useRef<HTMLModElement>(null);
+    const isPushed = useRef(false);
 
     useEffect(() => {
         // En desarrollo evitamos llamar a AdSense (Google bloquea con 403 localhost)
@@ -32,12 +33,11 @@ export default function GoogleAd({
 
         if (!adClient || !adSlot || adSlot === 'XXXXXXXXXX') return;
         try {
-            if (typeof window !== 'undefined') {
+            if (typeof window !== 'undefined' && !isPushed.current) {
                 const adsbygoogle = (window as any).adsbygoogle || [];
-                // Only push if this ad slot hasn't been initialized yet
-                if (adRef.current && !adRef.current.hasAttribute('data-adsbygoogle-status')) {
-                    adsbygoogle.push({});
-                }
+                // Push manual al array global
+                adsbygoogle.push({});
+                isPushed.current = true; // Sincrónico: evitamos el doble push antes que Google marque el DOM
             }
         } catch (e) {
             // Silently handle AdSense errors (like double push warning from adblockers/etc)

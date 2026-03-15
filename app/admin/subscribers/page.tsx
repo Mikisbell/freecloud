@@ -1,4 +1,5 @@
 import { getSubscribers } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/server'
 import SubscribersClientView from './SubscribersClientView'
 
 export const dynamic = 'force-dynamic'
@@ -8,7 +9,8 @@ export const metadata = {
 }
 
 export default async function SubscribersPage() {
-    const subscribers = await getSubscribers()
+    const supabase = await createClient()
+    const subscribers = await getSubscribers(supabase)
     
     return <SubscribersClientView initialSubscribers={subscribers} />
 }

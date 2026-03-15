@@ -1,4 +1,5 @@
 import { getPosts, getContacts, getSubscribers, getPageViewStats, getTopPages } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { BarChart3, Users, MessageSquare, FileText, Eye, TrendingUp, Calendar, Layout } from 'lucide-react'
 
@@ -6,12 +7,13 @@ export const dynamic = 'force-dynamic'
 export const metadata = { title: 'Estadísticas | FreeCloud Admin' }
 
 export default async function StatsPage() {
+    const supabase = await createClient()
     const [postsResponse, contacts, subscribers, views, topPages] = await Promise.all([
-        getPosts({}),
-        getContacts(),
-        getSubscribers(),
-        getPageViewStats(30),
-        getTopPages(30)
+        getPosts({}), // public data, ok to leave without server client for now
+        getContacts(supabase),
+        getSubscribers(supabase),
+        getPageViewStats(30, supabase),
+        getTopPages(30, supabase)
     ])
     const posts = postsResponse.posts
 

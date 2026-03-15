@@ -1,4 +1,5 @@
 import { getAdminPosts, getCategories } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/server'
 import PostsClientTable from './PostsClientTable'
 import Link from 'next/link'
 import { PlusCircle } from 'lucide-react'
@@ -8,8 +9,9 @@ export const metadata = {
 }
 
 export default async function AdminPostsPage() {
-    const posts = await getAdminPosts()
-    const categories = await getCategories()
+    const supabase = await createClient()
+    const posts = await getAdminPosts({}, supabase)
+    const categories = await getCategories(supabase)
 
     return (
         <div className="space-y-6 animate-fade-in">

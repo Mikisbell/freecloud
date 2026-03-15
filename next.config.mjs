@@ -15,7 +15,7 @@ const nextConfig = {
     inlineCss: true,
   },
   images: {
-    qualities: [60, 75],
+    qualities: [60, 75, 80],
     remotePatterns: [
       { protocol: 'https', hostname: '**.supabase.co' },
       { protocol: 'https', hostname: '**.googleusercontent.com' },

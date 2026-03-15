@@ -80,8 +80,9 @@ export async function trackPageView(path: string, referrer?: string) {
 // Admin Analytics Queries
 // ==========================================
 
-export async function getSubscribers() {
-  const { data, error } = await getClient()
+export async function getSubscribers(client?: SupabaseClient) {
+  const supabase = client || getClient();
+  const { data, error } = await supabase
     .from('subscribers')
     .select('*')
     .order('created_at', { ascending: false });
@@ -89,11 +90,12 @@ export async function getSubscribers() {
   return data as Subscriber[];
 }
 
-export async function getPageViewStats(days: number = 30) {
+export async function getPageViewStats(days: number = 30, client?: SupabaseClient) {
   const since = new Date();
   since.setDate(since.getDate() - days);
 
-  const { data, error } = await getClient()
+  const supabase = client || getClient();
+  const { data, error } = await supabase
     .from('page_views')
     .select('path, created_at')
     .gte('created_at', since.toISOString())
@@ -102,8 +104,8 @@ export async function getPageViewStats(days: number = 30) {
   return data as PageView[];
 }
 
-export async function getTopPages(days: number = 30) {
-  const views = await getPageViewStats(days);
+export async function getTopPages(days: number = 30, client?: SupabaseClient) {
+  const views = await getPageViewStats(days, client);
   const counts: Record<string, number> = {};
   for (const v of views) {
     counts[v.path] = (counts[v.path] || 0) + 1;
@@ -114,8 +116,9 @@ export async function getTopPages(days: number = 30) {
     .map(([path, count]) => ({ path, count }));
 }
 
-export async function getDownloads() {
-  const { data, error } = await getClient()
+export async function getDownloads(client?: SupabaseClient) {
+  const supabase = client || getClient();
+  const { data, error } = await supabase
     .from('downloads')
     .select('*')
     .order('created_at', { ascending: false });
@@ -123,8 +126,9 @@ export async function getDownloads() {
   return data as Download[];
 }
 
-export async function deleteSubscriber(id: string) {
-  const { error } = await getClient()
+export async function deleteSubscriber(id: string, client?: SupabaseClient) {
+  const supabase = client || getClient();
+  const { error } = await supabase
     .from('subscribers')
     .delete()
     .eq('id', id);
@@ -181,8 +185,9 @@ export async function createContact(contactData: Partial<Contact>) {
   return data as Contact;
 }
 
-export async function getContacts() {
-  const { data, error } = await getClient()
+export async function getContacts(client?: SupabaseClient) {
+  const supabase = client || getClient();
+  const { data, error } = await supabase
     .from('contacts')
     .select('*')
     .order('created_at', { ascending: false });
@@ -212,8 +217,9 @@ export async function deleteContact(id: string) {
 
 import { Post, Category, Software, SoftwareMetric, SiteSettings, ProductDB } from '@/types/supabase';
 
-export async function getCategories() {
-  const { data, error } = await getClient()
+export async function getCategories(client?: SupabaseClient) {
+  const supabase = client || getClient();
+  const { data, error } = await supabase
     .from('categories')
     .select('*')
     .order('name');
@@ -387,8 +393,9 @@ export async function getAdjacentPosts(publishedAt: string, currentId: string) {
   return { prev: prevPost, next: nextPost };
 }
 
-export async function getAdminPosts(filters?: { status?: string, category_id?: string }) {
-  let query = getClient()
+export async function getAdminPosts(filters?: { status?: string, category_id?: string }, client?: SupabaseClient) {
+  const supabase = client || getClient();
+  let query = supabase
     .from('posts')
     .select('*, categories(*)')
     .order('created_at', { ascending: false });
@@ -595,14 +602,14 @@ export async function compareSoftware(
 // Settings & Products
 // ==========================================
 
-export async function getSiteSettings(): Promise<SiteSettings> {
-  const { data, error } = await getClient()
+export async function getSiteSettings(client?: SupabaseClient): Promise<SiteSettings> {
+  const supabase = client || getClient();
+  const { data, error } = await supabase
     .from('site_settings')
     .select('*')
     .eq('id', 'global')
     .single();
   
-  // Si no existe, lanza error (el script SQL lo insertó por defecto)
   if (error) throw error;
   return data as SiteSettings;
 }
@@ -620,8 +627,9 @@ export async function updateSiteSettings(data: Partial<SiteSettings>): Promise<S
   return updatedData as SiteSettings;
 }
 
-export async function getProducts(options?: { onlyActive?: boolean }): Promise<ProductDB[]> {
-  let query = getClient()
+export async function getProducts(options?: { onlyActive?: boolean } | null, client?: SupabaseClient): Promise<ProductDB[]> {
+  const supabase = client || getClient();
+  let query = supabase
     .from('products')
     .select('*')
     .order('created_at', { ascending: false });

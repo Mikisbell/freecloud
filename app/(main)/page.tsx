@@ -5,8 +5,7 @@ import { Suspense } from 'react';
 import { Monitor, Settings, BookOpen, ArrowRight, Github, Linkedin, Youtube } from 'lucide-react';
 import { getPosts } from '@/lib/supabase';
 import { generateOrganizationSchema, generateWebsiteSchema, generateFAQSchema } from '@/lib/seo';
-import HeroCountdown from '@/components/HeroCountdown';
-import HeroBackground from '@/components/HeroBackground';
+import HeroVands from '@/components/HeroVands';
 import Newsletter from '@/components/Newsletter';
 import { getHomepageProducts } from '@/config/products';
 
@@ -99,63 +98,7 @@ export default async function HomePage() {
       />
 
       {/* ── 1. HERO ── */}
-      <section className="relative w-full flex flex-col items-center text-center overflow-hidden bg-slate-950 px-6 min-h-[min(70svh,620px)] pt-[clamp(60px,10vw,80px)] pb-[clamp(40px,8vw,48px)]">
-        {/* Background Gradients */}
-        <div className="absolute inset-0 pointer-events-none bg-hero-radial" />
-
-        {/* Canvas Animation - Edificio Wireframe + Matrix Rain */}
-        <div className="absolute inset-0 pointer-events-none">
-          <HeroBackground />
-        </div>
-
-        {/* Protection Layer / Gradient Oscuro central */}
-        <div className="absolute inset-0 pointer-events-none z-[5] bg-hero-overlay" />
-
-        <div className="relative z-10 w-full max-w-2xl mx-auto flex flex-col items-center">
-          {/* Elemento 1 — Badge countdown */}
-          <div className="drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
-            <HeroCountdown />
-          </div>
-
-          {/* Elemento 2 — H1 */}
-          <h1
-            className="mt-7 font-extrabold leading-tight tracking-tight text-[clamp(2rem,5vw,3.2rem)] animate-fade-in-up [animation-delay:0.15s] [animation-fill-mode:both] flex flex-col items-center drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]"
-          >
-            <span className="text-white">Tecnología para</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-cyan-500">
-              Ingeniería Civil
-            </span>
-          </h1>
-
-          {/* Elemento 3 — Subtítulo */}
-          <p
-            className="mt-4 max-w-xl font-normal leading-relaxed text-[clamp(1rem,2vw,1.15rem)] animate-fade-in-up [animation-delay:0.3s] [animation-fill-mode:both] text-slate-300 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] text-center"
-          >
-            Desarrollo de software a medida, automatización BIM y recursos técnicos para ingenieros y empresas de construcción en Perú.
-          </p>
-
-          {/* Elemento 4 — Botones */}
-          <div
-            className="mt-9 flex flex-col sm:flex-row justify-center gap-3.5 w-full max-w-xs sm:max-w-none animate-fade-in-up [animation-delay:0.45s] [animation-fill-mode:both]"
-          >
-            <Link
-              href="/blog"
-              className="group flex justify-center items-center rounded-xl w-full sm:w-auto transition-all bg-white text-slate-900 font-bold text-sm px-8 py-3.5 hover:bg-slate-50 hover:-translate-y-px hover:shadow-[0_8px_30px_rgba(255,255,255,0.15)]"
-            >
-              Explorar Tutoriales <span className="ml-1 text-lg transition-transform group-hover:translate-x-1">→</span>
-            </Link>
-
-            <Link
-              href="/sobre-mi#contacto"
-              className="flex justify-center items-center rounded-xl w-full sm:w-auto transition-all font-semibold text-sm px-8 py-3.5 bg-transparent text-white/70 border border-white/15 hover:border-white/35 hover:text-white hover:bg-white/5"
-            >
-              Solicitar Cotización
-            </Link>
-          </div>
-
-
-        </div>
-      </section>
+      <HeroVands />
 
       {/* ── 2. CARRUSEL DE TECNOLOGÍAS ── */}
       <section className="bg-white py-7 overflow-hidden border-t border-gray-200">
@@ -433,6 +376,7 @@ async function RecentBlogPosts() {
                     src={post.featured_image}
                     alt={post.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 ) : (

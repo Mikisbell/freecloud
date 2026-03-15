@@ -3,6 +3,7 @@ import { Building2, Code, GraduationCap, MapPin, Briefcase, Linkedin, Github, Yo
 import ContactForm from '@/components/ContactForm';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site';
+import PageHeader from '@/components/PageHeader';
 
 export const metadata: Metadata = {
   title: 'Sobre Mí - Miguel Angel Rivera Ospina',
@@ -77,160 +78,159 @@ export default function SobreMiPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* ── HERO DE CONVERSIÓN OSCURO ── */}
-      <section className="bg-dataiku-navy border-b-4 border-fc-gold relative overflow-hidden pt-20 pb-20">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.1]" />
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-fc-cyan/15 rounded-full blur-[100px] pointer-events-none translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-fc-blue/15 rounded-full blur-[100px] pointer-events-none -translate-x-1/2 translate-y-1/2" />
+      {/* ── HERO ESTANDARIZADO 2026 ── */}
+      <PageHeader
+        badge="Sobre Mí"
+        title="Miguel Angel Rivera Ospina"
+        description={<span className="text-fc-cyan font-medium">Ingeniero Civil & Ingeniero de Sistemas</span>}
+      />
 
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 flex flex-col md:flex-row items-center md:items-start gap-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
-          <div className="w-40 h-40 md:w-48 md:h-48 rounded-3xl overflow-hidden shadow-2xl shadow-fc-cyan/20 flex-shrink-0 border-4 border-white/10 relative z-10 group bg-surface-900">
-            <div className="absolute inset-0 bg-gradient-to-tr from-fc-blue/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20" />
-            <img src="/me.png" alt="Miguel Angel Rivera Ospina" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 relative z-10" />
-          </div>
-
-          <div className="flex-1 text-center md:text-left">
-            <h1 className="text-3xl md:text-5xl font-display font-bold text-white mb-3 tracking-tight">
-              Miguel Angel Rivera Ospina
-            </h1>
-            <p className="text-xl text-fc-cyan mb-6 font-medium">
-              Ingeniero Civil &amp; Ingeniero de Sistemas
-            </p>
-
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-sm text-surface-300 mb-8">
-              <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1 rounded-full"><MapPin className="w-4 h-4 text-fc-cyan" /> Huancayo, Perú</span>
-              <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1 rounded-full"><Building2 className="w-4 h-4 text-fc-gold" /> FreeCloud &amp; Rivamez</span>
-              <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1 rounded-full"><GraduationCap className="w-4 h-4 text-fc-blue" /> Doble Ingeniería</span>
+      {/* CONTENEDOR GLOBAL TIPO BLOG */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        
+        {/* ── PERFIL Y REDES (Top Section) ── */}
+        <section className="py-12 border-b border-surface-100 relative mt-[-60px] md:mt-[-80px]">
+          <div className="flex flex-col items-center justify-center gap-6">
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0 border-4 border-white bg-surface-50 relative z-20 mx-auto">
+              <img src="/me.png" alt="Miguel Angel Rivera Ospina" className="w-full h-full object-cover" />
             </div>
-
-            {/* Redes y CTA */}
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
-              <Link href="/sobre-mi#contacto" className="flex items-center gap-2 bg-fc-blue hover:bg-fc-navy text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-fc-blue/30 border border-fc-blue/50">
-                Contactar
-              </Link>
-              <div className="flex items-center gap-3 ml-2">
-                <a href={siteConfig.links.linkedin} target="_blank" rel="noopener noreferrer" className="p-2.5 text-surface-400 hover:text-[#0A66C2] hover:bg-white/10 rounded-lg transition-colors border border-transparent hover:border-white/10" aria-label="LinkedIn">
-                  <Linkedin className="w-5 h-5" />
-                </a>
-                <a href={siteConfig.links.youtube} target="_blank" rel="noopener noreferrer" className="p-2.5 text-surface-400 hover:text-[#FF0000] hover:bg-white/10 rounded-lg transition-colors border border-transparent hover:border-white/10" aria-label="YouTube">
-                  <Youtube className="w-5 h-5" />
-                </a>
-                <a href={siteConfig.links.github} target="_blank" rel="noopener noreferrer" className="p-2.5 text-surface-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors border border-transparent hover:border-white/10" aria-label="GitHub">
-                  <Github className="w-5 h-5" />
-                </a>
+            <div className="flex flex-col items-center text-center gap-4 relative z-20">
+               <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-surface-600">
+                <span className="flex items-center gap-1.5 bg-surface-100 border border-surface-200 px-3 py-1 rounded-full"><MapPin className="w-4 h-4 text-fc-cyan" /> Huancayo, Perú</span>
+                <span className="flex items-center gap-1.5 bg-surface-100 border border-surface-200 px-3 py-1 rounded-full"><Building2 className="w-4 h-4 text-fc-gold" /> FreeCloud &amp; Rivamez</span>
+                <span className="flex items-center gap-1.5 bg-surface-100 border border-surface-200 px-3 py-1 rounded-full"><GraduationCap className="w-4 h-4 text-fc-blue" /> Doble Ingeniería</span>
+              </div>
+              
+              <div className="flex flex-wrap items-center justify-center gap-4 mt-2">
+                <Link href="#contacto" className="flex items-center gap-2 bg-fc-blue hover:bg-fc-navy text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-fc-blue/30 border border-fc-blue/50">
+                  Contactar
+                </Link>
+                <div className="flex items-center gap-3">
+                  <a href={siteConfig.links.linkedin} target="_blank" rel="noopener noreferrer" className="p-2.5 text-surface-400 bg-surface-50 hover:text-fc-blue hover:bg-surface-100 rounded-lg transition-colors border border-surface-200">
+                    <Linkedin className="w-5 h-5" />
+                  </a>
+                  <a href={siteConfig.links.youtube} target="_blank" rel="noopener noreferrer" className="p-2.5 text-surface-400 bg-surface-50 hover:text-fc-blue hover:bg-surface-100 rounded-lg transition-colors border border-surface-200">
+                    <Youtube className="w-5 h-5" />
+                  </a>
+                  <a href={siteConfig.links.github} target="_blank" rel="noopener noreferrer" className="p-2.5 text-surface-400 bg-surface-50 hover:text-fc-blue hover:bg-surface-100 rounded-lg transition-colors border border-surface-200">
+                    <Github className="w-5 h-5" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+        <div className="max-w-3xl mx-auto">
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-12 overflow-hidden">
-
-        {/* Stats - Staggered fade in */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20 animate-in fade-in slide-in-from-bottom-12 duration-700 delay-200">
-          {STATS.map((stat, i) => (
-            <div key={stat.label} className="bg-surface-50 border border-surface-200 rounded-2xl p-6 text-center hover:shadow-md transition-shadow group relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-fc-blue/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <p className="text-4xl font-display font-bold text-fc-navy-deep relative z-10">{stat.number}</p>
-              <p className="text-sm text-surface-500 font-medium mt-1 relative z-10">{stat.label}</p>
+          {/* Stats - Staggered fade in */}
+          <section className="py-12 animate-in fade-in slide-in-from-bottom-12 duration-700 delay-200">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {STATS.map((stat, i) => (
+                <div key={stat.label} className="bg-surface-50 border border-surface-200 rounded-2xl p-6 text-center hover:shadow-md transition-shadow group relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-fc-blue/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <p className="text-4xl font-display font-bold text-fc-navy-deep relative z-10">{stat.number}</p>
+                  <p className="text-sm text-surface-500 font-medium mt-1 relative z-10">{stat.label}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </section>
 
-        {/* Bio / Timeline */}
-        <div className="mb-20 animate-in fade-in slide-in-from-bottom-12 duration-700 delay-300">
-          <div className="flex items-center gap-3 mb-8">
-            <h2 className="text-2xl font-display font-bold text-surface-900">Mi Trayectoria</h2>
-            <div className="h-px bg-surface-200 flex-1" />
-          </div>
-
-          <div className="grid md:grid-cols-[1fr_1fr] gap-12 items-start">
-            <div className="prose-blog text-surface-600">
-              <p className="text-lg leading-relaxed">
-                Soy una mezcla poco común: <strong>ingeniero civil e ingeniero de sistemas.</strong> Esa combinación
-                me permite ver la construcción desde dos perspectivas que normalmente no se cruzan —
-                la del calculista que entiende la norma E.030 y la del programador que puede automatizar
-                un flujo de trabajo en Revit con Python.
-              </p>
-              <p className="text-lg leading-relaxed">
-                Perú está en un momento crítico. La obligatoriedad de BIM desde agosto 2026 va a
-                transformar cómo trabajamos. Este espacio existe para cerrar esa brecha compartiendo tutoriales,
-                herramientas y recursos reales, bajo la normativa peruana.
-              </p>
+          {/* Bio / Timeline */}
+          <section className="py-12 border-t border-surface-100 animate-in fade-in slide-in-from-bottom-12 duration-700 delay-300">
+            <div className="flex items-center gap-3 mb-8">
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-surface-900">Mi Trayectoria</h2>
+              <div className="h-px bg-surface-200 flex-1" />
             </div>
 
-            <div className="space-y-8 relative before:absolute before:inset-0 before:ml-4 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-fc-blue/20 before:via-surface-200 before:to-transparent">
-              {TIMELINE.map((item, index) => (
-                <div key={index} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                  <div className="hidden md:block md:w-1/2" />
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full border-4 border-surface-50 bg-fc-blue text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 absolute left-0 md:left-1/2 -ml-4 md:ml-0 z-10">
-                    <div className="w-2 h-2 rounded-full bg-white" />
+            <div className="grid md:grid-cols-[1.5fr_1fr] gap-12 items-start">
+              <div className="prose-blog text-surface-600">
+                <p className="text-lg leading-relaxed">
+                  Soy una mezcla poco común: <strong>ingeniero civil e ingeniero de sistemas.</strong> Esa combinación
+                  me permite ver la construcción desde dos perspectivas que normalmente no se cruzan —
+                  la del calculista que entiende la norma E.030 y la del programador que puede automatizar
+                  un flujo de trabajo en Revit con Python.
+                </p>
+                <p className="text-lg leading-relaxed mt-4">
+                  Perú está en un momento crítico. La obligatoriedad de BIM desde agosto 2026 va a
+                  transformar cómo trabajamos. Este espacio existe para cerrar esa brecha compartiendo tutoriales,
+                  herramientas y recursos reales, bajo la normativa peruana.
+                </p>
+              </div>
+
+              <div className="space-y-6 relative before:absolute before:inset-0 before:ml-4 before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-fc-blue/20 before:via-surface-200 before:to-transparent">
+                {TIMELINE.map((item, index) => (
+                  <div key={index} className="relative flex items-center group is-active">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full border-4 border-surface-50 bg-fc-blue text-white shadow shrink-0 absolute left-0 -ml-4 z-10">
+                      <div className="w-2 h-2 rounded-full bg-white" />
+                    </div>
+                    <div className="w-full ml-10 p-5 rounded-2xl bg-surface-50 border border-surface-100 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex items-center justify-between mb-1">
+                        <h3 className="font-bold text-surface-900 text-lg">{item.title}</h3>
+                        <span className="text-xs font-mono font-medium text-fc-blue bg-fc-blue/10 px-2 py-1 rounded-md">{item.year}</span>
+                      </div>
+                      <div className="text-sm font-medium text-surface-500 mb-3 flex items-center gap-1">
+                        <Briefcase className="w-3.5 h-3.5" /> {item.company}
+                      </div>
+                      <p className="text-surface-600 text-sm leading-relaxed">{item.description}</p>
+                    </div>
                   </div>
-                  <div className="w-[calc(100%-3rem)] md:w-[calc(50%-2rem)] ml-12 md:ml-0 p-5 rounded-2xl bg-surface-50 border border-surface-100 shadow-sm hover:shadow-md transition-shadow">
-                    <div className="flex items-center justify-between mb-1">
-                      <h3 className="font-bold text-surface-900 text-lg">{item.title}</h3>
-                      <span className="text-xs font-mono font-medium text-fc-blue bg-fc-blue/10 px-2 py-1 rounded-md">{item.year}</span>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Skills Grid */}
+          <section className="py-12 border-t border-surface-100 animate-in fade-in slide-in-from-bottom-12 duration-700 delay-500">
+            <div className="flex items-center gap-3 mb-8">
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-surface-900">Stack Tecnológico</h2>
+              <div className="h-px bg-surface-200 flex-1" />
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {SKILL_CATEGORIES.map(category => (
+                <div key={category.title} className="bg-surface-50/50 p-6 rounded-3xl border border-surface-200">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-3 bg-white rounded-xl shadow-sm border border-surface-100">
+                      {category.icon}
                     </div>
-                    <div className="text-sm font-medium text-surface-500 mb-3 flex items-center gap-1">
-                      <Briefcase className="w-3.5 h-3.5" /> {item.company}
-                    </div>
-                    <p className="text-surface-600 text-sm leading-relaxed">{item.description}</p>
+                    <h3 className="font-bold text-surface-900 text-lg">{category.title}</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {category.skills.map(skill => (
+                      <span key={skill} className="px-4 py-2 bg-white border border-surface-200 rounded-xl text-sm font-medium text-surface-700 shadow-sm hover:border-fc-blue/30 hover:text-fc-blue transition-colors cursor-default">
+                        {skill}
+                      </span>
+                    ))}
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        </div>
+          </section>
 
-        {/* Skills Grid */}
-        <div className="mb-24 animate-in fade-in slide-in-from-bottom-12 duration-700 delay-500">
-          <div className="flex items-center gap-3 mb-8">
-            <h2 className="text-2xl font-display font-bold text-surface-900">Stack Tecnológico</h2>
-            <div className="h-px bg-surface-200 flex-1" />
-          </div>
+          {/* CTA / Contact */}
+          <section id="contacto" className="py-16 mb-12">
+            <div className="bg-surface-900 rounded-3xl p-8 md:p-12 shadow-2xl overflow-hidden relative animate-in fade-in slide-in-from-bottom-12 duration-700 delay-700">
+              <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3">
+                <div className="w-96 h-96 bg-fc-blue/20 rounded-full blur-3xl" />
+              </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {SKILL_CATEGORIES.map(category => (
-              <div key={category.title} className="bg-surface-50/50 p-6 rounded-3xl border border-surface-200">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-white rounded-xl shadow-sm border border-surface-100">
-                    {category.icon}
-                  </div>
-                  <h3 className="font-bold text-surface-900 text-lg">{category.title}</h3>
+              <div className="relative z-10">
+                <div className="mb-10 text-center md:text-left">
+                  <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-3 tracking-tight">
+                    ¿Trabajamos juntos?
+                  </h2>
+                  <p className="text-surface-300 text-lg max-w-xl">
+                    Consultoría BIM, desarrollo de herramientas a medida o capacitación para tu equipo. Hablemos sobre tu próximo proyecto.
+                  </p>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {category.skills.map(skill => (
-                    <span key={skill} className="px-4 py-2 bg-white border border-surface-200 rounded-xl text-sm font-medium text-surface-700 shadow-sm hover:border-fc-blue/30 hover:text-fc-blue transition-colors cursor-default">
-                      {skill}
-                    </span>
-                  ))}
+                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8">
+                  <ContactForm />
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* CTA / Contact */}
-        <div id="contacto" className="bg-surface-900 rounded-3xl p-8 md:p-12 shadow-2xl overflow-hidden relative animate-in fade-in slide-in-from-bottom-12 duration-700 delay-700">
-          <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3">
-            <div className="w-96 h-96 bg-fc-blue/20 rounded-full blur-3xl" />
-          </div>
-
-          <div className="relative z-10">
-            <div className="mb-10 text-center md:text-left">
-              <h2 className="text-3xl font-display font-bold text-white mb-3 tracking-tight">
-                ¿Trabajamos juntos?
-              </h2>
-              <p className="text-surface-300 text-lg max-w-xl">
-                Consultoría BIM, desarrollo de herramientas a medida o capacitación para tu equipo. Hablemos sobre tu próximo proyecto.
-              </p>
             </div>
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8">
-              <ContactForm />
-            </div>
-          </div>
-        </div>
+          </section>
 
+        </div>
       </div>
     </>
   );

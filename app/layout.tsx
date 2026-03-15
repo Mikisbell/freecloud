@@ -83,9 +83,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* AdSense — Script optimizado con next/script para no bloquear el renderizado inicial y mejorar LCP */}
         {adsenseId && (
-          <Script
+          <script
             id="adsense-init"
-            strategy="lazyOnload"
+            async
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
             crossOrigin="anonymous"
           />

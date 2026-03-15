@@ -16,7 +16,7 @@ export default async function LoginPage({
 }) {
     const { error } = await searchParams
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[var(--color-admin-bg)] p-4 relative overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center bg-admin-bg p-4 relative overflow-hidden">
             {/* Background effects */}
             <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-fc-blue/[0.04] rounded-full blur-[150px] pointer-events-none" />
             <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-violet-500/[0.03] rounded-full blur-[120px] pointer-events-none" />
