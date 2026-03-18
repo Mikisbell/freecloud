@@ -41,7 +41,7 @@ const nextConfig = {
       { source: '/portfolio', destination: '/sobre-mi', permanent: true },
       // Servicios
       { source: '/services', destination: '/servicios', permanent: true },
-      { source: '/servicios/:path*', destination: '/servicios', permanent: true },
+      { source: '/servicios/:path+', destination: '/servicios', permanent: true },
       { source: '/industrias', destination: '/servicios', permanent: true },
       // Productos / recursos
       { source: '/products', destination: '/recursos', permanent: true },
