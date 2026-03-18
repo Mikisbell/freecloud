@@ -83,6 +83,6 @@ Si Engram MCP está disponible:
 - `NEXT_PUBLIC_SUPABASE_URL` — Supabase endpoint
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Supabase public key
 - `SUPABASE_SERVICE_ROLE_KEY` — Supabase admin key (solo server-side)
-- `NEXT_PUBLIC_ADSENSE_PUBLISHER_ID` — AdSense ID
+- `NEXT_PUBLIC_ADSENSE_ID` — AdSense publisher ID (ej: `ca-pub-XXXXXXXXXXXXXXXX`)
 - `NEXT_PUBLIC_ADSENSE_APPROVED` — `'true'` cuando AdSense apruebe la cuenta
 - `NEXT_PUBLIC_SITE_URL` — `https://freecloud.pe`

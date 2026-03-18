@@ -84,12 +84,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body suppressHydrationWarning className="font-body antialiased min-h-screen flex flex-col">
         {children}
-        {/* AdSense — afterInteractive defer load hasta que la página sea interactiva → elimina CLS por Auto Ads */}
+        {/* AdSense — lazyOnload: carga SOLO cuando el browser está completamente idle
+            Esto empuja AdSense Auto Ads fuera de la ventana de medición de CLS (0-5s)
+            Los anuncios manuales en blog posts siguen funcionando ya que usan el mismo script */}
         {adsenseId && (
           <Script
             id="adsense-init"
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             crossOrigin="anonymous"
           />
         )}
