@@ -208,7 +208,7 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* Featured Image Hero */}
             {post.featured_image && (
-              <div className="relative w-full h-[240px] md:h-[380px] rounded-2xl overflow-hidden mb-8 shadow-md">
+              <div className="relative w-full h-[220px] md:h-[340px] max-w-3xl rounded-2xl overflow-hidden mb-8 shadow-md">
                 <Image
                   src={post.featured_image}
                   alt={post.image_alt || post.title}
@@ -367,14 +367,12 @@ export default async function BlogPostPage({ params }: Props) {
                     <BlogCard key={rp.slug} post={{
                       title: rp.title,
                       slug: rp.slug,
-                      description: rp.excerpt || '',
-                      category: rp.categories?.slug || '',
-                      date: rp.published_at || rp.created_at,
-                      image: rp.featured_image,
-                      readingTime: `${rp.reading_time || 5} min`,
+                      excerpt: rp.excerpt || '',
+                      published_at: rp.published_at || rp.created_at,
+                      featured_image: rp.featured_image,
+                      reading_time: rp.reading_time || 5,
                       featured: rp.featured,
-                      // We map the category configs from Supabase just for BlogCard compatibility
-                    } as Partial<import('@/types/supabase').Post>} dbCategory={rp.categories} />
+                    }} dbCategory={rp.categories} />
                   ))}
                 </div>
               </div>
@@ -413,7 +411,8 @@ export default async function BlogPostPage({ params }: Props) {
                     href={`https://www.linkedin.com/sharing/share-offsite/?url=${siteUrl}/blog/${post.slug}`}
                     target="_blank"
                     rel="noopener"
-                    className="flex-1 py-2 bg-[#0077b5] text-white text-xs font-medium rounded-lg text-center hover:opacity-90 transition-opacity"
+                    className="flex-1 py-2 text-white text-xs font-medium rounded-lg text-center hover:opacity-90 transition-opacity"
+                    style={{ backgroundColor: '#0077b5' }}
                   >
                     LinkedIn
                   </a>
@@ -421,7 +420,8 @@ export default async function BlogPostPage({ params }: Props) {
                     href={`https://www.facebook.com/sharer/sharer.php?u=${siteUrl}/blog/${post.slug}`}
                     target="_blank"
                     rel="noopener"
-                    className="flex-1 py-2 bg-[#1877f2] text-white text-xs font-medium rounded-lg text-center hover:opacity-90 transition-opacity"
+                    className="flex-1 py-2 text-white text-xs font-medium rounded-lg text-center hover:opacity-90 transition-opacity"
+                    style={{ backgroundColor: '#1877f2' }}
                   >
                     Facebook
                   </a>
@@ -429,7 +429,8 @@ export default async function BlogPostPage({ params }: Props) {
                     href={`https://wa.me/?text=${encodeURIComponent(post.title + ' ' + siteUrl + '/blog/' + post.slug)}`}
                     target="_blank"
                     rel="noopener"
-                    className="flex-1 py-2 bg-[#25d366] text-white text-xs font-medium rounded-lg text-center hover:opacity-90 transition-opacity"
+                    className="flex-1 py-2 text-white text-xs font-medium rounded-lg text-center hover:opacity-90 transition-opacity"
+                    style={{ backgroundColor: '#25d366' }}
                   >
                     WhatsApp
                   </a>
@@ -452,12 +453,10 @@ export default async function BlogPostPage({ params }: Props) {
               )}
 
               {/* Sidebar Ad — slot configurado en NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR */}
-              <div className="sticky top-20">
-                <ClientGoogleAd
-                  adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR || ''}
-                  reservedHeight={600}
-                />
-              </div>
+              <ClientGoogleAd
+                adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR || ''}
+                reservedHeight={600}
+              />
             </div>
           </aside>
         </div>
