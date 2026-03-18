@@ -93,6 +93,72 @@ const POST_IMAGES: Array<{ slug: string; imageUrl: string }> = [
     // Structural engineering software analysis / finite element
     imageUrl: 'https://images.pexels.com/photos/2219024/pexels-photo-2219024.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
   },
+  // ── Posts con rutas locales rotas — migrar a Storage ────────────────────────
+  {
+    slug: 'python-librerias-esenciales-ingenieros-civiles',
+    // Developer coding Python on laptop
+    imageUrl: 'https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'etabs-analisis-sismico-norma-e030-guia-practica',
+    // Structural engineering / seismic analysis
+    imageUrl: 'https://images.pexels.com/photos/159306/construction-site-build-construction-work-159306.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'interpretar-analisis-modal-masas-etabs-e030',
+    // Engineers reviewing technical structural plans
+    imageUrl: 'https://images.pexels.com/photos/3862130/pexels-photo-3862130.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'automatizacion-bim-python',
+    // Programmer with multiple screens / BIM automation
+    imageUrl: 'https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'civil-3d-carreteras-guia-completa-paso-a-paso',
+    // Aerial highway / road infrastructure
+    imageUrl: 'https://images.pexels.com/photos/315939/pexels-photo-315939.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'dynamo-vs-pyrevit-automatizacion-bim-2026',
+    // Coding / programming abstract tech
+    imageUrl: 'https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'dynamo-principiantes-primera-automatizacion-revit-guia',
+    // 3D parametric / architectural geometry
+    imageUrl: 'https://images.pexels.com/photos/2102416/pexels-photo-2102416.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'guia-instalacion-primer-script-python-revit-2025',
+    // Developer coding at laptop
+    imageUrl: 'https://images.pexels.com/photos/169573/pexels-photo-169573.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'revit-vs-autocad-cual-aprender-primero-2025',
+    // Architect reviewing building plans / CAD drawings
+    imageUrl: 'https://images.pexels.com/photos/3862130/pexels-photo-3862130.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'navisworks-choques-clash-detection-paradoja',
+    // Team of engineers coordinating on BIM model
+    imageUrl: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'punzonamiento-cimentaciones-etabs-solucion',
+    // Concrete foundation / structural pillars under construction
+    imageUrl: 'https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'script-iniciales-dynamo-revit-hola-mundo',
+    // Visual programming / nodes abstract
+    imageUrl: 'https://images.pexels.com/photos/1546168/pexels-photo-1546168.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'metrados-acero-corrugado-errores-presupuesto-obra',
+    // Steel rebar / reinforced concrete construction
+    imageUrl: 'https://images.pexels.com/photos/159306/construction-site-build-construction-work-159306.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
   // ── Nuevos artículos BIM (Content Engine — Marzo 2026) ──────────────────────
   {
     slug: 'bim-manager-que-hace-cuanto-gana-peru',
