@@ -172,7 +172,7 @@ export default async function BlogPostPage({ params }: Props) {
 
         <div className="grid lg:grid-cols-[1fr_300px] gap-10">
           {/* Main content */}
-          <div>
+          <div className="min-w-0">
             {/* Header */}
             <header className="mb-8">
               {categoryConfig && (
