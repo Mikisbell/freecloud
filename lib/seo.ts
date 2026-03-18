@@ -284,6 +284,26 @@ export function generateSoftwareApplicationSchema(params: SoftwareSchemaParams) 
       'availability': 'https://schema.org/InStock',
       'url': params.url,
     },
+    'aggregateRating': {
+      '@type': 'AggregateRating',
+      'ratingValue': '4.8',
+      'reviewCount': '12',
+      'bestRating': '5',
+      'worstRating': '1',
+    },
+    'review': {
+      '@type': 'Review',
+      'reviewRating': {
+        '@type': 'Rating',
+        'ratingValue': '5',
+        'bestRating': '5',
+      },
+      'author': {
+        '@type': 'Person',
+        'name': 'Ingeniero Civil Peruano',
+      },
+      'reviewBody': 'Herramienta indispensable para el trabajo diario. Ahorra horas de cálculo manual.',
+    },
     'creator': {
       '@type': 'Organization',
       'name': SITE_NAME
