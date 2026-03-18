@@ -279,7 +279,10 @@ export function generateSoftwareApplicationSchema(params: SoftwareSchemaParams) 
     'offers': {
       '@type': 'Offer',
       'price': params.price || '0',
-      'priceCurrency': params.currency || 'USD'
+      'priceCurrency': params.currency || 'PEN',
+      'priceValidUntil': `${new Date().getFullYear() + 1}-12-31`,
+      'availability': 'https://schema.org/InStock',
+      'url': params.url,
     },
     'creator': {
       '@type': 'Organization',
