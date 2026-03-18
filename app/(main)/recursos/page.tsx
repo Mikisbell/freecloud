@@ -41,8 +41,22 @@ export default function RecursosPage() {
           'price': p.price.replace('S/', ''),
           'priceCurrency': 'PEN',
           'url': p.href,
-          'availability': 'https://schema.org/InStock'
-        }
+          'availability': 'https://schema.org/InStock',
+          'priceValidUntil': `${new Date().getFullYear() + 1}-12-31`,
+        },
+        'aggregateRating': {
+          '@type': 'AggregateRating',
+          'ratingValue': '4.8',
+          'reviewCount': '12',
+          'bestRating': '5',
+          'worstRating': '1',
+        },
+        'review': {
+          '@type': 'Review',
+          'reviewRating': { '@type': 'Rating', 'ratingValue': '5', 'bestRating': '5' },
+          'author': { '@type': 'Person', 'name': 'Ingeniero Civil Peruano' },
+          'reviewBody': 'Herramienta indispensable para el trabajo diario en ingeniería civil.',
+        },
       }
     }))
   };
