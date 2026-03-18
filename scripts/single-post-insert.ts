@@ -17,10 +17,11 @@ import path from 'path';
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
   console.error('❌ Faltan credenciales de Supabase en .env.local');
+  console.error('   Requerido: NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY');
   process.exit(1);
 }
 
@@ -95,7 +96,6 @@ async function insertPost(post: PostInput) {
     ...rest,
     category_id: finalCategoryId,
     published_at: publishedAt,
-    created_at: publishedAt,
     featured_image: post.featured_image ?? null,
   };
 

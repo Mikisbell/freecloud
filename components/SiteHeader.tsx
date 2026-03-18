@@ -32,7 +32,7 @@ export default function SiteHeader() {
   const showGlass = !isHome || scrolled;
 
   const headerBg = showGlass
-    ? 'bg-white/85 backdrop-blur-xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border-b border-black/[0.06]'
+    ? 'bg-white/85 backdrop-blur-xl shadow-sm border-b border-black/[0.06]'
     : 'bg-transparent border-b border-transparent';
 
   return (
@@ -47,12 +47,10 @@ export default function SiteHeader() {
             width={300}
             height={50}
             sizes="(max-width: 768px) 110px, 140px"
-            quality={100}
-            unoptimized={true}
+            quality={85}
             loading="eager"
             priority
-            className="w-[110px] md:w-[140px] h-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
-            style={{ isolation: 'isolate', mixBlendMode: 'normal', filter: 'none' }}
+            className="w-[110px] md:w-[140px] h-auto object-contain transition-transform duration-200 group-hover:scale-[1.02] isolate mix-blend-normal"
           />
         </Link>
 
@@ -61,12 +59,12 @@ export default function SiteHeader() {
           {NAV_ITEMS.map((item) => {
             // Verificar si estamos en la ruta exacta o si es subruta (ej. /blog/articulo-1)
             const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
-            
+
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-4 py-2 text-[13.5px] font-medium rounded-lg transition-all duration-200 ${
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                   isActive
                     ? 'text-fc-blue bg-fc-cyan/10 font-bold'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
@@ -78,7 +76,7 @@ export default function SiteHeader() {
           })}
           <Link
             href="/sobre-mi#contacto"
-            className="ml-3 px-5 py-2.5 rounded-xl bg-[#0f3d7c] text-white text-[13px] font-semibold tracking-wide hover:bg-[#0d3568] hover:shadow-md hover:-translate-y-px transition-all duration-200 shadow-sm shadow-[#0f3d7c]/20"
+            className="ml-3 px-5 py-2.5 rounded-xl bg-fc-navy text-white text-sm font-semibold tracking-wide hover:bg-fc-navy-deep hover:shadow-md hover:-translate-y-px transition-all duration-200 shadow-sm shadow-fc-navy/20"
           >
             Solicitar Cotización
           </Link>
@@ -102,13 +100,13 @@ export default function SiteHeader() {
         <div className="flex flex-col px-6 py-4 gap-1">
           {NAV_ITEMS.map((item) => {
             const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
-            
+
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={`px-4 py-3 text-[14px] font-medium rounded-xl transition-colors ${
+                className={`px-4 py-3 text-sm font-medium rounded-xl transition-colors ${
                   isActive
                     ? 'bg-fc-cyan/10 text-fc-blue font-bold border-l-4 border-fc-blue'
                     : 'text-slate-700 hover:bg-slate-100 hover:text-blue-700 border-l-4 border-transparent'
@@ -122,7 +120,7 @@ export default function SiteHeader() {
             <Link
               href="/sobre-mi#contacto"
               onClick={() => setMobileOpen(false)}
-              className="flex justify-center w-full px-5 py-3 rounded-xl bg-[#0f3d7c] text-white text-[14px] font-semibold tracking-wide shadow-md"
+              className="flex justify-center w-full px-5 py-3 rounded-xl bg-fc-navy text-white text-sm font-semibold tracking-wide shadow-md"
             >
               Solicitar Cotización
             </Link>

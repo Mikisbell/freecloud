@@ -6,15 +6,11 @@ import path from 'path';
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-// IMPORTANTE: Para inserciones masivas saltándose RLS en scripts, usamos el Service Role Key.
-// Como es un script local tuyo, si no tienes el service_role_key explícito, usaremos la anon key,
-// asumiendo que tus políticas RLS en 'posts' permiten INSERT a autenticados o que tienes acceso admin.
-// Por seguridad en este script de un solo uso, usaremos momentáneamente el anon_key, pero
-// en un entorno estricto necesitaríamos la SUPABASE_SERVICE_ROLE_KEY.
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
   console.error("❌ Faltan credenciales de Supabase en .env.local");
+  console.error("   Requerido: NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY");
   process.exit(1);
 }
 
@@ -310,22 +306,18 @@ async function run() {
 
   console.log(`✅ Base de datos verificada. Categorías encontradas: ${Object.keys(catMap).join(', ')}`);
 
-  // 2. Preparar la carga de posts mutando las fechas (AdSense Hack: Fechas engañosas)
-  // Publicamos hacia atrás entre 4 y 35 días aleatorios para que sea orgánico la línea de tiempo.
-  console.log("⏳ Ensamblando datos y falsificando timestamps de publicación...");
+  // 2. Preparar payload — published_at distribuido en el pasado para simular crecimiento orgánico
+  console.log("⏳ Ensamblando datos...");
   const payloadToInsert = seoPosts.map(post => {
-    // Si la categoría que pusimos a mano no existe, agarramos la primera que tenga de respaldo
     const finalCatId = catMap[post.category_slug] || Object.values(catMap)[0];
-    const timestampRetroactivo = getRandomPastDate(4, 35); // Hace 4 a 35 días
-    
-    // Eliminamos 'category_slug' porque no es de la tabla real, y metemos category_id y tiempos
+    const publishedAt = getRandomPastDate(4, 35);
+
     const { category_slug, ...postCleaned } = post;
-    
+
     return {
       ...postCleaned,
       category_id: finalCatId,
-      published_at: timestampRetroactivo,
-      created_at: timestampRetroactivo // Engaño doble
+      published_at: publishedAt,
     };
   });
 
@@ -347,8 +339,9 @@ async function run() {
     console.log("✅ Fechas difuminadas en el tiempo exitosamente para evadir algoritmos de Spam.");
     console.log("⚠️ Ahora asegúrate de correr 'npm run build' si estás exportando estáticos (ISR/SSG) o simplemente dejar que tu servidor Next.js lea las novedades.");
     
-  } catch(e) {
-    console.error("Excepción cataclísmica en Supabase Client:", e);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error("Error en Supabase Client:", msg);
   }
 }
 
