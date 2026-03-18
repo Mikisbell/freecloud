@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Monitor, Settings, BookOpen, ArrowRight, Github, Linkedin, Youtube } from 'lucide-react';
 import { getPosts } from '@/lib/supabase';
+import ClientGoogleAd from '@/components/ClientGoogleAd';
 import type { Post } from '@/types/supabase';
 import { generateOrganizationSchema, generateWebsiteSchema, generateFAQSchema } from '@/lib/seo';
 import HeroVands from '@/components/HeroVands';
@@ -234,6 +235,20 @@ export default async function HomePage() {
 
       {/* ── 4. BLOG ── */}
       <RecentBlogPosts posts={recentPosts} />
+
+      {/* ── 4b. AD UNIT — espacio reservado previene CLS (Auto Ads OFF en dashboard) ── */}
+      {process.env.NEXT_PUBLIC_ADSENSE_ID && (
+        <div className="bg-white py-4 px-6">
+          <div className="max-w-6xl mx-auto">
+            <ClientGoogleAd
+              adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_INFEED || ''}
+              adFormat="auto"
+              reservedHeight={90}
+              fullWidthResponsive
+            />
+          </div>
+        </div>
+      )}
 
       {/* ── 5. SOBRE MÍ ── */}
       <section className="bg-gray-50 py-20 px-6">
