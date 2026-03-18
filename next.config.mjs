@@ -23,6 +23,44 @@ const nextConfig = {
     ],
     formats: ['image/avif', 'image/webp'],
   },
+  async redirects() {
+    return [
+      // ── Rutas del site anterior (empresa de software) → site actual (blog BIM) ──
+      // Contacto / soporte
+      { source: '/contacto', destination: '/sobre-mi', permanent: true },
+      { source: '/contacto/:path*', destination: '/sobre-mi', permanent: true },
+      { source: '/contact/:path*', destination: '/sobre-mi', permanent: true },
+      { source: '/soporte', destination: '/sobre-mi', permanent: true },
+      { source: '/soporte-tecnico', destination: '/sobre-mi', permanent: true },
+      // Empresa / acerca de
+      { source: '/nosotros', destination: '/sobre-mi', permanent: true },
+      { source: '/sobre-nosotros', destination: '/sobre-mi', permanent: true },
+      { source: '/about', destination: '/sobre-mi', permanent: true },
+      { source: '/equipo', destination: '/sobre-mi', permanent: true },
+      { source: '/carreras', destination: '/', permanent: true },
+      { source: '/portfolio', destination: '/sobre-mi', permanent: true },
+      // Servicios
+      { source: '/services', destination: '/servicios', permanent: true },
+      { source: '/servicios/:path*', destination: '/servicios', permanent: true },
+      { source: '/industrias', destination: '/servicios', permanent: true },
+      // Productos / recursos
+      { source: '/products', destination: '/recursos', permanent: true },
+      // Blog / noticias
+      { source: '/noticias', destination: '/blog', permanent: true },
+      { source: '/news', destination: '/blog', permanent: true },
+      { source: '/docs', destination: '/blog', permanent: true },
+      { source: '/faq', destination: '/blog', permanent: true },
+      // Legal
+      { source: '/politica-privacidad', destination: '/politica-de-privacidad', permanent: true },
+      { source: '/privacidad', destination: '/politica-de-privacidad', permanent: true },
+      { source: '/cookies', destination: '/politica-de-privacidad', permanent: true },
+      { source: '/gdpr', destination: '/politica-de-privacidad', permanent: true },
+      { source: '/terminos-servicio', destination: '/terminos-de-uso', permanent: true },
+      { source: '/terminos', destination: '/terminos-de-uso', permanent: true },
+      // Misc
+      { source: '/status', destination: '/', permanent: true },
+    ];
+  },
   async headers() {
     return [
       // Cache largo para assets estáticos de Next.js — resuelve auditoría Lighthouse
