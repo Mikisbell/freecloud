@@ -93,6 +93,32 @@ const POST_IMAGES: Array<{ slug: string; imageUrl: string }> = [
     // Structural engineering software analysis / finite element
     imageUrl: 'https://images.pexels.com/photos/2219024/pexels-photo-2219024.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
   },
+  // ── Nuevos artículos BIM (Content Engine — Marzo 2026) ──────────────────────
+  {
+    slug: 'bim-manager-que-hace-cuanto-gana-peru',
+    // Professional BIM Manager with tablet on construction site
+    imageUrl: 'https://images.pexels.com/photos/3760529/pexels-photo-3760529.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'bim-nivel-1-2-3-diferencias-certificacion',
+    // Engineers in meeting examining building plans and models
+    imageUrl: 'https://images.pexels.com/photos/1438081/pexels-photo-1438081.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'open-bim-vs-closed-bim-ifc-formato',
+    // Digital data flow / network connectivity over building
+    imageUrl: 'https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'lod-100-500-bim-significado-revit-peru',
+    // Architect reviewing 3D BIM model blueprints on desk
+    imageUrl: 'https://images.pexels.com/photos/1115804/pexels-photo-1115804.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'bep-plan-ejecucion-bim-ejemplo-peru',
+    // Engineers and architects reviewing construction project plans on table
+    imageUrl: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
 ];
 
 interface PostRecord {

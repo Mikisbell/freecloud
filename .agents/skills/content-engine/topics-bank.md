@@ -4,11 +4,11 @@
 
 ## 🔥 Alta Prioridad (BIM + Obligatoriedad Perú 2026)
 
-- [ ] `bim-manager-que-hace-cuanto-gana-peru` — BIM Manager: Qué hace y cuánto gana en Perú 2026
-- [ ] `bim-nivel-1-2-3-diferencias-certificacion` — BIM Nivel 1, 2 y 3: Diferencias y cómo certificarte en Perú
-- [ ] `open-bim-vs-closed-bim-ifc-formato` — Open BIM vs Closed BIM: Por qué el formato IFC es el futuro
-- [ ] `lod-100-500-que-significa-revit` — LOD 100 al 500: Qué significa y cómo aplicarlo en Revit
-- [ ] `bep-plan-ejecucion-bim-ejemplo-peru` — BEP (Plan de Ejecución BIM) con Ejemplo Real para Obras en Perú
+- [x] `bim-manager-que-hace-cuanto-gana-peru` — BIM Manager: Qué hace y cuánto gana en Perú 2026
+- [x] `bim-nivel-1-2-3-diferencias-certificacion` — BIM Nivel 1, 2 y 3: Diferencias y cómo certificarte en Perú
+- [x] `open-bim-vs-closed-bim-ifc-formato` — Open BIM vs Closed BIM: Por qué el formato IFC es el futuro
+- [x] `lod-100-500-que-significa-revit` — LOD 100 al 500: Qué significa y cómo aplicarlo en Revit
+- [x] `bep-plan-ejecucion-bim-ejemplo-peru` — BEP (Plan de Ejecución BIM) con Ejemplo Real para Obras en Perú
 
 ## ⚡ Automatización y Python
 
