@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Suspense } from 'react';
 import { Monitor, Settings, BookOpen, ArrowRight, Github, Linkedin, Youtube } from 'lucide-react';
 import { getPosts } from '@/lib/supabase';
+import type { Post } from '@/types/supabase';
 import { generateOrganizationSchema, generateWebsiteSchema, generateFAQSchema } from '@/lib/seo';
 import HeroVands from '@/components/HeroVands';
 import Newsletter from '@/components/Newsletter';
@@ -61,6 +61,9 @@ const A_TECH = [
 ];
 
 export default async function HomePage() {
+  const postsRes = await getPosts({ limit: 3 });
+  const recentPosts = postsRes.posts;
+
   const orgSchema = generateOrganizationSchema();
   const webSchema = generateWebsiteSchema();
   const faqSchema = generateFAQSchema([
@@ -230,29 +233,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── 4. BLOG ── */}
-      <Suspense fallback={
-        <section className="bg-white py-20 px-6 border-y border-gray-100 min-h-[450px]">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-              <div className="animate-pulse">
-                <div className="h-4 w-16 bg-blue-100 rounded mb-4"></div>
-                <div className="h-8 w-48 bg-gray-200 rounded"></div>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="flex flex-col gap-4 animate-pulse">
-                  <div className="w-full h-48 md:h-44 rounded-xl bg-gray-200"></div>
-                  <div className="h-6 w-3/4 bg-gray-200 rounded"></div>
-                  <div className="h-4 w-1/3 bg-gray-100 rounded mt-auto"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      }>
-        <RecentBlogPosts />
-      </Suspense>
+      <RecentBlogPosts posts={recentPosts} />
 
       {/* ── 5. SOBRE MÍ ── */}
       <section className="bg-gray-50 py-20 px-6">
@@ -344,15 +325,11 @@ export default async function HomePage() {
   );
 }
 
-// Server Component for the Blog Section to isolate data fetching and enable Suspense/PPR
-async function RecentBlogPosts() {
-  const postsRes = await getPosts({ limit: 3 });
-  const recentPosts = postsRes.posts;
-
-  if (recentPosts.length === 0) return null;
+function RecentBlogPosts({ posts }: { posts: Post[] }) {
+  if (posts.length === 0) return null;
 
   return (
-    <section className="bg-white py-20 px-6 border-y border-gray-100 min-h-[450px]">
+    <section className="bg-white py-20 px-6 border-y border-gray-100">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
           <div>
@@ -369,7 +346,7 @@ async function RecentBlogPosts() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {recentPosts.map(post => (
+          {posts.map(post => (
             <Link key={post.slug} href={`/blog/${post.slug}`} className="group flex flex-col">
               <div className="relative w-full h-48 md:h-44 rounded-xl overflow-hidden mb-4 bg-gray-100">
                 {post.featured_image ? (
