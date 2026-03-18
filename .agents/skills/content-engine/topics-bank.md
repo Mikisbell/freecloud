@@ -12,7 +12,7 @@
 
 ## ⚡ Automatización y Python
 
-- [ ] `pyrevit-instalar-primeros-scripts-revit` — PyRevit: Cómo instalar y crear tus primeros scripts en Revit
+- [x] `pyrevit-instalar-primeros-scripts-revit` — PyRevit: Cómo instalar y crear tus primeros scripts en Revit
 - [ ] `dynamo-player-automatizar-tareas-repetitivas` — Dynamo Player: Automatiza tareas repetitivas en Revit sin programar
 - [ ] `python-pandas-metrados-excel-automatico` — Python + Pandas: Genera metrados en Excel automáticamente
 - [ ] `revit-api-python-crear-elementos-codigo` — Revit API con Python: Crea elementos estructurales desde código
@@ -20,7 +20,7 @@
 
 ## 🏗️ ETABS y Estructuras
 
-- [ ] `etabs-muros-pantalla-rigidez-lateral` — ETABS: Muros Pantalla para Control de Rigidez Lateral (E.030)
+- [x] `etabs-muros-pantalla-rigidez-lateral` — ETABS: Muros Pantalla para Control de Rigidez Lateral (E.030)
 - [ ] `etabs-diafragma-rigido-semiflexible-cuando-usar` — Diafragma Rígido vs Semiflexible en ETABS: Cuándo usar cada uno
 - [ ] `predimensionamiento-losas-aligeradas-e060` — Predimensionamiento de Losas Aligeradas según E.060 (con tabla)
 - [ ] `sap2000-vs-etabs-cual-usar-edificios` — SAP2000 vs ETABS: ¿Cuál usar para el diseño de edificios?
@@ -37,7 +37,7 @@
 
 - [ ] `excel-tabla-dinamica-control-obra-avance` — Excel: Tabla Dinámica para Control de Avance de Obra
 - [ ] `excel-solver-optimizacion-costos-estructura` — Excel Solver: Optimización de Costos en Estructuras de Concreto
-- [ ] `excel-metrado-acero-calculo-automatico-vigas` — Excel: Cálculo Automático de Metrado de Acero en Vigas
+- [x] `excel-metrado-acero-calculo-automatico-vigas` — Excel: Cálculo Automático de Metrado de Acero en Vigas
 - [ ] `excel-curva-s-proyecto-cronograma-gantt` — Excel: Curva S y Cronograma Gantt para Control de Proyectos
 
 ## 📐 Normativa Peruana (Evergreen SEO)
@@ -45,10 +45,10 @@
 - [ ] `norma-e020-cargas-viento-calculo-edificios` — Norma E.020: Cálculo de Cargas de Viento en Edificios Peruanos
 - [ ] `norma-e050-estudios-suelos-informe-geotecnico` — Norma E.050: Qué debe incluir un Informe Geotécnico
 - [ ] `norma-e060-diseno-vigas-peraltadas-concreto` — Norma E.060: Diseño de Vigas Peraltadas de Concreto Armado
-- [ ] `calculo-zapata-aislada-e050-e060-paso-a-paso` — Cálculo de Zapata Aislada: E.050 + E.060 paso a paso
+- [x] `calculo-zapata-aislada-e050-e060-paso-a-paso` — Cálculo de Zapata Aislada: E.050 + E.060 paso a paso
 
 ## 🏆 Navisworks y Coordinación
 
-- [ ] `navisworks-clash-detection-tutorial-completo` — Navisworks Manage: Clash Detection completo (MEP vs Estructura)
+- [x] `navisworks-clash-detection-tutorial-completo` — Navisworks Manage: Clash Detection completo (MEP vs Estructura)
 - [ ] `navisworks-nwc-nwf-nwd-diferencias-flujo` — Navisworks: Diferencias entre NWC, NWF y NWD y cuándo usar cada uno
 - [ ] `bim-360-autodesk-construction-cloud-tutorial` — BIM 360 vs Autodesk Construction Cloud: Guía para empezar

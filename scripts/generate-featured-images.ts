@@ -159,6 +159,32 @@ const POST_IMAGES: Array<{ slug: string; imageUrl: string }> = [
     // Steel rebar / reinforced concrete construction
     imageUrl: 'https://images.pexels.com/photos/159306/construction-site-build-construction-work-159306.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
   },
+  // ── Batch 5 posts (Content Engine — 17 Mar 2026) ────────────────────────────
+  {
+    slug: 'calculo-zapata-aislada-e050-e060-paso-a-paso',
+    // Concrete foundation / structural engineering excavation
+    imageUrl: 'https://images.pexels.com/photos/2219024/pexels-photo-2219024.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'etabs-muros-pantalla-rigidez-lateral',
+    // Reinforced concrete shear wall building structure
+    imageUrl: 'https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'pyrevit-instalar-primeros-scripts-revit',
+    // Developer coding Python / programming setup
+    imageUrl: 'https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'excel-metrado-acero-calculo-automatico-vigas',
+    // Engineer working with spreadsheet data on laptop
+    imageUrl: 'https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'navisworks-clash-detection-tutorial-completo',
+    // Team coordinating BIM model review on screens
+    imageUrl: 'https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
   // ── Nuevos artículos BIM (Content Engine — Marzo 2026) ──────────────────────
   {
     slug: 'bim-manager-que-hace-cuanto-gana-peru',
