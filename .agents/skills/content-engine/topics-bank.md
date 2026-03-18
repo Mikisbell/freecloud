@@ -21,9 +21,10 @@
 ## 🏗️ ETABS y Estructuras
 
 - [x] `etabs-muros-pantalla-rigidez-lateral` — ETABS: Muros Pantalla para Control de Rigidez Lateral (E.030)
-- [ ] `etabs-diafragma-rigido-semiflexible-cuando-usar` — Diafragma Rígido vs Semiflexible en ETABS: Cuándo usar cada uno
+- [x] `etabs-diafragma-rigido-semiflexible-cuando-usar` — Diafragma Rígido vs Semiflexible en ETABS: Cuándo usar cada uno
 - [ ] `predimensionamiento-losas-aligeradas-e060` — Predimensionamiento de Losas Aligeradas según E.060 (con tabla)
-- [ ] `sap2000-vs-etabs-cual-usar-edificios` — SAP2000 vs ETABS: ¿Cuál usar para el diseño de edificios?
+- [x] `sap2000-vs-etabs-cual-usar-edificios` — SAP2000 vs ETABS: ¿Cuál usar para el diseño de edificios?
+- [x] `robot-structural-vs-etabs-cual-usar-estructuras` — Robot Structural vs ETABS: ¿Cuál usar para análisis estructural en Perú?
 - [ ] `robot-structural-analisis-viento-carga-lateral` — Robot Structural: Análisis de Viento y Cargas Laterales paso a paso
 
 ## 🛠️ Civil 3D y Topografía
@@ -46,6 +47,8 @@
 - [ ] `norma-e050-estudios-suelos-informe-geotecnico` — Norma E.050: Qué debe incluir un Informe Geotécnico
 - [ ] `norma-e060-diseno-vigas-peraltadas-concreto` — Norma E.060: Diseño de Vigas Peraltadas de Concreto Armado
 - [x] `calculo-zapata-aislada-e050-e060-paso-a-paso` — Cálculo de Zapata Aislada: E.050 + E.060 paso a paso
+- [x] `cortante-basal-formula-e030-calculo-paso-a-paso` — Cortante Basal: Fórmula E.030 y Cálculo Paso a Paso con Ejemplo
+- [x] `zucs-formula-zona-sismica-e030-peru` — Fórmula ZUCS/R de la Norma E.030: Qué significa cada factor y cómo aplicarla
 
 ## 🏆 Navisworks y Coordinación
 

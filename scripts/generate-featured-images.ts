@@ -211,6 +211,32 @@ const POST_IMAGES: Array<{ slug: string; imageUrl: string }> = [
     // Engineers and architects reviewing construction project plans on table
     imageUrl: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
   },
+  // ── Batch 6 — Search Console keywords (18 Mar 2026) ─────────────────────────
+  {
+    slug: 'robot-structural-vs-etabs-cual-usar-estructuras',
+    // Structural engineering analysis / finite element model
+    imageUrl: 'https://images.pexels.com/photos/2219024/pexels-photo-2219024.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'cortante-basal-formula-e030-calculo-paso-a-paso',
+    // Seismic / earthquake zone Andean building structure
+    imageUrl: 'https://images.pexels.com/photos/1134166/pexels-photo-1134166.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'zucs-formula-zona-sismica-e030-peru',
+    // Engineer calculating structural formulas on whiteboard
+    imageUrl: 'https://images.pexels.com/photos/3862365/pexels-photo-3862365.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'sap2000-vs-etabs-cual-usar-edificios',
+    // Modern high-rise building structural frame under construction
+    imageUrl: 'https://images.pexels.com/photos/157811/pexels-photo-157811.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
+  {
+    slug: 'etabs-diafragma-rigido-semiflexible-cuando-usar',
+    // Concrete slab / floor plate structural plan
+    imageUrl: 'https://images.pexels.com/photos/2219024/pexels-photo-2219024.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&fit=crop',
+  },
 ];
 
 interface PostRecord {
