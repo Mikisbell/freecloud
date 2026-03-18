@@ -33,8 +33,8 @@ export default function Footer() {
                 alt="FreeCloud"
                 width={160}
                 height={27}
-                style={{ height: 'auto' }}
-                className="brightness-0 invert opacity-90 w-[140px]"
+                sizes="140px"
+                className="brightness-0 invert opacity-90 w-[140px] h-auto"
               />
             </Link>
             <p className="text-sm mt-3 leading-relaxed text-gray-400">

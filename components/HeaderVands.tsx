@@ -42,9 +42,8 @@ export default function HeaderVands() {
             alt="FreeCloud"
             width={300}
             height={50}
-            sizes="(max-width: 768px) 100px, 130px"
-            quality={100}
-            unoptimized={true}
+            sizes="(max-width: 768px) 110px, 140px"
+            quality={85}
             loading="eager"
             priority
             className="w-[100px] md:w-[135px] h-auto object-contain"
@@ -64,7 +63,7 @@ export default function HeaderVands() {
           ))}
           <Link
             href="/sobre-mi#contacto"
-            className="ml-2 px-5 py-2.5 bg-[#0f3d7c] text-white text-sm font-semibold hover:opacity-90 transition-opacity duration-200 shadow-sm"
+            className="ml-2 px-5 py-2.5 bg-fc-navy text-white text-sm font-semibold hover:opacity-90 transition-opacity duration-200 shadow-sm"
           >
             Solicitar Cotización
           </Link>

@@ -70,7 +70,7 @@ export default async function HomePage() {
     },
     {
       question: '¿Qué herramientas BIM debo aprender para cumplir con la Ley 32069?',
-      answer: 'Las herramientas más demandadas en el mercado peruano son Autodesk Revit (modelado arquitectónico y estructural), Navisworks (coordinación y detección de interferencias), Robot Structural Analysis (cálculo estructural) y Dynamo (automatización con scripts). Python también es fundamental para workfows avanzados con la API de Revit.',
+      answer: 'Las herramientas más demandadas en el mercado peruano son Autodesk Revit (modelado arquitectónico y estructural), Navisworks (coordinación y detección de interferencias), Robot Structural Analysis (cálculo estructural) y Dynamo (automatización con scripts). Python también es fundamental para workflows avanzados con la API de Revit.',
     },
     {
       question: '¿Cómo es el Plan BIM Perú y cuáles son sus fases?',
@@ -127,6 +127,7 @@ export default async function HomePage() {
                     width={22}
                     height={22}
                     className="object-contain w-full h-full"
+                    loading="lazy"
                     unoptimized
                   />
                 </div>
@@ -192,10 +193,10 @@ export default async function HomePage() {
                 {/* Placeholder de imagen — reemplazar con imagen real cuando exista */}
                 <div className="w-full h-48 relative border-b border-gray-100 bg-slate-50 flex items-center justify-center overflow-hidden">
                   <div className="text-center">
-                    <span className="text-5xl font-black tracking-tighter text-slate-200">
+                    <span className="text-5xl font-black tracking-tighter text-slate-400">
                       {prod.tag}
                     </span>
-                    <p className="text-xs mt-1 font-medium text-slate-400">Imagen próximamente</p>
+                    <p className="text-xs mt-1 font-medium text-slate-500">Imagen próximamente</p>
                   </div>
                 </div>
 
