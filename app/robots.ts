@@ -7,7 +7,13 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/admin/'],
+        disallow: [
+          '/api/',
+          '/admin/',
+          '/_next/static/',   // fuentes, chunks JS, CSS — no son páginas indexables
+          '/_next/image',     // URLs de optimización de imágenes
+          '/favicon.ico',     // favicon no debe indexarse
+        ],
       },
       {
         userAgent: 'Mediapartners-Google',
