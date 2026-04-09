@@ -49,17 +49,17 @@ const SKILLS = [
 ];
 
 const A_TECH = [
-  { name: 'Revit', logo: '/logos/autodesk-revit-logo-brandlogos.net_3f4zcg8n5.svg', dark: false },
-  { name: 'Python', logo: '/logos/python-logo.svg', dark: false },
+  { name: 'Revit', logo: '/logos/revit.svg', dark: true },
+  { name: 'Python', logo: '/logos/python.svg', dark: false },
   { name: 'ETABS', logo: '/logos/etabs.svg', dark: true },
-  { name: 'Robot Structural', logo: '/logos/Robot.svg', dark: true },
-  { name: 'AutoCAD', logo: '/logos/autocad-2018-logo-brandlogos.net_daa2e8ebk.svg', dark: false },
-  { name: 'Civil 3D', logo: '/logos/autodesk-civil-3d-icon.svg', dark: false },
-  { name: 'Navisworks', logo: '/logos/navisworks-logo-brandlogos.net_7nhvw5zx3.svg', dark: false },
-  { name: 'TypeScript', logo: '/logos/typescript-logo-brandlogos.net_8m25t2gyq.svg', dark: false },
-  { name: 'Supabase', logo: '/logos/supabase-logo-brandlogos.net_t0244mcpn.svg', dark: false },
-  { name: 'Excel', logo: '/logos/microsoft-excel-2025-logo-brandlogos.net_ztffjkq0v.svg', dark: false },
-  { name: 'SketchUp', logo: '/logos/SketchUp-OkCVaMpMm_brandlogos.net.svg', dark: false },
+  { name: 'Robot', logo: '/logos/robot.svg', dark: true },
+  { name: 'AutoCAD', logo: '/logos/autocad.svg', dark: true },
+  { name: 'Civil 3D', logo: '/logos/civil3d.svg', dark: true },
+  { name: 'Navisworks', logo: '/logos/navisworks.svg', dark: true },
+  { name: 'TypeScript', logo: '/logos/typescript.svg', dark: false },
+  { name: 'Supabase', logo: '/logos/supabase.svg', dark: false },
+  { name: 'Excel', logo: '/logos/microsoft-excel.svg', dark: false },
+  { name: 'SketchUp', logo: '/logos/sketchup.svg', dark: false },
 ];
 
 export default async function HomePage() {
