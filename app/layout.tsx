@@ -4,7 +4,7 @@ import { DM_Sans, Space_Grotesk, JetBrains_Mono, Montserrat, Rajdhani, Barlow_Co
 import { generateSiteMetadata, generateWebsiteSchema } from '@/lib/seo';
 import ClientAnalytics from '@/components/ClientAnalytics';
 import CookieConsent from '@/components/CookieConsent';
-import Script from 'next/script';
+import CookieConsentAwareAdSense from '@/components/CookieConsentAwareAdSense';
 import './globals.css';
 
 const fontDisplay = Space_Grotesk({
@@ -74,8 +74,6 @@ const fontLogoCloud = Nunito({
 export const metadata: Metadata = generateSiteMetadata();
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID;
-
   return (
     <html lang="es" suppressHydrationWarning data-scroll-behavior="smooth" className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable} ${fontBrand.variable} ${fontSlogan.variable} ${fontLogoFree.variable} ${fontLogoCloud.variable}`}>
       <head>
@@ -85,17 +83,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body suppressHydrationWarning className="font-body antialiased min-h-screen flex flex-col">
         {children}
-        {/* AdSense — lazyOnload: carga SOLO cuando el browser está completamente idle
-            Esto empuja AdSense Auto Ads fuera de la ventana de medición de CLS (0-5s)
-            Los anuncios manuales en blog posts siguen funcionando ya que usan el mismo script */}
-        {adsenseId && (
-          <Script
-            id="adsense-init"
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
-            strategy="lazyOnload"
-            crossOrigin="anonymous"
-          />
-        )}
+        {/* AdSense — solo carga cuando el usuario acepta cookies (GDPR compliant) */}
+        <CookieConsentAwareAdSense />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(generateWebsiteSchema()) }}

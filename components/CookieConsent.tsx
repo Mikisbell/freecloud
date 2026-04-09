@@ -5,24 +5,36 @@ import { X } from 'lucide-react';
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
+  const [consent, setConsent] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const consent = localStorage.getItem('cookie_consent');
-    if (!consent) {
-      // Show banner after 1 second
-      const timer = setTimeout(() => setVisible(true), 1000);
-      return () => clearTimeout(timer);
+    const stored = localStorage.getItem('cookie_consent');
+    if (stored === 'accepted') {
+      setConsent(true);
+      return;
     }
+    if (stored === 'rejected') {
+      setConsent(false);
+      return;
+    }
+    // No consent stored yet — show banner
+    const timer = setTimeout(() => setVisible(true), 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   const accept = () => {
     localStorage.setItem('cookie_consent', 'accepted');
+    setConsent(true);
     setVisible(false);
+    // Dispatch event so other components can react
+    window.dispatchEvent(new CustomEvent('cookie_consent', { detail: true }));
   };
 
   const reject = () => {
     localStorage.setItem('cookie_consent', 'rejected');
+    setConsent(false);
     setVisible(false);
+    window.dispatchEvent(new CustomEvent('cookie_consent', { detail: false }));
   };
 
   if (!visible) return null;
@@ -40,13 +52,10 @@ export default function CookieConsent() {
               <div className="flex-1">
                 <p className="text-sm text-white/80 leading-snug">
                   Usamos cookies para mejorar tu experiencia, analizar tráfico y personalizar contenido.
-                  Al continuar navegando, aceptas nuestra{' '}
-                  <a href="/politica-de-privacidad" className="text-fc-cyan hover:underline">
-                    Política de Privacidad
-                  </a>
-                  {' '}y el uso de cookies según nuestra{' '}
+                  Puedes aceptar o rechazar las cookies no esenciales.
+                  Más info en nuestra{' '}
                   <a href="/politica-de-privacidad#cookies" className="text-fc-cyan hover:underline">
-                    Política de Cookies
+                    Política de Privacidad y Cookies
                   </a>.
                 </p>
               </div>
@@ -56,7 +65,7 @@ export default function CookieConsent() {
             <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={reject}
-                className="px-4 py-2 text-xs text-white/50 hover:text-white/70 transition-colors"
+                className="px-4 py-2 text-xs text-white/50 hover:text-white/70 border border-white/10 rounded-full transition-colors"
               >
                 Rechazar
               </button>
