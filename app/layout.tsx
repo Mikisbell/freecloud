@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { DM_Sans, Space_Grotesk, JetBrains_Mono, Montserrat, Rajdhani, Barlow_Condensed, Nunito } from 'next/font/google';
 import { generateSiteMetadata, generateWebsiteSchema } from '@/lib/seo';
 import ClientAnalytics from '@/components/ClientAnalytics';
+import CookieConsent from '@/components/CookieConsent';
 import Script from 'next/script';
 import './globals.css';
 
@@ -102,6 +103,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <React.Suspense fallback={null}>
           <ClientAnalytics />
         </React.Suspense>
+        <CookieConsent />
       </body>
     </html>
   );

@@ -10,6 +10,8 @@ const NAV_ITEMS = [
   { label: 'Blog', href: '/blog' },
   { label: 'Servicios', href: '/servicios' },
   { label: 'Recursos', href: '/recursos' },
+  { label: 'Apps', href: '/apps' },
+  { label: 'Contacto', href: '/sobre-mi#contacto' },
   { label: 'Sobre Mí', href: '/sobre-mi' },
 ];
 
