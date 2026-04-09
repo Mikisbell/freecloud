@@ -256,6 +256,31 @@ export function generateFAQSchema(faqs: { question: string; answer: string }[]) 
   };
 }
 
+export function generateHowToSchema(steps: { name: string; text: string; url?: string }[], title: string, description: string, image?: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: title,
+    description: description,
+    image: image || `${SITE_URL}/og-default.png`,
+    step: steps.map((step, index) => ({
+      '@type': 'HowToStep',
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+      ...(step.url ? { url: `${SITE_URL}/blog/${step.url}` } : {}),
+    })),
+    totalTime: 'PT30M',
+    estimatedCost: {
+      '@type': 'MonetaryAmount',
+      currency: 'PEN',
+      value: '0',
+    },
+    supply: [],
+    tool: [],
+  };
+}
+
 export interface SoftwareSchemaParams {
   name: string;
   description: string;

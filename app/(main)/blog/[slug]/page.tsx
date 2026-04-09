@@ -19,6 +19,9 @@ import ShareButtons from '@/components/ShareButtons';
 import YouTubeFacade from '@/components/YouTubeFacade';
 import ClientGoogleAd from '@/components/ClientGoogleAd';
 import TableOfContents from '@/components/TableOfContents';
+import GiscusComments from '@/components/GiscusComments';
+import CommercialDisclaimer from '@/components/CommercialDisclaimer';
+import PostEditHistory from '@/components/PostEditHistory';
 import { extractHeadings } from '@/lib/blog';
 
 // 🚀 ISR: Regenerar la página 1 vez por hora máximo (3600 segundos)
@@ -245,14 +248,17 @@ export default async function BlogPostPage({ params }: Props) {
                 components={{
                   ...mdxComponents,
                   ProductCTA: () => post.cta_product_url ? (
-                    <div className="my-10 p-6 rounded-2xl bg-gradient-to-r from-fc-blue/5 to-transparent border-l-4 border-fc-blue shadow-sm">
-                      <p className="text-xs font-semibold text-fc-navy uppercase tracking-wider mb-2">💡 Recomendación del Autor</p>
-                      <h3 className="text-xl font-bold text-surface-900 mb-2">{post.cta_product_name || 'Herramienta Recomendada'}</h3>
-                      <p className="text-sm text-surface-600 mb-4">{post.cta_product_price ? `Disponible por ${post.cta_product_price}` : 'Accede a esta herramienta para optimizar tu trabajo.'}</p>
-                      <a href={post.cta_product_url} target="_blank" rel="noopener noreferrer" className="inline-block bg-fc-blue text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-fc-navy transition-colors shadow-sm">
-                        👉 Ver detalles
-                      </a>
-                    </div>
+                    <>
+                      <div className="my-10 p-6 rounded-2xl bg-gradient-to-r from-fc-blue/5 to-transparent border-l-4 border-fc-blue shadow-sm">
+                        <p className="text-xs font-semibold text-fc-navy uppercase tracking-wider mb-2">💡 Recomendación del Autor</p>
+                        <h3 className="text-xl font-bold text-surface-900 mb-2">{post.cta_product_name || 'Herramienta Recomendada'}</h3>
+                        <p className="text-sm text-surface-600 mb-4">{post.cta_product_price ? `Disponible por ${post.cta_product_price}` : 'Accede a esta herramienta para optimizar tu trabajo.'}</p>
+                        <a href={post.cta_product_url} target="_blank" rel="noopener noreferrer" className="inline-block bg-fc-blue text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-fc-navy transition-colors shadow-sm">
+                          👉 Ver detalles
+                        </a>
+                      </div>
+                      <CommercialDisclaimer />
+                    </>
                   ) : null,
                 }}
                 options={{
@@ -377,6 +383,12 @@ export default async function BlogPostPage({ params }: Props) {
                 </div>
               </div>
             )}
+
+            {/* Edit History — signals transparency & trust */}
+            <PostEditHistory slug={post.slug} />
+
+            {/* Comments — Giscus (GitHub Discussions) */}
+            <GiscusComments />
           </div>
 
           {/* Sidebar */}

@@ -96,8 +96,20 @@ export default function RecursosPage() {
 
       {/* CONTENEDOR GLOBAL TIPO BLOG */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        
-        {/* ── ALERTA DE HERRAMIENTAS GRATUITAS ── */}
+
+        {/* ── NOTA EDITORIAL (Señal AdSense: no es página de ventas) ── */}
+        <section className="py-6">
+          <div className="p-5 bg-fc-cyan/5 border border-fc-cyan/20 rounded-xl flex items-start gap-3">
+            <span className="text-xl">ℹ️</span>
+            <div className="text-sm text-surface-700 leading-relaxed">
+              <strong>Nota editorial:</strong> Estas herramientas están diseñadas para resolver problemas reales que encontré en mis proyectos de ingeniería. 
+              No hay obligación de compra — primero prueba nuestras <a href="/apps" className="text-fc-blue hover:underline font-medium">herramientas gratuitas</a>. 
+              Si te funcionan y quieres ahorrar más tiempo, las plantillas premium están aquí.
+            </div>
+          </div>
+        </section>
+
+        {/* ── ALERTA DE HERRAMIENTAS GRATUITAS (más prominente) ── */}
         <section className="py-8 relative z-20">
           <div className="dataiku-card p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
             <div className="flex items-center gap-4">
@@ -184,6 +196,36 @@ export default function RecursosPage() {
                 </div>
               );
             })}
+          </div>
+        </section>
+
+        {/* ── CUÁNDO NO COMPRAR (Señal editorial fuerte) ── */}
+        <section className="py-10 border-t border-surface-100">
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 md:p-8">
+            <h3 className="font-display font-bold text-lg text-amber-900 mb-3">
+              🤔 ¿Cuándo NO necesitas comprar nada?
+            </h3>
+            <ul className="space-y-2 text-amber-800 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-amber-600 mt-0.5">✋</span>
+                <span>Si solo necesitas <strong>aprender los conceptos</strong>, nuestros artículos del blog son gratuitos y cubren todo el paso a paso.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-amber-600 mt-0.5">✋</span>
+                <span>Si tienes <strong>un solo proyecto pequeño</strong> (casa de 1-2 pisos), puedes calcular todo manualmente con nuestras guías.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-amber-600 mt-0.5">✋</span>
+                <span>Si eres <strong>estudiante</strong>, Autodesk ofrece licencias educativas gratuitas de Revit, AutoCAD y Civil 3D.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-amber-600 mt-0.5">✋</span>
+                <span>Las <a href="/apps" className="underline font-medium">calculadoras online</a> (cortante basal, diseño sísmico) son siempre gratuitas.</span>
+              </li>
+            </ul>
+            <p className="text-amber-700 text-sm mt-4 font-medium">
+              💡 Las plantillas premium son para profesionales que necesitan <strong>automatizar cálculos repetitivos</strong> y ahorrar horas de trabajo manual.
+            </p>
           </div>
         </section>
 
