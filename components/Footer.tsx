@@ -19,6 +19,8 @@ const FOOTER_LINKS = {
   ]
 };
 
+const CONTACT_EMAIL = 'contacto@freecloud.pe';
+
 export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-400 py-12 px-6">
@@ -40,6 +42,12 @@ export default function Footer() {
             <p className="text-sm mt-3 leading-relaxed text-gray-400">
               BIM, ingeniería civil y tecnología para profesionales en Perú.
             </p>
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              className="inline-block mt-3 text-sm text-fc-cyan hover:underline"
+            >
+              {CONTACT_EMAIL}
+            </a>
           </div>
 
           {/* Cols dinámicas */}

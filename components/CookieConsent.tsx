@@ -45,7 +45,7 @@ export default function CookieConsent() {
                     Política de Privacidad
                   </a>
                   {' '}y el uso de cookies según nuestra{' '}
-                  <a href="/terminos-de-uso" className="text-fc-cyan hover:underline">
+                  <a href="/politica-de-privacidad#cookies" className="text-fc-cyan hover:underline">
                     Política de Cookies
                   </a>.
                 </p>

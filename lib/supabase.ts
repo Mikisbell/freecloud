@@ -270,6 +270,7 @@ export interface GetPostsOptions {
   category?: string; // backwards compatibility
   tag?: string;
   featured?: boolean;
+  search?: string; // search query
 }
 
 export async function getPosts(options?: GetPostsOptions) {
@@ -286,6 +287,11 @@ export async function getPosts(options?: GetPostsOptions) {
 
   if (options?.tag) {
     query = query.contains('tags', [options.tag]);
+  }
+
+  if (options?.search) {
+    const searchQuery = `%${options.search}%`;
+    query = query.or(`title.ilike.${searchQuery},content.ilike.${searchQuery},excerpt.ilike.${searchQuery}`);
   }
 
   if (options?.featured !== undefined) {
