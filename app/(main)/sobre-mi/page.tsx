@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
-import { Building2, Code, GraduationCap, MapPin, Briefcase, Linkedin, Github, Youtube, Download, ExternalLink } from 'lucide-react';
+import { Building2, Code, GraduationCap, MapPin, Briefcase, Download, ExternalLink } from 'lucide-react';
+import { Linkedin, Github, Youtube } from '@/components/icons/BrandIcons';
 import ContactForm from '@/components/ContactForm';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site';

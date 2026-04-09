@@ -93,6 +93,13 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
     const [dirty, setDirty] = useState(false)
     const [tagInput, setTagInput] = useState('')
     const [toastMsg, setToastMsg] = useState<{ text: string, type: 'success' | 'error' } | null>(null)
+    
+    // AI Image Generation state
+    const [showAiGen, setShowAiGen] = useState(false)
+    const [aiPrompt, setAiPrompt] = useState('')
+    const [aiGenerating, setAiGenerating] = useState(false)
+    const [aiGeneratedUrls, setAiGeneratedUrls] = useState<string[]>([])
+    const [aiStyle, setAiStyle] = useState<'photorealistic' | 'architectural' | '3d-render' | 'illustration' | 'technical'>('photorealistic')
 
     // Editor Resizer state
     const [editorWidth, setEditorWidth] = useState(50) // percentage
@@ -186,6 +193,57 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
             setDirty(true);
         }
     }
+
+    // AI Image Generation
+    const handleAiGenerateImage = async (useAutoPrompt: boolean = false) => {
+        const prompt = useAutoPrompt 
+            ? `Professional engineering blog featured image: ${formData.title || 'BIM and Civil Engineering'}, modern architecture, Peru, clean composition`
+            : aiPrompt;
+        
+        if (!prompt) {
+            showToast('Escribe un prompt para generar la imagen', 'error');
+            return;
+        }
+
+        setAiGenerating(true);
+        try {
+            const response = await fetch('/api/image-generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    mode: 'custom',
+                    prompt,
+                    options: {
+                        style: aiStyle,
+                        size: '1920x1080',
+                        n: 2,
+                    },
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                showToast(data.error || 'Error al generar imagen', 'error');
+                return;
+            }
+
+            setAiGeneratedUrls(data.urls);
+            showToast(`${data.urls.length} imagen(es) generada(s)`, 'success');
+        } catch (error) {
+            showToast('Error de red al generar imagen', 'error');
+        } finally {
+            setAiGenerating(false);
+        }
+    };
+
+    const handleAiUseImage = (url: string) => {
+        setFormData(prev => ({ ...prev, featured_image: url }));
+        setDirty(true);
+        setShowAiGen(false);
+        setAiGeneratedUrls([]);
+        showToast('Imagen aplicada como destacada', 'success');
+    };
 
     useEffect(() => {
         if (!isEditing && formData.title && !formData.slug) {
@@ -715,6 +773,117 @@ export default function PostEditor({ post, categories }: PostEditorProps) {
                             placeholder="Texto Alt (Accesibilidad/SEO)"
                             className="bg-white/[0.04] border-white/[0.08] text-white text-xs h-9"
                         />
+                        
+                        {/* AI Image Generation Button */}
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setShowAiGen(!showAiGen);
+                                if (formData.title) {
+                                    setAiPrompt(`Professional engineering blog featured image about: ${formData.title}`);
+                                }
+                            }}
+                            className="w-full h-9 border-purple-500/30 text-purple-300 hover:bg-purple-500/10 hover:border-purple-500/50 text-xs"
+                        >
+                            <Sparkles className="w-3.5 h-3.5 mr-1.5" />
+                            {showAiGen ? 'Cerrar Generador IA' : 'Generar Imagen con IA ✨'}
+                        </Button>
+
+                        {/* AI Image Generation Panel */}
+                        {showAiGen && (
+                            <div className="space-y-3 p-3 bg-purple-500/5 border border-purple-500/20 rounded-lg">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <Sparkles className="w-4 h-4 text-purple-400" />
+                                    <span className="text-xs font-medium text-purple-300">Qwen Image (DashScope)</span>
+                                </div>
+
+                                {/* Style Selector */}
+                                <div className="grid grid-cols-5 gap-1">
+                                    {([
+                                        { value: 'photorealistic', label: '📷 Real' },
+                                        { value: 'architectural', label: '🏛️ Arq' },
+                                        { value: '3d-render', label: '🎮 3D' },
+                                        { value: 'illustration', label: '🎨 Draw' },
+                                        { value: 'technical', label: '📐 Téc' },
+                                    ] as const).map((s) => (
+                                        <button
+                                            key={s.value}
+                                            onClick={() => setAiStyle(s.value)}
+                                            className={`text-[10px] py-1.5 rounded transition-colors ${
+                                                aiStyle === s.value
+                                                    ? 'bg-purple-500/30 text-purple-200 border border-purple-500/40'
+                                                    : 'bg-white/[0.04] text-white/40 border border-transparent hover:text-white/60'
+                                            }`}
+                                        >
+                                            {s.label}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* Prompt Input */}
+                                <Textarea
+                                    value={aiPrompt}
+                                    onChange={(e) => setAiPrompt(e.target.value)}
+                                    placeholder="Describe la imagen que quieres generar... (en inglés para mejor resultado)"
+                                    rows={3}
+                                    className="bg-white/[0.04] border-white/[0.08] text-white text-xs resize-none min-h-[60px]"
+                                />
+
+                                {/* Action Buttons */}
+                                <div className="flex gap-2">
+                                    <Button
+                                        onClick={() => handleAiGenerateImage(false)}
+                                        disabled={aiGenerating || !aiPrompt}
+                                        className="flex-1 h-8 text-xs bg-purple-500/20 text-purple-200 hover:bg-purple-500/30 border border-purple-500/30"
+                                    >
+                                        {aiGenerating ? (
+                                            <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
+                                        ) : (
+                                            <Sparkles className="w-3.5 h-3.5 mr-1.5" />
+                                        )}
+                                        {aiGenerating ? 'Generando...' : 'Generar'}
+                                    </Button>
+                                    <Button
+                                        onClick={() => handleAiGenerateImage(true)}
+                                        disabled={aiGenerating || !formData.title}
+                                        variant="outline"
+                                        className="h-8 text-xs border-white/[0.08] text-white/50 hover:text-white/70"
+                                        title="Auto-generar prompt desde título"
+                                    >
+                                        Auto ✨
+                                    </Button>
+                                </div>
+
+                                {/* Generated Images Grid */}
+                                {aiGeneratedUrls.length > 0 && (
+                                    <div className="space-y-2 pt-2 border-t border-purple-500/20">
+                                        <p className="text-[10px] text-purple-300/60">Selecciona una imagen para usar como destacada:</p>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {aiGeneratedUrls.map((url, idx) => (
+                                                <button
+                                                    key={idx}
+                                                    onClick={() => handleAiUseImage(url)}
+                                                    className="relative group rounded-lg overflow-hidden border border-purple-500/30 hover:border-purple-400/60 transition-colors"
+                                                >
+                                                    <img
+                                                        src={url}
+                                                        alt={`Generada ${idx + 1}`}
+                                                        className="w-full h-24 object-cover"
+                                                    />
+                                                    <div className="absolute inset-0 bg-purple-500/0 group-hover:bg-purple-500/20 transition-colors flex items-center justify-center">
+                                                        <span className="text-white text-[10px] font-medium opacity-0 group-hover:opacity-100 bg-black/50 px-2 py-1 rounded">
+                                                            Usar esta
+                                                        </span>
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </CardContent>
             </Card>

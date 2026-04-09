@@ -1,6 +1,7 @@
 'use client';
 
-import { Twitter, Linkedin, Link as LinkIcon } from 'lucide-react';
+import { Link as LinkIcon } from 'lucide-react';
+import { Twitter, Linkedin } from '@/components/icons/BrandIcons';
 import { useState } from 'react';
 
 interface ShareButtonsProps {

@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Monitor, Settings, BookOpen, ArrowRight, Github, Linkedin, Youtube } from 'lucide-react';
+import { Monitor, Settings, BookOpen, ArrowRight } from 'lucide-react';
+import { Github, Linkedin, Youtube } from '@/components/icons/BrandIcons';
 import { getPosts } from '@/lib/supabase';
 import ClientGoogleAd from '@/components/ClientGoogleAd';
 import type { Post } from '@/types/supabase';
@@ -194,14 +195,15 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {PRODUCTS.map((prod, i) => (
               <div key={i} className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col group">
-                {/* Placeholder de imagen — reemplazar con imagen real cuando exista */}
-                <div className="w-full h-48 relative border-b border-gray-100 bg-slate-50 flex items-center justify-center overflow-hidden">
-                  <div className="text-center">
-                    <span className="text-5xl font-black tracking-tighter text-slate-400">
-                      {prod.tag}
-                    </span>
-                    <p className="text-xs mt-1 font-medium text-slate-500">Imagen próximamente</p>
-                  </div>
+                {/* Imagen del producto */}
+                <div className="w-full h-48 relative border-b border-gray-100 overflow-hidden bg-surface-50">
+                  <Image
+                    src={prod.cover || '/recursos/sismica_cover.png'}
+                    alt={prod.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 33vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
                 </div>
 
                 <div className="p-6 flex flex-col flex-1 relative z-20 bg-white">

@@ -72,12 +72,35 @@ GGA corre **automáticamente** como pre-commit hook en cada `git commit`.
 - Ver workflow completo en `.agents/workflows/gga-commit.md`
 - Requiere `ANTHROPIC_API_KEY` en `.env.local`
 
-## Memoria Persistente (Engram)
-Si Engram MCP está disponible:
-- Al iniciar una sesión: `mem_context` para recuperar contexto anterior del proyecto
-- Al tomar una decisión técnica importante: `mem_save` con formato: `qué, por qué, dónde, qué se aprendió`
-- Antes de que el contexto se llene: `mem_session_summary` para no perder info crítica
-- Si Engram no responde → usar `MEMORY.md` como fallback
+## Memoria Persistente (Engram v1.7.0)
+
+**Conexión:** MCP nativo configurado en `.qwen/settings.json`
+
+### Verificar conexión
+```
+qwen mcp list  → debe mostrar ✓ engram - Connected
+```
+
+### 11 herramientas nativas disponibles (perfil `agent`)
+Las herramientas de Engram se cargan automáticamente al iniciar sesión en el proyecto.
+
+### CLI de respaldo (si MCP falla)
+| Comando | Uso |
+|---------|-----|
+| `.agents\engram-connect.bat` | Contexto general |
+| `.agents\engram-connect.bat "query"` | Búsqueda específica |
+| `engram context` | Contexto del proyecto |
+| `engram search "query"` | Buscar memorias |
+| `engram save "título" "mensaje"` | Guardar memoria |
+
+### Cuándo guardar memoria
+- Decisiones arquitectónicas importantes
+- Bugs resueltos con solución no obvia
+- Cambios de estrategia del proyecto
+- Antes de cerrar sesión: resumen de sesión
+
+### Fallback
+Si Engram no responde → usar `MEMORY.md`
 
 ## Variables de entorno relevantes
 - `NEXT_PUBLIC_SUPABASE_URL` — Supabase endpoint
