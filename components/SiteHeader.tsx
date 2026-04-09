@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
 const NAV_ITEMS = [
+  { label: 'Empieza Aquí', href: '/empieza-aqui' },
   { label: 'Blog', href: '/blog' },
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'Servicios', href: '/servicios' },

@@ -22,6 +22,7 @@ import TableOfContents from '@/components/TableOfContents';
 import GiscusComments from '@/components/GiscusComments';
 import CommercialDisclaimer from '@/components/CommercialDisclaimer';
 import PostEditHistory from '@/components/PostEditHistory';
+import ReadingProgressBar from '@/components/ReadingProgressBar';
 import { extractHeadings } from '@/lib/blog';
 
 // 🚀 ISR: Regenerar la página 1 vez por hora máximo (3600 segundos)
@@ -155,7 +156,10 @@ export default async function BlogPostPage({ params }: Props) {
         />
       )}
 
-      <article className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      {/* Reading Progress Bar */}
+      <ReadingProgressBar />
+
+      <article className="max-w-7xl mx-auto px-4 sm:px-6 py-8 print:py-4">
         {/* Breadcrumbs */}
         <nav className="flex flex-wrap items-center gap-2 text-sm text-surface-400 mb-6">
           <Link href="/" className="hover:text-fc-navy transition-colors">Inicio</Link>

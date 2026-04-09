@@ -5,6 +5,7 @@ import { generateSiteMetadata, generateWebsiteSchema } from '@/lib/seo';
 import ClientAnalytics from '@/components/ClientAnalytics';
 import CookieConsent from '@/components/CookieConsent';
 import CookieConsentAwareAdSense from '@/components/CookieConsentAwareAdSense';
+import NewsletterPopup from '@/components/NewsletterPopup';
 import './globals.css';
 
 const fontDisplay = Space_Grotesk({
@@ -93,6 +94,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ClientAnalytics />
         </React.Suspense>
         <CookieConsent />
+        <NewsletterPopup />
       </body>
     </html>
   );

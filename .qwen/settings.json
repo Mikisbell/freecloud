@@ -16,7 +16,8 @@
       "Bash(copy *)",
       "Bash(git show *)",
       "Bash(move *)",
-      "Bash(type *)"
+      "Bash(type *)",
+      "Bash(echo *)"
     ]
   },
   "$version": 3,

@@ -581,3 +581,14 @@
     animation: scrollLogos 40s linear infinite;
   }
 }
+
+/* ━━━ PRINT-FRIENDLY CSS ━━━ */
+@media print {
+  header, footer, nav, .sticky, aside, .giscus, #giscus-comments, button, .no-print { display: none !important; }
+  article { max-width: 100% !important; margin: 0 !important; padding: 1rem !important; }
+  .prose-blog { font-size: 11pt !important; line-height: 1.5 !important; }
+  .prose-blog h2 { page-break-after: avoid; }
+  .prose-blog table { page-break-inside: avoid; }
+  a { color: #333 !important; text-decoration: underline !important; }
+  a[href^='http']:after { content: ' (' attr(href) ')'; font-size: 9pt; }
+}
