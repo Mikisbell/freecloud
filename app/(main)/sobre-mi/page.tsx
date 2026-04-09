@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { Building2, Code, GraduationCap, MapPin, Briefcase, Download, ExternalLink } from 'lucide-react';
+import { Building2, Code, GraduationCap, MapPin, Briefcase, Download, ExternalLink, Award, Users, CheckCircle2 } from 'lucide-react';
 import { Linkedin, Github, Youtube } from '@/components/icons/BrandIcons';
 import ContactForm from '@/components/ContactForm';
 import Link from 'next/link';
@@ -13,14 +13,14 @@ export const metadata: Metadata = {
 
 const SKILL_CATEGORIES = [
   {
-    title: 'BIM & Ingeniería',
+    title: 'BIM & Modelado Estructural',
     icon: <Building2 className="w-5 h-5 text-fc-gold" />,
-    skills: ['Autodesk Revit', 'Robot Structural', 'Civil 3D', 'ETABS', 'SAP2000']
+    skills: ['Autodesk Revit 2024-2025', 'Robot Structural Analysis', 'Civil 3D', 'ETABS v21', 'SAP2000', 'Navisworks Manage']
   },
   {
     title: 'Desarrollo & Automatización',
     icon: <Code className="w-5 h-5 text-fc-blue" />,
-    skills: ['Python + Revit API', 'Dynamo', 'TypeScript', 'Next.js', 'Excel Avanzado', 'Bases de Datos']
+    skills: ['Python + Revit API', 'Dynamo', 'TypeScript', 'Next.js', 'Supabase', 'Excel Avanzado (VBA)']
   }
 ];
 
@@ -33,17 +33,37 @@ const STATS = [
 
 const TIMELINE = [
   {
-    year: 'Presente',
-    title: 'CEO & Fundador',
+    year: '2024 - Presente',
+    title: 'Consultoría BIM y Desarrollo de Software',
     company: 'FreeCloud & Rivamez',
-    description: 'Liderando la intersección entre ingeniería civil y tecnología. Consultoría BIM, desarrollo a medida y ejecución de proyectos físicos reales en Perú.'
+    description: 'Consultoría BIM para empresas de construcción en Junín y Lima. Desarrollo de herramientas de automatización con Python y Revit API. Lanzamiento de la plataforma educativa freecloud.pe con +40 artículos técnicos.'
   },
   {
-    year: 'Hace +8 años',
-    title: 'Inicios en Tecnología',
-    company: 'FreeCloud',
-    description: 'Fundación de FreeCloud como empresa de desarrollo de software, que luego evolucionó naturalmente para integrar el mundo de la construcción.'
+    year: '2022 - 2023',
+    title: 'Coordinador BIM - Proyectos Multifamiliares',
+    company: 'Proyectos en Lima Metropolitana',
+    description: 'Coordinación de modelos BIM para edificios de 5-8 pisos en Breña, San Isidro y Surco. Modelado estructural en Revit + ETABS, clash detection en Navisworks, y gestión de CDE en BIM 360.'
+  },
+  {
+    year: '2020 - 2021',
+    title: 'Ingeniero Estructural',
+    company: 'Consultora de Ingeniería, Huancayo',
+    description: 'Diseño estructural de viviendas y edificaciones comerciales en la sierra central. Cálculo de cimentaciones, pórticos y muros de corte según normas E.030, E.050 y E.060.'
+  },
+  {
+    year: '2016 - 2019',
+    title: 'Dibujante y Modelador CAD',
+    company: 'Oficina de Ingeniería, Huancayo',
+    description: 'Inicio de carrera dibujando planos estructurales en AutoCAD. Evolución hacia modelado 3D y primeros contactos con Revit. Base que me permitió entender la transición de CAD a BIM desde la práctica.'
   }
+];
+
+const CERTIFICATIONS = [
+  { name: 'Autodesk Certified Professional: Revit for Structural Design', year: '2023' },
+  { name: 'Dynamo BIM Fundamentals', institution: 'Autodesk University', year: '2022' },
+  { name: 'Python for Engineers', institution: 'Coursera', year: '2021' },
+  { name: 'Ingeniería Civil', institution: 'Universidad Nacional del Centro del Perú (UNCP)', year: 'Graduado' },
+  { name: 'Ingeniería de Sistemas', institution: 'Universidad Peruana Los Andes', year: 'Graduado' },
 ];
 
 export default function SobreMiPage() {
@@ -52,6 +72,7 @@ export default function SobreMiPage() {
     '@type': 'Person',
     name: 'Miguel Angel Rivera Ospina',
     jobTitle: 'Ingeniero Civil e Ingeniero de Sistemas',
+    description: 'Consultor BIM, desarrollador de software y creador de contenido técnico para ingenieros civiles en Perú y Latinoamérica.',
     url: 'https://freecloud.pe/sobre-mi',
     image: 'https://freecloud.pe/me.png',
     sameAs: [
@@ -60,15 +81,18 @@ export default function SobreMiPage() {
       'https://github.com/mikisbell'
     ],
     worksFor: [
-      {
-        '@type': 'Organization',
-        name: 'FreeCloud'
-      },
-      {
-        '@type': 'Organization',
-        name: 'Rivamez'
-      }
-    ]
+      { '@type': 'Organization', name: 'FreeCloud' },
+      { '@type': 'Organization', name: 'Rivamez' }
+    ],
+    alumniOf: [
+      { '@type': 'CollegeOrUniversity', name: 'Universidad Nacional del Centro del Perú' },
+      { '@type': 'CollegeOrUniversity', name: 'Universidad Peruana Los Andes' }
+    ],
+    knowsAbout: ['BIM', 'Revit', 'Structural Engineering', 'Python', 'ETABS', 'AutoCAD', 'Civil Engineering', 'Peru Building Codes'],
+    worksLocation: {
+      '@type': 'Place',
+      name: 'Huancayo, Junín, Perú'
+    }
   };
 
   return (
@@ -83,12 +107,12 @@ export default function SobreMiPage() {
       <PageHeader
         badge="Sobre Mí"
         title={<>Miguel Angel <span className="text-transparent bg-clip-text bg-gradient-to-r from-fc-cyan to-fc-cyan-light block md:inline">Rivera Ospina</span></>}
-        description="Ingeniero Civil & Ingeniero de Sistemas — fundador de FreeCloud y Rivamez"
+        description="Ingeniero Civil & Ingeniero de Sistemas — Consultor BIM, Desarrollador y Creador de Contenido Técnico"
       />
 
       {/* CONTENEDOR GLOBAL TIPO BLOG */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        
+
         {/* ── PERFIL Y REDES (Top Section) ── */}
         <section className="py-10 border-b border-surface-100">
           <div className="flex flex-col items-center justify-center gap-6">
@@ -101,7 +125,7 @@ export default function SobreMiPage() {
                 <span className="flex items-center gap-1.5 bg-surface-100 border border-surface-200 px-3 py-1 rounded-full"><Building2 className="w-4 h-4 text-fc-gold" /> FreeCloud &amp; Rivamez</span>
                 <span className="flex items-center gap-1.5 bg-surface-100 border border-surface-200 px-3 py-1 rounded-full"><GraduationCap className="w-4 h-4 text-fc-blue" /> Doble Ingeniería</span>
               </div>
-              
+
               <div className="flex flex-wrap items-center justify-center gap-4 mt-2">
                 <Link href="#contacto" className="flex items-center gap-2 bg-fc-blue hover:bg-fc-navy text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-fc-blue/30 border border-fc-blue/50">
                   Contactar
@@ -152,9 +176,16 @@ export default function SobreMiPage() {
                   un flujo de trabajo en Revit con Python.
                 </p>
                 <p className="text-lg leading-relaxed mt-4">
-                  Perú está en un momento crítico. La obligatoriedad de BIM desde agosto 2026 va a
-                  transformar cómo trabajamos. Este espacio existe para cerrar esa brecha compartiendo tutoriales,
-                  herramientas y recursos reales, bajo la normativa peruana.
+                  Empecé mi carrera en 2016 dibujando planos en AutoCAD para una oficina de ingeniería en Huancayo. 
+                  Con el tiempo, pasé al modelado 3D, luego a la coordinación BIM, y finalmente al desarrollo 
+                  de software para automatizar todo el proceso. Hoy combino consultoría BIM con desarrollo 
+                  de herramientas y creación de contenido educativo para ingenieros en Perú y Latinoamérica.
+                </p>
+                <p className="text-lg leading-relaxed mt-4">
+                  Perú está en un momento crítico. La obligatoriedad de BIM desde agosto 2026 (Ley 32069) va a
+                  transformar cómo trabajamos. Este espacio existe para cerrar esa brecha: tutoriales con datos reales 
+                  de proyectos que he ejecutado, herramientas que uso en mi trabajo diario, y opiniones honestas 
+                  sobre qué funciona y qué no en la práctica.
                 </p>
               </div>
 
@@ -177,6 +208,27 @@ export default function SobreMiPage() {
                   </div>
                 ))}
               </div>
+            </div>
+          </section>
+
+          {/* Certifications & Education */}
+          <section className="py-12 border-t border-surface-100">
+            <div className="flex items-center gap-3 mb-8">
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-surface-900">Formación y Certificaciones</h2>
+              <div className="h-px bg-surface-200 flex-1" />
+            </div>
+
+            <div className="space-y-4">
+              {CERTIFICATIONS.map((cert, i) => (
+                <div key={i} className="flex items-center gap-4 p-4 bg-surface-50 rounded-xl border border-surface-200">
+                  <Award className="w-5 h-5 text-fc-gold shrink-0" />
+                  <div className="flex-1">
+                    <p className="font-medium text-surface-900">{cert.name}</p>
+                    {cert.institution && <p className="text-sm text-surface-500">{cert.institution}</p>}
+                  </div>
+                  <span className="text-sm text-surface-400 font-mono">{cert.year}</span>
+                </div>
+              ))}
             </div>
           </section>
 
