@@ -19,15 +19,15 @@ export default function GiscusComments() {
     const script = document.createElement('script');
     script.src = 'https://giscus.app/client.js';
     script.setAttribute('data-repo', 'Mikisbell/freecloud');
-    script.setAttribute('data-repo-id', ''); // Add your repo ID from giscus.app
+    script.setAttribute('data-repo-id', 'R_kgDOOpq0dg');
     script.setAttribute('data-category', 'General');
-    script.setAttribute('data-category-id', ''); // Add category ID
+    script.setAttribute('data-category-id', 'DIC_kwDOOpq0ds4C6cDt');
     script.setAttribute('data-mapping', 'pathname');
     script.setAttribute('data-strict', '0');
     script.setAttribute('data-reactions-enabled', '1');
     script.setAttribute('data-emit-metadata', '0');
     script.setAttribute('data-input-position', 'bottom');
-    script.setAttribute('data-theme', 'light');
+    script.setAttribute('data-theme', 'preferred_color_scheme');
     script.setAttribute('data-lang', 'es');
     script.setAttribute('data-loading', 'lazy');
     script.crossOrigin = 'anonymous';
@@ -42,22 +42,7 @@ export default function GiscusComments() {
     };
   }, []);
 
-  // If not configured, show fallback
-  const isConfigured = process.env.NEXT_PUBLIC_GISCUS_REPO === 'Mikisbell/freecloud';
-
-  if (!isConfigured) {
-    return (
-      <div className="py-12 text-center bg-surface-50 rounded-2xl border border-surface-100">
-        <p className="text-surface-500 text-sm">
-          ¿Tienes una pregunta o comentario?{' '}
-          <a href="/sobre-mi#contacto" className="text-fc-blue hover:underline font-medium">
-            Contáctame directamente
-          </a>
-        </p>
-      </div>
-    );
-  }
-
+  // Always show Giscus for now (configured for Mikisbell/freecloud)
   return (
     <section className="mt-16 pt-8 border-t border-surface-100">
       <h2 className="text-2xl font-display font-bold text-surface-900 mb-6">
