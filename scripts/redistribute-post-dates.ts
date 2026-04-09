@@ -78,7 +78,6 @@ const POST_DATES: Record<string, string> = {
   'bim-manager-que-hace-cuanto-gana-peru': '2026-02-14',
   'bep-plan-ejecucion-bim-ejemplo-peru': '2026-02-17',
   'python-librerias-esenciales-ingenieros-civiles': '2026-02-21',
-  'que-es-bim-obligatorio-peru-2026': '2026-02-24',
 
   // ═══ MARZO 2026 — Posts recientes, guías completas (7 posts) ═══
   'civil-3d-carreteras-guia-completa-paso-a-paso': '2026-03-03',
@@ -92,13 +91,6 @@ const POST_DATES: Record<string, string> = {
   'predimensionamiento-columnas-vigas-e060-practico': '2026-03-26',
   'haz-predimensionamiento-columnas-vigas-optimizar': '2026-03-26',
   'hardy-cross-hp-prime-programa': '2026-01-27',
-  'hp-prime-programa-hardy-cross-analisis-estructural': '2026-01-27',
-};
-
-// Alternative dates for slugs that might differ
-const FALLBACK_DATES: Record<string, string[]> = {
-  'hp-prime': '2026-01-27',
-  'haz-predimensionamiento': '2026-03-26',
 };
 
 async function main() {
