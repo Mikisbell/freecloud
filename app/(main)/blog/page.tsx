@@ -54,7 +54,7 @@ export default async function BlogPage({ searchParams }: Props) {
       />
 
       {/* Category filters + Search */}
-      <div className="sticky top-16 z-30 bg-white/80 backdrop-blur-xl border-b border-surface-100">
+      <div className="sticky top-16 md:top-[72px] z-30 bg-white/95 backdrop-blur-xl border-b border-surface-100 shadow-sm">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-3 px-4 sm:px-6">
             {/* Category pills */}

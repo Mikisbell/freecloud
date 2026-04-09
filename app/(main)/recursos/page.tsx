@@ -79,8 +79,8 @@ export default function RecursosPage() {
         description="Plantillas Excel profesionales, programas para calculadoras y scripts BIM diseñados específicamente para ingenieros civiles en Perú."
       />
 
-      {/* ── BARRA DE CONFIANZA STICKY (Tipo Blog) ── */}
-      <div className="sticky top-16 z-30 bg-white/80 backdrop-blur-xl border-b border-surface-100">
+      {/* ── BARRA DE CONFIANZA STICKY (debajo del header fijo) ── */}
+      <div className="sticky top-16 md:top-[72px] z-30 bg-white/95 backdrop-blur-xl border-b border-surface-100 shadow-sm">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-8 gap-y-3 py-3 overflow-x-auto no-scrollbar px-4 sm:px-6">
             <span className="text-xs font-bold text-surface-400 uppercase tracking-widest hidden lg:block">GARANTÍAS:</span>
