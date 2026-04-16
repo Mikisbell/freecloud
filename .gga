@@ -38,7 +38,10 @@ RULES_FILE="AGENTS.md"
 
 # Strict mode: fail if AI response is ambiguous
 # Default: true
-STRICT_MODE="true"
+# Disabled: GGA v2.7.0 parser requires 'STATUS: PASSED/FAILED' in English.
+# Claude reviewer approves correctly in Spanish but strict mode fails on format.
+# Re-enable after upgrading to v2.8.1+ if it fixes multilingual status parsing.
+STRICT_MODE="false"
 
 # Timeout in seconds for AI provider response
 # Default: 300 (5 minutes)

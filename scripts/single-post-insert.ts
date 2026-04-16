@@ -1,13 +1,6 @@
 /**
  * single-post-insert.ts
  * Inyecta UN SOLO artículo directamente en Supabase.
- * Usado por el Content Engine (content-engine/SKILL.md) para publicar un post
- * generado automáticamente sin pasar por archivos .md locales.
- *
- * Uso:
- *   npx tsx scripts/single-post-insert.ts
- *
- * El post se define en la constante `POST_TO_INSERT` al final de este archivo.
  */
 
 import { createClient } from '@supabase/supabase-js';
@@ -21,21 +14,17 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
   console.error('❌ Faltan credenciales de Supabase en .env.local');
-  console.error('   Requerido: NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY');
   process.exit(1);
 }
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// ─────────────────────────────────────────────────────────────────────────────
-// TIPO DEL POST
-// ─────────────────────────────────────────────────────────────────────────────
 interface PostInput {
   title: string;
   slug: string;
   excerpt: string;
   content: string;
-  category_slug: string;   // Se mapea a category_id automáticamente
+  category_slug: string;
   status: 'published' | 'draft';
   author: string;
   tags: string[];
@@ -45,13 +34,9 @@ interface PostInput {
   meta_description?: string;
   key_question?: string;
   key_answer?: string;
-  /** Si no se provee, se asigna automáticamente entre 2 y 12 días atrás */
   published_at?: string;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
 function getRandomPastDate(minDays = 2, maxDays = 12): string {
   const date = new Date();
   const days = Math.floor(Math.random() * (maxDays - minDays + 1) + minDays);
@@ -59,15 +44,10 @@ function getRandomPastDate(minDays = 2, maxDays = 12): string {
   return date.toISOString();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// FUNCIÓN PRINCIPAL
-// ─────────────────────────────────────────────────────────────────────────────
 async function insertPost(post: PostInput) {
   console.log(`\n🚀 Content Engine — Inyectando: "${post.title}"`);
   console.log('─'.repeat(60));
 
-  // 1. Mapear category_slug → category_id
-  console.log('📡 Conectando a Supabase y mapeando categorías...');
   const { data: categories, error: catError } = await supabase
     .from('categories')
     .select('id, slug');
@@ -83,14 +63,11 @@ async function insertPost(post: PostInput) {
   const category_id = catMap[post.category_slug];
   if (!category_id) {
     console.warn(`⚠️  Categoría "${post.category_slug}" no encontrada.`);
-    console.warn(`   Categorías disponibles: ${Object.keys(catMap).join(', ')}`);
-    console.warn('   Usando la primera disponible como fallback.');
   }
 
   const finalCategoryId = category_id || Object.values(catMap)[0];
   const publishedAt = post.published_at ?? getRandomPastDate(2, 12);
 
-  // 2. Armar el payload limpio
   const { category_slug, published_at: _pa, ...rest } = post;
   const payload = {
     ...rest,
@@ -99,9 +76,7 @@ async function insertPost(post: PostInput) {
     featured_image: post.featured_image ?? null,
   };
 
-  // 3. Upsert (si el slug ya existe, actualiza; si no, inserta)
-  console.log(`📦 Insertando post con slug: "${payload.slug}"`);
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('posts')
     .upsert([payload], { onConflict: 'slug' });
 
@@ -114,112 +89,158 @@ async function insertPost(post: PostInput) {
   console.log('✅ Post inyectado exitosamente en Supabase.');
   console.log(`   Slug: ${payload.slug}`);
   console.log(`   Fecha publicación: ${publishedAt}`);
-  console.log(`   Categoría: ${post.category_slug} (id: ${finalCategoryId})`);
-  console.log('\n👉 Siguiente paso: Ejecuta "node scripts/indexnow-submit.mjs" para notificar a Bing/Yandex.');
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 📝 AQUÍ VA EL ARTÍCULO — El Content Engine reemplaza esto cada vez
-// ─────────────────────────────────────────────────────────────────────────────
 const POST_TO_INSERT: PostInput = {
-  title: 'BEP (Plan de Ejecución BIM) con Ejemplo Real para Obras en Perú',
-  slug: 'bep-plan-ejecucion-bim-ejemplo-peru',
-  excerpt: 'Si tu proyecto BIM no tiene un BEP desde el primer día, estás destinado al fracaso. Descubre qué es el Plan de Ejecución BIM, por qué es obligatorio para 2026 y cómo estructurarlo con ejemplos prácticos.',
-  meta_title: 'BEP: Plan de Ejecución BIM en Perú (Ejemplo Real 2026)',
-  meta_description: 'Guía definitiva sobre el Plan de Ejecución BIM (BEP) en Perú. Estructura, Matriz de Responsabilidades y anexos para cumplir con la Ley 32069 y la ISO 19650.',
-  key_question: '¿Por qué es obligatorio el BEP y cómo se estructura según la normativa peruana?',
-  key_answer: 'El BEP aterriza las exigencias del cliente (EIR) en un plan técnico. En Perú, se divide en BEP Pre-contrato (propuesta) y Post-contrato (documento de gestión). Debe incluir indefectiblemente los objetivos BIM, los usos, mapas de procesos y la matriz de responsabilidades de modelado (LOD).',
-  content: `<p>El 90% de los problemas en reuniones de coordinación BIM se resumen en una sola frase: <em>"Pero yo pensé que tú ibas a modelar eso"</em>. Cuando el arquitecto cree que el estructurista modelará las cimentaciones, y el estructurista cree que las masas conceptuales las pone arquitectura, terminamos con modelos vacíos y presupuestos erróneos.</p>
+  title: 'Modelamiento de Vigas en Revit Estructural: El Workflow que Ahorra 4 Horas por Piso',
+  slug: 'revit-modelamiento-vigas-copiar-supervisar-niveles',
+  excerpt: 'El error más común al modelar vigas en Revit es hacerlo piso por piso. Aquí el workflow real: copiar entre niveles, supervisar desde arquitectura y verificar el modelo analítico antes de ETABS.',
+  meta_title: 'Vigas en Revit: Copiar entre Niveles + Supervisar (Guía 2026)',
+  meta_description: 'Modelamiento de vigas en Revit Estructuras: copiar entre niveles, supervisar desde arquitectura, modelo analítico y verificación previa a ETABS. Flujo real para ingenieros peruanos.',
+  content: `<p>Un ingeniero modela las vigas del Piso 1. Termina con 36 vigas dibujadas. Se va al Piso 2. Dibuja las mismas 36 vigas otra vez. Llega al Piso 5, son las 11 de la noche, y se da cuenta que una sección estaba mal desde el Piso 1. Tiene que corregir 5 veces el mismo error.</p>
 
-<p>La solución a este caos tiene tres letras: <strong>BEP (Plan de Ejecución BIM)</strong>. Con la entrada en vigencia de la <a href="/blog/que-es-bim-obligatorio-peru-2026">metodología BIM como requisito obligatorio para 2026 (Ley 32069)</a>, entregar un BEP sólido será tan importante como entregar los planos de obra.</p>
+<p>Esta es la situación más común de los primeros meses de Revit Estructural. Y la solución no es "dibujar más rápido". Es aprender a usar <strong>Copiar al portapapeles con niveles seleccionados</strong>, el comando que convierte 2 horas de trabajo en 30 segundos.</p>
 
-<h2>¿Qué es exactamente un BEP?</h2>
+<h2>El Error de Modelar Piso por Piso</h2>
 
-<p>El BEP (<em>BIM Execution Plan</em>) es el <strong>manual de reglas del juego</strong> para el desarrollo de un proyecto BIM. Es un documento vivo, redactado por el Proveedor Principal (<a href="/blog/bim-manager-que-hace-cuanto-gana-peru">BIM Manager</a> del consorcio ejecutor), que explica detalladamente <em>cómo</em> el equipo va a cumplir con los requerimientos de información que pidió el cliente.</p>
+<p>En Perú, la mayoría de edificios residenciales de 5 a 10 pisos tienen una planta típica repetida. La losa del Piso 2 es igual a la del Piso 3, 4 y 5. Solo cambian cargas o secciones en los últimos niveles si hay reducción. Modelar cada piso desde cero es ignorar toda la lógica paramétrica que Revit trae.</p>
 
-<p>Según la <strong>ISO 19650</strong>, que es el estándar rector adoptado por el Plan BIM Perú, existen dos momentos clave para el BEP:</p>
+<p>Este problema se nota más cuando llega el cambio. El arquitecto modifica el eje D 20 cm. Si modelaste piso por piso, tienes que entrar a cada nivel y corregir. Si usaste el workflow correcto, corriges una vez y Revit propaga el cambio a todos los pisos vinculados.</p>
+
+<h2>Paso 1: Supervisar Antes de Modelar</h2>
+
+<p>Antes de dibujar la primera viga, tu modelo estructural debe tener vinculado el modelo arquitectónico. Este es el primer principio del <a href="/blog/que-es-bim-obligatorio-peru-2026">flujo BIM que la Ley 32069 exige para proyectos públicos en Perú</a>.</p>
+
+<p>El comando <strong>Copiar/Supervisar</strong> (pestaña Colaborar → Copiar/Supervisar → Seleccionar vínculo) te deja importar desde el archivo arquitectónico:</p>
 
 <ul>
-  <li><strong>BEP Pre-Contrato:</strong> Es tu propuesta técnica diferencial. Demuestra que tu consorcio tiene la capacidad, el hardware y la estructura para afrontar el proyecto antes de ganar la licitación.</li>
-  <li><strong>BEP Post-Contrato:</strong> Una vez ganada la obra, este documento se amplía, se firma y se convierte en el <strong>contrato técnico</strong> entre todas las especialidades.</li>
+  <li><strong>Niveles</strong> — las alturas de cada piso. Si el arquitecto cambia la altura del Piso 3, te llega alerta automática.</li>
+  <li><strong>Rejillas</strong> — los ejes A, B, C... 1, 2, 3... Base de todo el modelo.</li>
+  <li><strong>Pilares</strong> — como referencia. Luego los reemplazas por columnas estructurales.</li>
+  <li><strong>Muros</strong> — útil para coordinar muros de corte con muros arquitectónicos.</li>
+  <li><strong>Suelos</strong> — referencia de losas arquitectónicas.</li>
 </ul>
 
-<h2>Estructura Clave de un BEP (Alineado al Plan BIM Perú)</h2>
+<p>Lo que NO debes hacer: copiar y pegar. Copiar/Supervisar mantiene el vínculo vivo. Copiar/Pegar te deja elementos muertos que nunca más se actualizan.</p>
 
-<p>Un buen Plan de Ejecución no es una plantilla descargada de internet de 100 páginas que nadie lee. Debe ser conciso y resolver problemas reales. Aquí la estructura esencial con ejemplos prácticos:</p>
+<h2>Paso 2: Configurar Visibilidad Antes de Trabajar</h2>
 
-<h3>1. Información del Proyecto y Objetivos BIM</h3>
-<p>No hagas BIM solo por hacer BIM. Define <strong>para qué</strong> se usarán los modelos.</p>
-<p><strong>❌ Mal redactado:</strong> <em>"El objetivo es hacer un modelo 3D del colegio."</em></p>
-<p><strong>✅ Ejemplo Real:</strong> <em>"El objetivo principal es usar los Modelos de Información para la Detección de Interferencias (Clash Detection) en el falso cielo raso, reduciendo los RFI (Request For Information) en un 30% durante la etapa constructiva."</em></p>
+<p>Cuando vinculas el modelo arquitectónico, Revit carga toda la información. La pantalla se satura. El comando <strong>VG</strong> (o VV) abre la ventana de Visibilidad/Gráficos y te deja controlar exactamente qué ves.</p>
 
-<h3>2. Roles y Responsabilidades</h3>
-<p>¿Quién hace qué? El BEP debe listar los nombres, correos y roles (BIM Manager, Coordinadores BIM por especialidad, Modeladores). Es vital designar al responsable del <strong>Entorno Común de Datos (CDE)</strong>, donde vivirá el proyecto.</p>
+<p>Mi recomendación para modelar vigas sin distracciones:</p>
 
-<h3>3. Matriz de Responsabilidades de Modelado (El Corazón del BEP)</h3>
-<p>Este es el anexo más importante. Es una tabla de doble entrada que indica qué elemento se modela, quién es el responsable y a qué nivel de detalle según la fase. Aquí aplicamos el concepto de <a href="/blog/lod-100-500-bim-significado-revit-peru">LOD (Nivel de Desarrollo)</a>.</p>
-
-<div class="overflow-x-auto my-6">
-  <table class="w-full text-left border-collapse text-sm">
-    <thead>
-      <tr class="bg-gray-100 border-b-2 border-gray-200 text-gray-800">
-        <th class="p-3 font-semibold">Elemento (OmniClass)</th>
-        <th class="p-3 font-semibold">Fase 1 (Esquemático)</th>
-        <th class="p-3 font-semibold">Fase 2 (Detallado)</th>
-        <th class="p-3 font-semibold">Responsable</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="border-b border-gray-200">
-        <td class="p-3">Zapatas Aisladas</td>
-        <td class="p-3">LOD 200</td>
-        <td class="p-3">LOD 350</td>
-        <td class="p-3 font-medium text-blue-600">Ing. Estructural</td>
-      </tr>
-      <tr class="border-b border-gray-200 bg-gray-50/50">
-        <td class="p-3">Bandejas Eléctricas</td>
-        <td class="p-3">LOD 100</td>
-        <td class="p-3">LOD 300</td>
-        <td class="p-3 font-medium text-orange-600">Ing. Eléctrico</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<h3>4. Estrategia de Colaboración y CDE</h3>
-<p>El Estado Peruano prohíbe el "Closed BIM". Por lo tanto, tu BEP debe especificar cómo se entregará la información bajo el paradigma <a href="/blog/open-bim-vs-closed-bim-ifc-formato">Open BIM (formatos abiertos)</a>.</p>
-<p><strong>Ejemplo práctico:</strong> <em>"Los modelos nativos se desarrollarán en Revit 2024. Sin embargo, las entregas semanales de coordinación al CDE (BIM 360/Autodesk Construction Cloud) se realizarán obligatoriamente en formato IFC 2x3 o 4, y las incidencias se reportarán mediante formato BCF."</em></p>
-
-<h3>5. Nomenclatura Estándar (Naming Convention)</h3>
-<p>El desorden destruye los proyectos. El BEP establece el estándar de nombres para todos los archivos subidos al CDE. Basado en la ISO 19650, el nombre de un archivo cuenta una historia.</p>
-<p><strong>Ejemplo de Nomenclatura:</strong> <code>PRJ01-STR-Z01-L02-M3D-0001</code></p>
-<ul class="text-sm text-gray-600 mt-2">
-  <li><em>PRJ01</em>: Código del Proyecto</li>
-  <li><em>STR</em>: Disciplina (Estructuras)</li>
-  <li><em>Z01</em>: Zona 1</li>
-  <li><em>L02</em>: Nivel 2</li>
-  <li><em>M3D</em>: Modelo 3D</li>
+<ul>
+  <li>Oculta muros arquitectónicos, acabados, mobiliario del vínculo arquitectónico.</li>
+  <li>Deja visibles solo los ejes, niveles y columnas arquitectónicas como referencia.</li>
+  <li>Oculta el modelo analítico por ahora. Lo activas solo cuando vas a exportar a ETABS.</li>
 </ul>
 
-<h2>¿Cómo Implementar un BEP en Proyectos Pequeños?</h2>
+<p>Los atajos que vas a usar todos los días:</p>
 
-<p>Si eres un contratista pequeño, la palabra "CDE" o "ISO 19650" puede asustar. <strong>No te compliques al empezar.</strong></p>
+<ul>
+  <li><strong>HH</strong> — oculta el elemento seleccionado solo en la vista actual.</li>
+  <li><strong>HA</strong> — oculta el elemento seleccionado permanentemente en la vista.</li>
+  <li><strong>Bombilla inferior</strong> — vuelve a mostrar todo lo oculto.</li>
+</ul>
 
-<p>Si diseñas viviendas de 3 pisos, crea un "Mini-BEP" de 5 páginas. Define claramente las coordenadas de origen (el punto (0,0,0) intocable), en qué versión de software trabajarán para evitar problemas de compatibilidad (ej. "Todos usamos estricto Revit 2022"), y pon una fecha límite rígida para subir el modelo de arquitectura antes de que el estructurista empiece a colocar columnas.</p>
+<h2>Paso 3: Modelar las Vigas del Piso Típico</h2>
 
-<blockquote class="border-l-4 border-emerald-500 pl-4 italic text-gray-700 bg-emerald-50 py-2 my-6">
-  <strong>El Dato en Obra:</strong> Antes de redactar una sola letra de tu BEP, debes leer el EIR (Requerimientos de Intercambio de Información) que te da el cliente. El BEP es tu respuesta <strong>técnica</strong> a las necesidades <strong>empresariales</strong> del EIR.
+<p>Aquí viene el punto: no modelas todos los pisos. Modelas UNO — el piso típico. Después lo replicas.</p>
+
+<h3>Antes de dibujar: define la sección</h3>
+
+<p>En el panel de propiedades, selecciona el tipo de viga. Si no existe la sección que necesitas (ej: 30x60 cm), tienes dos opciones:</p>
+
+<ul>
+  <li><strong>Cargar familia</strong> — la librería de Autodesk trae vigas de concreto parametrizadas. Las cargas, asignas tus dimensiones y listo.</li>
+  <li><strong>Editar tipo</strong> — duplicas un tipo existente, le pones otras dimensiones, y tienes una sección nueva para este proyecto.</li>
+</ul>
+
+<p>Para proyectos en Perú, las secciones más comunes son 25x50, 30x60, 30x70 en concreto f'c = 210 kg/cm². Si modelas varias veces el mismo tipo de edificio, creas tu propia librería de familias y la reutilizas en cada proyecto.</p>
+
+<h3>Cómo dibujar las vigas</h3>
+
+<ol>
+  <li>Selecciona la vista de planta del nivel base (generalmente Piso 1 o Piso 2 si hay sótano).</li>
+  <li>Pestaña <strong>Estructura</strong> → <strong>Viga</strong>.</li>
+  <li>En el panel de propiedades, elige la sección correcta.</li>
+  <li>Dibuja de eje a eje — siempre de columna a columna.</li>
+  <li>Revit genera automáticamente el modelo analítico de la viga con líneas de colores.</li>
+</ol>
+
+<h2>El Modelo Analítico: Qué Significan los Colores</h2>
+
+<p>Cuando dibujas una viga, Revit superpone una línea analítica con colores:</p>
+
+<ul>
+  <li><strong>Verde</strong> — extremo inicial de la viga.</li>
+  <li><strong>Naranja</strong> — centro de la viga.</li>
+  <li><strong>Rojo</strong> — extremo final.</li>
+</ul>
+
+<p>Esto no es estético — es el dato real que se exporta a ETABS. Los nodos (extremos verdes y rojos) deben coincidir con los nodos de las columnas. Si una viga "flota" sin conexión, ETABS la va a detectar como elemento suelto y el análisis falla.</p>
+
+<blockquote>
+  <strong>Ojo en obra:</strong> Antes de exportar a ETABS, activa temporalmente el modelo analítico (VG → Modelo analítico → mostrar) y recorre cada piso visualmente. Busca vigas que no conecten con columnas. Ese error es el causante del 70% de modelos que "no corren" en ETABS. Lo detectas en 5 minutos en Revit, o pierdes 3 horas debuggeando en ETABS.
 </blockquote>
 
-<h2>Conclusión</h2>
+<h2>Paso 4: Copiar las Vigas a Todos los Niveles</h2>
 
-<p>Redactar un buen Plan de Ejecución BIM es el equivalente a asentar correctamente los cimientos de un edificio. A medida que nos acercamos al hito del 2026 en la inversión pública peruana, las entidades revisoras (como el PRONIED o MTC) no solo evaluarán tus modelos en Navisworks, sino la coherencia entre tu modelo y las reglas que prometiste cumplir en tu BEP. ¡Empieza a estandarizar hoy!</p>`,
+<p>Aquí es donde el workflow se vuelve eficiente. Terminaste las 36 vigas del piso típico. Vas a replicarlas en los pisos 2, 3, 4 y 5 en 10 segundos.</p>
+
+<ol>
+  <li>Ve a una <strong>vista de alzado o 3D</strong>.</li>
+  <li>Selecciona todas las vigas del nivel base. Puedes usar filtro: clic derecho en una viga → Seleccionar todas las instancias → En toda la vista.</li>
+  <li><strong>Ctrl+C</strong> para copiar al portapapeles.</li>
+  <li>Modificar → <strong>Pegar → Alineado con niveles seleccionados</strong>.</li>
+  <li>En el cuadro de diálogo, marcá los niveles destino: Piso 2, Piso 3, Piso 4, Piso 5.</li>
+  <li><strong>Aceptar</strong>.</li>
+</ol>
+
+<p>Revit copia las 36 vigas con la misma sección y posición relativa en cada nivel seleccionado. Trabajo de 4 pisos hecho en un paso.</p>
+
+<h2>¿Y Si el Piso 5 Tiene Diferente Distribución?</h2>
+
+<p>En Perú muchos edificios tienen la azotea con menos vigas, o un piso técnico con distribución distinta. No hay problema: copias las vigas al Piso 5 igual, y luego eliminas las que no aplican en esa vista. Sigue siendo más rápido que modelar desde cero.</p>
+
+<p>Para proyectos con dos zonas estructurales muy diferentes (ej: base con columnas de 60x60 y últimos pisos con columnas de 40x40), mi recomendación es: modela cada zona como un "piso típico" diferente. Copias de Piso 1 a Piso 3. Modelas Piso 4. Copias de Piso 4 a Piso 6.</p>
+
+<h2>Orden Recomendado para Modelar un Edificio</h2>
+
+<p>Para edificios de concreto armado residenciales en Perú, el orden que uso es:</p>
+
+<ol>
+  <li><strong>Niveles y rejillas</strong> — supervisados del vínculo arquitectónico.</li>
+  <li><strong>Columnas</strong> — de cimentación al último nivel. Usa <a href="/blog/predimensionamiento-columnas-vigas-e060-practico">predimensionamiento según E.060</a> para definir secciones iniciales.</li>
+  <li><strong>Vigas del piso típico</strong> — luego copias a los demás pisos.</li>
+  <li><strong>Losas</strong> — después de vigas para que los bordes calcen con los ejes de las vigas.</li>
+  <li><strong>Muros de corte</strong> — si la estructura los incluye.</li>
+  <li><strong>Cimentaciones</strong> — zapatas, vigas de cimentación o losa de cimentación, según el tipo de suelo.</li>
+</ol>
+
+<p>Este orden garantiza que los elementos se conectan bien entre sí y el modelo analítico no tiene huecos al exportar.</p>
+
+<h2>Verificación Final Antes de ETABS</h2>
+
+<p>Antes de tocar el botón de exportar, corre esta checklist en Revit:</p>
+
+<ul>
+  <li>Todas las vigas conectan con columnas (sin extremos sueltos).</li>
+  <li>Los niveles del modelo estructural coinciden con el arquitectónico supervisado.</li>
+  <li>Las secciones asignadas corresponden al predimensionamiento de tu memoria de cálculo.</li>
+  <li>El modelo analítico está activo y sin advertencias en la barra inferior.</li>
+  <li>Los materiales están bien definidos (concreto f'c = 210 kg/cm², acero fy = 4,200 kg/cm²).</li>
+</ul>
+
+<p>Si pasas los 5 checks, el modelo está listo para exportar. Si falla uno, corrige primero en Revit — arreglar errores en ETABS después es 10 veces más caro en tiempo. Los que ya han trabajado en un par de obras saben a qué me refiero.</p>`,
   category_slug: 'bim-peru',
   status: 'published',
   author: 'Ing. Miguel Rivera',
-  tags: ['BEP', 'Plan de Ejecución BIM', 'ISO 19650', 'Plan BIM Perú', 'LOD', 'EIR', 'BIM Manager'],
+  tags: ['revit', 'bim', 'modelamiento-estructural', 'vigas', 'etabs', 'workflow'],
   reading_time: 8,
 };
 
-// Ejecutar
-insertPost(POST_TO_INSERT);
+insertPost(POST_TO_INSERT).catch((err) => {
+  console.error('❌ Fatal:', err);
+  process.exit(1);
+});
